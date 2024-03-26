@@ -55,6 +55,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               msg.body.mute
             )
             outGW.send(event)
+            log.info(mutedByModeratorSet)
             // Update the mutedByModeratorSet if the moderator mutes the user
             if (requester.role == Roles.MODERATOR_ROLE) {
               if (msg.body.mute) {
