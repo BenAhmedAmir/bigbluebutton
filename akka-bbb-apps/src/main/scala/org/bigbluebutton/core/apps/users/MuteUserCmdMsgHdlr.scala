@@ -43,7 +43,10 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
         )
       } yield {
 
-        if (requester.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
+        // Add a flag to track if the user was muted by a moderator
+        var mutedByModerator: Boolean = false
+
+        if (requester.role != Roles.MODERATOR_ROLE && u.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
           // Non-moderator user trying to unmute another user of lower role while microphone is disabled. Do not allow.
         } else {
           if (u.muted != msg.body.mute) {
@@ -54,32 +57,20 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               u.voiceUserId,
               msg.body.mute
             )
-
-
-
-            // Update the mutedByModeratorSet if the moderator mutes the user
-            if (requester.role == Roles.MODERATOR_ROLE) {
-              if (msg.body.mute) {
-                mutedByModeratorSet += u.intId
-              } else {
-                mutedByModeratorSet -= u.intId
-              }
-            }
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("mutedByModeratorSet.mkString(", ")")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
-            log.info("###################################################################")
             outGW.send(event)
+
+            // Update the mutedByModerator flag if the moderator mutes the user
+            if (requester.role == Roles.MODERATOR_ROLE && msg.body.mute) {
+              mutedByModerator = true
+            }
           }
         }
+
+        // Prevent self-unmuting if the user was muted by a moderator
+        if (mutedByModerator && msg.body.userId == msg.header.userId && !msg.body.mute) {
+          // Muted by moderator, and trying to unmute oneself. Do not allow.
+        }
+
 
         // Prevent self-unmuting if the user was muted by a moderator
         if (mutedByModeratorSet.contains(msg.body.userId) && msg.body.userId == msg.header.userId && !msg.body.mute) {
