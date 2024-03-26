@@ -64,8 +64,9 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
                 mutedByModeratorSet -= u.intId
               }
             }
+            outGW.send(event)
           }
-          outGW.send(event)
+
         }
 
         // Prevent self-unmuting if the user was muted by a moderator
