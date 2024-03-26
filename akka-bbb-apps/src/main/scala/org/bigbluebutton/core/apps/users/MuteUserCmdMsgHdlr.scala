@@ -55,7 +55,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               msg.body.mute
             )
             outGW.send(event)
-
+            log.inf(mutedByModeratorSet)
             // Update the mutedByModeratorSet if the moderator mutes the user
             if (requester.role == Roles.MODERATOR_ROLE) {
               if (msg.body.mute) {
@@ -78,3 +78,10 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
 
   }
 }
+2024-03-26T11:14:46.670Z INFO  o.b.core.apps.users.UsersApp - you are muted by moderator
+  2024-03-26T11:14:46.670Z INFO  o.b.core.apps.users.UsersApp - Received mute user request. meetingId=43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884 userId=w_cf9vtonulhgs
+  2024-03-26T11:14:46.671Z INFO  o.b.core.apps.users.UsersApp - Send mute user request. meetingId=43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884 userId=w_cf9vtonulhgs user=VoiceUserState(w_cf9vtonulhgs,6,none,ag+ben,w_cf9vtonulhgs_1-bbbID-ag+ben,#5e35b1,false,true,false,freeswitch,1711451685190,false,0,false,eab2a55b-b147-469b-b951-5989bc016562)
+  2024-03-26T11:14:46.671Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserInVoiceConfSysMsg","routing":{"sender":"bbb-apps-akka"},"timestamp":1711451686670},"core":{"header":{"name":"MuteUserInVoiceConfSysMsg","meetingId":"43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884"},"body":{"voiceConf":"35739","voiceUserId":"6","mute":true}}}
+  2024-03-26T11:14:46.678Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"UserMutedVoiceEvtMsg","routing":{"msgType":"BROADCAST_TO_MEETING","meetingId":"43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884","userId":"w_cf9vtonulhgs"},"timestamp":1711451686678},"core":{"header":{"name":"UserMutedVoiceEvtMsg","meetingId":"43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884","userId":"w_cf9vtonulhgs"},"body":{"voiceConf":"35739","intId":"w_cf9vtonulhgs","voiceUserId":"w_cf9vtonulhgs","muted":true}}}
+  2024-03-26T11:14:48.729Z INFO  o.b.e.redis.LearningDashboardActor - Learning Dashboard data sent for meeting 43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884
+  2024-03-26T11:14:50.698Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"ToggleListenOnlyModeSysMsg","routing":{"sender":"bbb-apps-akka"},"timestamp":1711451690698},"core":{"header":{"name":"ToggleListenOnlyModeSysMsg","meetingId":"43b39f7e543e3fd7744c85d90d03ab616d00de61-1711451368884"},"body":{"voiceConf":"35739","userId":"w_cf9vtonulhgs","enabled":true}}}
