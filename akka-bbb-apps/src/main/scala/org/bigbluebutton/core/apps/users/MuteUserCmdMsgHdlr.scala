@@ -54,8 +54,9 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               u.voiceUserId,
               msg.body.mute
             )
-            outGW.send(event)
-            log.info(mutedByModeratorSet.mkString(", "))
+
+
+
             // Update the mutedByModeratorSet if the moderator mutes the user
             if (requester.role == Roles.MODERATOR_ROLE) {
               if (msg.body.mute) {
@@ -64,6 +65,19 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
                 mutedByModeratorSet -= u.intId
               }
             }
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info(mutedByModeratorSet.mkString(", "))
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            log.info("###################################################################")
+            outGW.send(event)
           }
         }
 
@@ -78,3 +92,21 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
 
   }
 }
+2024-03-26T12:33:30.217Z INFO  o.b.core.apps.users.UsersApp - you are muted by moderator
+  2024-03-26T12:33:30.217Z INFO  o.b.core.apps.users.UsersApp - Received mute user request. meetingId=adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784 userId=w_gad89hxqi9jc
+  2024-03-26T12:33:30.217Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserCmdMsg","routing":{"meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_cy9drwfopfyp"},"timestamp":1711456410214},"core":{"header":{"name":"MuteUserCmdMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_cy9drwfopfyp"},"body":{"userId":"w_gad89hxqi9jc","mutedBy":"w_cy9drwfopfyp","mute":true}}}
+  2024-03-26T12:33:30.217Z INFO  o.b.core.apps.users.UsersApp - Send mute user request. meetingId=adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784 userId=w_gad89hxqi9jc user=VoiceUserState(w_gad89hxqi9jc,8,none,guezguez,w_gad89hxqi9jc_1-bbbID-guezguez,#5e35b1,false,true,false,freeswitch,1711456408536,true,1711456408501717,false,0fa4b39f-80f7-49d6-84f6-984c2c8a9e37)
+  2024-03-26T12:33:30.217Z INFO  o.b.core.apps.users.UsersApp -
+    2024-03-26T12:33:30.218Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserInVoiceConfSysMsg","routing":{"sender":"bbb-apps-akka"},"timestamp":1711456410217},"core":{"header":{"name":"MuteUserInVoiceConfSysMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784"},"body":{"voiceConf":"33987","voiceUserId":"8","mute":true}}}
+  2024-03-26T12:33:30.224Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"UserMutedVoiceEvtMsg","routing":{"msgType":"BROADCAST_TO_MEETING","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_gad89hxqi9jc"},"timestamp":1711456410224},"core":{"header":{"name":"UserMutedVoiceEvtMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_gad89hxqi9jc"},"body":{"voiceConf":"33987","intId":"w_gad89hxqi9jc","voiceUserId":"w_gad89hxqi9jc","muted":true}}}
+  2024-03-26T12:33:30.408Z INFO  o.b.e.redis.LearningDashboardActor - Learning Dashboard data sent for meeting adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784
+  2024-03-26T12:33:34.238Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"ToggleListenOnlyModeSysMsg","routing":{"sender":"bbb-apps-akka"},"timestamp":1711456414237},"core":{"header":{"name":"ToggleListenOnlyModeSysMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784"},"body":{"voiceConf":"33987","userId":"w_gad89hxqi9jc","enabled":true}}}
+  2024-03-26T12:33:37.472Z INFO  o.b.core.apps.users.UsersApp - you are muted by moderator
+  2024-03-26T12:33:37.473Z INFO  o.b.core.apps.users.UsersApp - Received mute user request. meetingId=adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784 userId=w_gad89hxqi9jc
+  2024-03-26T12:33:37.473Z INFO  o.b.core.apps.users.UsersApp - Send mute user request. meetingId=adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784 userId=w_gad89hxqi9jc user=VoiceUserState(w_gad89hxqi9jc,8,none,guezguez,w_gad89hxqi9jc_1-bbbID-guezguez,#5e35b1,true,false,false,freeswitch,1711456412112,true,1711456408501717,false,0fa4b39f-80f7-49d6-84f6-984c2c8a9e37)
+  2024-03-26T12:33:37.473Z INFO  o.b.core.apps.users.UsersApp -
+    2024-03-26T12:33:37.473Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserCmdMsg","routing":{"meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_gad89hxqi9jc"},"timestamp":1711456417470},"core":{"header":{"name":"MuteUserCmdMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_gad89hxqi9jc"},"body":{"userId":"w_gad89hxqi9jc","mutedBy":"w_gad89hxqi9jc","mute":false}}}
+  2024-03-26T12:33:37.473Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserInVoiceConfSysMsg","routing":{"sender":"bbb-apps-akka"},"timestamp":1711456417472},"core":{"header":{"name":"MuteUserInVoiceConfSysMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784"},"body":{"voiceConf":"33987","voiceUserId":"8","mute":false}}}
+  2024-03-26T12:33:37.480Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"ToggleListenOnlyModeSysMsg","routing":{"sender":"bbb-apps-akka"},"timestamp":1711456417479},"core":{"header":{"name":"ToggleListenOnlyModeSysMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784"},"body":{"voiceConf":"33987","userId":"w_gad89hxqi9jc","enabled":false}}}
+  2024-03-26T12:33:37.480Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"UserMutedVoiceEvtMsg","routing":{"msgType":"BROADCAST_TO_MEETING","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_gad89hxqi9jc"},"timestamp":1711456417480},"core":{"header":{"name":"UserMutedVoiceEvtMsg","meetingId":"adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784","userId":"w_gad89hxqi9jc"},"body":{"voiceConf":"33987","intId":"w_gad89hxqi9jc","voiceUserId":"w_gad89hxqi9jc","muted":false}}}
+  2024-03-26T12:33:40.408Z INFO  o.b.e.redis.LearningDashboardActor - Learning Dashboard data sent for meeting adc36abec7fe4f731c46350f582f74b7a783bab7-1711456365784
