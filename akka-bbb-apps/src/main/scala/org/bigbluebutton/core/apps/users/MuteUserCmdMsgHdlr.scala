@@ -27,7 +27,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
     } else {
       val meetingId = liveMeeting.props.meetingProp.intId
       val voiceConf = liveMeeting.props.voiceProp.voiceConf
-
+      log.info("you are muted by moderator")
       log.info("Received mute user request. meetingId=" + meetingId + " userId="
         + msg.body.userId)
 
