@@ -43,7 +43,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
         )
       } yield {
 
-        var mutedByModerator: Boolean = false
+//        var mutedByModerator: Boolean = false
 
         if (requester.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
           // Non-moderator user trying to unmute another user of lower role while microphone is disabled. Do not allow.
@@ -60,7 +60,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
 
             // Update the mutedByModerator flag if the moderator mutes the user
             if (requester.role == Roles.MODERATOR_ROLE && msg.body.mute) {
-              mutedByModerator = true
+              u.mutedByModerator = true
               log.info("################################")
               log.info("################################")
               log.info("################################")
@@ -75,6 +75,12 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
         // Prevent self-unmuting if the user was muted by a moderator
         if (mutedByModerator && msg.body.userId == msg.header.userId && !msg.body.mute) {
           // Muted by moderator, and trying to unmute oneself. Do not allow.
+          log.info("################################")
+          log.info("################################")
+          log.info("################################")
+          log.info("you can not open microphone")
+          log.info("################################")
+          log.info("################################")
         }
 
       }

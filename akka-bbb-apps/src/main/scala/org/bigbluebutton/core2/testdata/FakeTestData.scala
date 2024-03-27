@@ -74,3 +74,47 @@ trait FakeTestData {
   }
 
 }
+2024-03-27T10:32:07.083Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{
+  "name":"UserMutedVoiceEvtMsg","routing":{
+  "msgType":"BROADCAST_TO_MEETING","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"}
+  ,"timestamp":1711535527083
+}
+  ,"core":{
+    "header":{
+    "name":"UserMutedVoiceEvtMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"
+  },
+    "body":{
+    "voiceConf":"03138","intId":"w_bczylgrpz5eb","voiceUserId":"w_bczylgrpz5eb","muted":true,"mutedByModerator":false}
+  }}
+  2024-03-27T10:32:07.754Z INFO  o.b.e.redis.LearningDashboardActor - Learning Dashboard data sent for meeting 3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240
+  2024-03-27T10:32:11.094Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{
+    "name":"ToggleListenOnlyModeSysMsg","routing":{
+    "sender":"bbb-apps-akka"
+  },"timestamp":1711535531094}
+    ,"core":{"header":{"name":"ToggleListenOnlyModeSysMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240"},"body":{"voiceConf":"03138","userId":"w_bczylgrpz5eb","enabled":true}}}
+  2024-03-27T10:32:11.562Z INFO  o.b.core.apps.users.UsersApp - you are muted by moderator
+  2024-03-27T10:32:11.562Z INFO  o.b.core.apps.users.UsersApp - Received mute user request. meetingId=3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240 userId=w_bczylgrpz5eb
+  2024-03-27T10:32:11.562Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserCmdMsg","routing":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"timestamp":1711535531560},"core":{"header":{"name":"MuteUserCmdMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"body":{"userId":"w_bczylgrpz5eb","mutedBy":"w_bczylgrpz5eb","mute":true}}}
+  2024-03-27T10:32:15.394Z INFO  o.b.core.apps.users.UsersApp - you are muted by moderator
+  2024-03-27T10:32:15.394Z INFO  o.b.core.apps.users.UsersApp - Received mute user request. meetingId=3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240 userId=w_bczylgrpz5eb
+  2024-03-27T10:32:15.394Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserCmdMsg","routing":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"timestamp":1711535535392},"core":{"header":{"name":"MuteUserCmdMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"body":{"userId":"w_bczylgrpz5eb","mutedBy":"w_bczylgrpz5eb","mute":true}}}
+  2024-03-27T10:32:20.612Z INFO  o.b.core.apps.users.UsersApp - you are muted by moderator
+  2024-03-27T10:32:20.612Z INFO  o.b.core.apps.users.UsersApp - Received mute user request. meetingId=3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240 userId=w_bczylgrpz5eb
+  2024-03-27T10:32:20.612Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MuteUserCmdMsg","routing":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"timestamp":1711535540611},"core":{"header":{"name":"MuteUserCmdMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"body":{"userId":"w_bczylgrpz5eb","mutedBy":"w_bczylgrpz5eb","mute":true}}}
+  2024-03-27T10:33:39.555Z INFO  o.b.core.running.MeetingActor - Received user left meeting. user w_bczylgrpz5eb meetingId=3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240
+  2024-03-27T10:33:39.555Z INFO  o.b.core.running.MeetingActor - Setting user left flag. user w_bczylgrpz5eb meetingId=3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240
+  2024-03-27T10:33:39.601Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"UserLeftVoiceConfEvtMsg","routing":{"voiceConf":"03138"},"timestamp":1711535619598},"core":{"header":{"name":"UserLeftVoiceConfEvtMsg","voiceConf":"03138"},"body":{"voiceConf":"03138","voiceUserId":"27"}}}
+  2024-03-27T10:33:39.601Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"UserLeftVoiceConfToClientEvtMsg","routing":{"msgType":"BROADCAST_TO_MEETING","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"timestamp":1711535619600},"core":{"header":{"name":"UserLeftVoiceConfToClientEvtMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_bczylgrpz5eb"},"body":{"voiceConf":"03138","intId":"w_bczylgrpz5eb","voiceUserId":"w_bczylgrpz5eb"}}}
+  2024-03-27T10:33:39.618Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"VoiceConfCallStateEvtMsg","routing":{"voiceConf":"03138"},"timestamp":1711535619617},"core":{"header":{"name":"VoiceConfCallStateEvtMsg","voiceConf":"03138"},"body":{"voiceConf":"03138","callSession":"1562cecc-1bab-492a-b428-5e4a6a77dfc2","clientSession":"1","userId":"w_bczylgrpz5eb","callerName":"Ahmed","callState":"CALL_ENDED","origCallerIdName":"w_bczylgrpz5eb_1-bbbID-Ahmed","origCalledDest":"03138"}}}
+  2024-03-27T10:33:39.618Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"VoiceCallStateEvtMsg","routing":{"msgType":"BROADCAST_TO_MEETING","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"03138"},"timestamp":1711535619618},"core":{"header":{"name":"VoiceCallStateEvtMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"03138"},"body":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","voiceConf":"03138","clientSession":"1","userId":"w_bczylgrpz5eb","callerName":"Ahmed","callState":"CALL_ENDED"}}}
+  2024-03-27T10:33:47.754Z INFO  o.b.e.redis.LearningDashboardActor - Learning Dashboard data sent for meeting 3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240
+  2024-03-27T10:33:52.027Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"LogoutAndEndMeetingCmdMsg","routing":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_rdqvck0cbrzd"},"timestamp":1711535632025},"core":{"header":{"name":"LogoutAndEndMeetingCmdMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_rdqvck0cbrzd"},"body":{"userId":"w_rdqvck0cbrzd"}}}
+  2024-03-27T10:33:52.028Z INFO  o.b.core.apps.users.UsersApp - Meeting 3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240 ended by user [w_rdqvck0cbrzd, amirbenahmed} when logging out.
+  2024-03-27T10:33:52.028Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"MeetingEndingEvtMsg","routing":{"msgType":"BROADCAST_TO_MEETING","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_rdqvck0cbrzd"},"timestamp":1711535632026},"core":{"header":{"name":"MeetingEndingEvtMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"w_rdqvck0cbrzd"},"body":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","reason":"ENDED_AFTER_USER_LOGGED_OUT"}}}
+  2024-03-27T10:33:52.030Z INFO  o.b.e.redis.LearningDashboardActor - Learning Dashboard data sent for meeting 3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240
+  2024-03-27T10:33:52.030Z INFO  o.b.e.redis.LearningDashboardActor -  removed for meeting 3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240.
+  2024-03-27T10:33:52.038Z WARN  o.b.core.BigBlueButtonActor - Cannot handle DestroyMeetingSysCmdMsg
+  2024-03-27T10:33:52.058Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"UserLeftVoiceConfEvtMsg","routing":{"voiceConf":"03138"},"timestamp":1711535632056},"core":{"header":{"name":"UserLeftVoiceConfEvtMsg","voiceConf":"03138"},"body":{"voiceConf":"03138","voiceUserId":"26"}}}
+  2024-03-27T10:33:52.058Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"VoiceConfCallStateEvtMsg","routing":{"voiceConf":"03138"},"timestamp":1711535632057},"core":{"header":{"name":"VoiceConfCallStateEvtMsg","voiceConf":"03138"},"body":{"voiceConf":"03138","callSession":"1562cecc-1bab-492a-b428-5e4a6a77dfc2","clientSession":"3","userId":"w_rdqvck0cbrzd","callerName":"amirbenahmed","callState":"CALL_ENDED","origCallerIdName":"w_rdqvck0cbrzd_3-bbbID-amirbenahmed","origCalledDest":"03138"}}}
+  2024-03-27T10:33:54.544Z INFO  o.b.core.BigBlueButtonActor - Destroyed meetingId=3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240
+  2024-03-27T10:33:54.544Z INFO  o.b.core2.AnalyticsActor - -- analytics -- {"envelope":{"name":"DisconnectAllClientsSysMsg","routing":{"msgType":"SYSTEM","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","userId":"not-used"},"timestamp":1711535634543},"core":{"header":{"name":"DisconnectAllClientsSysMsg","meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240"},"body":{"meetingId":"3602882fdb989ce1b22d6cfeb3562cb5832b7a9f-1711535433240","reason":"meeting-destroyed"}}}
