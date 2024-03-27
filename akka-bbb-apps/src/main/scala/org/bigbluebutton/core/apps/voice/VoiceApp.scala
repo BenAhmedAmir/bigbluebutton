@@ -325,7 +325,8 @@ object VoiceApp extends SystemConfiguration {
       floor = false,
       lastFloorTime = "0",
       hold,
-      uuid
+      uuid,
+      mutedByModerator = false
     )
     VoiceUsers.add(liveMeeting.voiceUsers, voiceUserState)
 

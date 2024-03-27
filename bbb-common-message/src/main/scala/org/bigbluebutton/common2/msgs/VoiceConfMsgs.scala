@@ -447,7 +447,7 @@ case class UserLeftVoiceConfToClientEvtMsgBody(voiceConf: String, intId: String,
  */
 object UserMutedVoiceEvtMsg { val NAME = "UserMutedVoiceEvtMsg" }
 case class UserMutedVoiceEvtMsg(header: BbbClientMsgHeader, body: UserMutedVoiceEvtMsgBody) extends BbbCoreMsg
-case class UserMutedVoiceEvtMsgBody(voiceConf: String, intId: String, voiceUserId: String, muted: Boolean)
+case class UserMutedVoiceEvtMsgBody(voiceConf: String, intId: String, voiceUserId: String, muted: Boolean, mutedByModerator: Boolean)
 
 /**
  * Received from FS that user has been muted in voice conference.
