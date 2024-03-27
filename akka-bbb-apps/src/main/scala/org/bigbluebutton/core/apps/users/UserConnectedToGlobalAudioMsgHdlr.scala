@@ -45,7 +45,8 @@ trait UserConnectedToGlobalAudioMsgHdlr {
         floor = false,
         lastFloorTime = "0",
         hold = false,
-        uuid = "unused"
+        uuid = "unused",
+        mutedByModerator = false
       )
 
       VoiceUsers.add(liveMeeting.voiceUsers, vu)
