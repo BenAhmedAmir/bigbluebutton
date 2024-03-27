@@ -110,7 +110,7 @@ object VoiceApp extends SystemConfiguration {
       liveMeeting: LiveMeeting,
       outGW:       OutMsgRouter,
       voiceUserId: String,
-      muted:       Boolean
+      muted:       Boolean,
       mutedByModerator: Boolean // New parameter indicating whether muted by moderator
 
   )(implicit context: ActorContext): Unit = {
