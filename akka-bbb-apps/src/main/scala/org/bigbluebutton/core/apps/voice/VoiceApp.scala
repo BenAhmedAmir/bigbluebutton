@@ -97,7 +97,8 @@ object VoiceApp extends SystemConfiguration {
       voiceConf = voiceConf,
       intId = vu.intId,
       voiceUserId = vu.intId,
-      vu.muted
+      vu.muted,
+      vu.mutedByModerator
     )
 
     val event = UserMutedVoiceEvtMsg(header, body)
@@ -110,9 +111,11 @@ object VoiceApp extends SystemConfiguration {
       outGW:       OutMsgRouter,
       voiceUserId: String,
       muted:       Boolean
+      mutedByModerator: Boolean // New parameter indicating whether muted by moderator
+
   )(implicit context: ActorContext): Unit = {
     for {
-      mutedUser <- VoiceUsers.userMuted(liveMeeting.voiceUsers, voiceUserId, muted)
+      mutedUser <- VoiceUsers.userMuted(liveMeeting.voiceUsers, voiceUserId, muted, mutedByModerator)
     } yield {
       if (!muted) {
         // Make sure lock settings are in effect (ralam dec 6, 2019)
@@ -137,7 +140,7 @@ object VoiceApp extends SystemConfiguration {
 
       // If the user is muted or unmuted with an unheld channel, broadcast
       // the event right away.
-      // If the user is unmuted, but channel is held, we need to wait for the 
+      // If the user is unmuted, but channel is held, we need to wait for the
       // channel to be active again to broadcast the event. See
       // VoiceApp.handleChannelHoldChanged for this second case.
       if (muted || (!muted && !mutedUser.hold)) {
@@ -164,12 +167,14 @@ object VoiceApp extends SystemConfiguration {
         cvu.voiceUserId
       ) match {
           case Some(vu) =>
+            val mutedByModerator = vu.mutedByModerator // Retrieve the mutedByModerator flag from the user
             if (vu.muted != cvu.muted) {
               handleUserMutedInVoiceConfEvtMsg(
                 liveMeeting,
                 outGW,
                 cvu.voiceUserId,
-                cvu.muted
+                cvu.muted,
+                mutedByModerator
               )
             } else {
               // Update the user status to indicate they are still in the voice conference.

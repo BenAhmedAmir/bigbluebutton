@@ -48,13 +48,15 @@ object VoiceUsers {
     users.removeFromCache(intId)
   }
 
-  def userMuted(users: VoiceUsers, voiceUserId: String, muted: Boolean): Option[VoiceUserState] = {
+  def userMuted(users: VoiceUsers, voiceUserId: String, muted: Boolean, mutedByModerator: Boolean): Option[VoiceUserState] = {
     for {
       u <- findWithVoiceUserId(users, voiceUserId)
+      if !u.mutedByModerator || mutedByModerator // Check if user is not muted by moderator or if mute action is initiated by moderator
     } yield {
       val vu = u.modify(_.muted).setTo(muted)
         .modify(_.talking).setTo(false)
         .modify(_.lastStatusUpdateOn).setTo(System.currentTimeMillis())
+        .modify(_.mutedByModerator).setTo(mutedByModerator) // Set mutedByModerator flag
       users.save(vu)
       vu
     }
@@ -63,8 +65,9 @@ object VoiceUsers {
   def userTalking(users: VoiceUsers, voiceUserId: String, talking: Boolean): Option[VoiceUserState] = {
     for {
       u <- findWithVoiceUserId(users, voiceUserId)
+      if !u.mutedByModerator // Check if user is not muted by moderator
     } yield {
-      val vu = u.modify(_.muted).setTo(false)
+      val vu = u.modify(_.muted).setTo(false) // Ensure user can only talk if not muted by moderator
         .modify(_.talking).setTo(talking)
         .modify(_.lastStatusUpdateOn).setTo(System.currentTimeMillis())
       users.save(vu)
@@ -201,4 +204,6 @@ case class VoiceUserState(
     lastFloorTime:      String,
     hold:               Boolean,
     uuid:               String
-)
+    mutedByModerator:   Boolean  // Indicator for whether user is muted by a moderator
+
+  )
