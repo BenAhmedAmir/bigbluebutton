@@ -60,11 +60,11 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
 
             // Update the mutedByModerator flag if the moderator mutes the user
             if (requester.role == Roles.MODERATOR_ROLE && msg.body.mute) {
-              u.mutedByModerator = true
+//              u.mutedByModerator = true
               log.info("################################")
               log.info("################################")
               log.info("################################")
-              log.info(mutedByModerator.toString)
+              log.info(u.mutedByModerator)
               log.info("################################")
               log.info("################################")
               log.info("################################")
