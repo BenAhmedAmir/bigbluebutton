@@ -79,7 +79,7 @@ object FakeUserGenerator {
     VoiceUserState(intId, voiceUserId = voiceUserId, callingWith, callerName = name,
       callerNum = name, "#ff6242", muted, talking, listenOnly, "freeswitch", System.currentTimeMillis(), floor, lastFloorTime,
       false,
-      "9b3f4504-275d-4315-9922-21174262d88c")
+      "9b3f4504-275d-4315-9922-21174262d88c",false)
   }
 
   def createFakeWebcamStreamFor(userId: String, subscribers: Set[String]): WebcamStream = {
