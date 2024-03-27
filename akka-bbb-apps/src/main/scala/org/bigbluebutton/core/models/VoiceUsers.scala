@@ -203,7 +203,7 @@ case class VoiceUserState(
     floor:              Boolean,
     lastFloorTime:      String,
     hold:               Boolean,
-    uuid:               String
+    uuid:               String,
     mutedByModerator:   Boolean  // Indicator for whether user is muted by a moderator
 
   )
