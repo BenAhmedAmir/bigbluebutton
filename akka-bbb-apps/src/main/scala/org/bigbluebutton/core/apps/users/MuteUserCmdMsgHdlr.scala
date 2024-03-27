@@ -65,6 +65,8 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               log.info("################################")
               log.info("################################")
               log.info(u.mutedByModerator.toString)
+              u.mutedByModerator = true
+              log.info(u.mutedByModerator.toString)
               log.info("################################")
               log.info("################################")
               log.info("################################")
