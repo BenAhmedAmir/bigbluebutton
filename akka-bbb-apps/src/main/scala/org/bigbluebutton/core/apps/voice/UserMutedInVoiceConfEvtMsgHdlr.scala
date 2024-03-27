@@ -19,7 +19,8 @@ trait UserMutedInVoiceConfEvtMsgHdlr {
         liveMeeting,
         outGW,
         msg.body.voiceUserId,
-        msg.body.muted
+        msg.body.muted,
+        vu.mutedByModerator
       )
     }
   }
