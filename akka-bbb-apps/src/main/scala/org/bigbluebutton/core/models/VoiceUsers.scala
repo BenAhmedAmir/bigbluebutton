@@ -51,7 +51,7 @@ object VoiceUsers {
   def userMuted(users: VoiceUsers, voiceUserId: String, muted: Boolean, mutedByModerator: Boolean): Option[VoiceUserState] = {
     for {
       u <- findWithVoiceUserId(users, voiceUserId)
-      if !u.mutedByModerator || mutedByModerator // Check if user is not muted by moderator or if mute action is initiated by moderator
+//      if !u.mutedByModerator || mutedByModerator // Check if user is not muted by moderator or if mute action is initiated by moderator
     } yield {
       val vu = u.modify(_.muted).setTo(muted)
         .modify(_.talking).setTo(false)
