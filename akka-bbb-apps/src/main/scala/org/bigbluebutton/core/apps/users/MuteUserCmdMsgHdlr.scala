@@ -44,6 +44,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
       } yield {
 
 //        var mutedByModerator: Boolean = false
+        log.info(u)
 
         if (requester.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
           // Non-moderator user trying to unmute another user of lower role while microphone is disabled. Do not allow.
@@ -64,7 +65,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               log.info("################################")
               log.info("################################")
               log.info("################################")
-              log.info(u)
+              log.info(u.mutedByModerator.toString)
               mutedByModerator = true
               log.info(u.mutedByModerator.toString)
               log.info("################################")
