@@ -71,7 +71,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
 
         // Prevent self-unmuting if the user was muted by a moderator
         if (mutedByModeratorSet.contains(msg.body.userId) && msg.body.userId == msg.header.userId && !msg.body.mute) {
-          // Muted by moderator, and trying to unmute oneself. Do not allow.
+          log.info("you can not open your microphone because you are muted by moderator")
         }
 
 
