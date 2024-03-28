@@ -65,6 +65,8 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               } else {
                 mutedByModeratorSet -= u.intId
               }
+              log.info("mutedByModeratorSet: " + mutedByModeratorSet.mkString(", "))
+
             }
           }
         }
