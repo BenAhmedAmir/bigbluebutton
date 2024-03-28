@@ -12,7 +12,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
 
   val liveMeeting: LiveMeeting
   val outGW: OutMsgRouter
-
+// from here i began
   def handleMuteUserCmdMsg(msg: MuteUserCmdMsg) {
     val unmuteDisabled = !liveMeeting.props.usersProp.allowModsToUnmuteUsers && msg.body.mute == false
     if (msg.body.userId != msg.header.userId && (unmuteDisabled || permissionFailed(
