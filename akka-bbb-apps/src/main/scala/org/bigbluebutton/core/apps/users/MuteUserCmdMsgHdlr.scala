@@ -41,10 +41,10 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
           liveMeeting.voiceUsers,
           msg.body.userId
         )
+        log.info(u)
       } yield {
 
 //        var mutedByModerator: Boolean = false
-        log.info(u)
 
         if (requester.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
           // Non-moderator user trying to unmute another user of lower role while microphone is disabled. Do not allow.
