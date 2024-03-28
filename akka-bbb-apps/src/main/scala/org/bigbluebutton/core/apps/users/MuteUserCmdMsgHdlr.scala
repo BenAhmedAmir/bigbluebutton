@@ -45,7 +45,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
         // Define a set to store user IDs muted by the moderator
         var mutedByModeratorSet: Set[String] = Set()
 
-        if (requester.role != Roles.MODERATOR_ROLE && u.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
+        if (requester.role != Roles.MODERATOR_ROLE && permissions.disableMic && requester.locked && u.muted && msg.body.userId == msg.header.userId) {
           // Non-moderator user trying to unmute another user of lower role while microphone is disabled. Do not allow.
         } else {
           if (u.muted != msg.body.mute) {
