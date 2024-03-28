@@ -56,7 +56,7 @@ object VoiceUsers {
       val vu = u.modify(_.muted).setTo(muted)
         .modify(_.talking).setTo(false)
         .modify(_.lastStatusUpdateOn).setTo(System.currentTimeMillis())
-        .modify(_.mutedByModerator).setTo(mutedByModerator) // Set mutedByModerator flag
+//        .modify(_.mutedByModerator).setTo(mutedByModerator) // Set mutedByModerator flag
       users.save(vu)
       vu
     }
