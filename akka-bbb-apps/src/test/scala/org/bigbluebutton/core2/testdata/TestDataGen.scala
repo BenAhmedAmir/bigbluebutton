@@ -54,8 +54,3 @@ object TestDataGen {
     u
   }
 }
-not enough arguments for method apply:
-  (intId: String, voiceUserId: String, callingWith: String,
-  callerName: String, callerNum: String, color: String, muted: Boolean,
-  talking: Boolean, listenOnly: Boolean, calledInto: String, lastStatusUpdateOn: Long,
-  floor: Boolean, lastFloorTime: String, hold: Boolean, uuid: String, mutedByModerator: Boolean): org.bigbluebutton.core.models.VoiceUserState in object VoiceUserState.
