@@ -41,13 +41,12 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
           msg.body.userId
         )
       } yield {
+        val mutedBy = if (u.muted && requester.role == Roles.MODERATOR_ROLE) Roles.MODERATOR_ROLE else u.mutedBy
         if (requester.role != Roles.MODERATOR_ROLE && mutedBy == Roles.MODERATOR_ROLE && u.muted && msg.body.userId == msg.header.userId) {
           // unmuting self while not moderator and was muted by a moderator. Do not allow.
         } else {
           if (u.muted != msg.body.mute) {
             log.info("Send mute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
-            // Set mutedBy to MODERATOR_ROLE if muted by moderator
-            val mutedBy = if (u.muted && requester.role == Roles.MODERATOR_ROLE) Roles.MODERATOR_ROLE else u.mutedBy
             val event = MsgBuilder.buildMuteUserInVoiceConfSysMsg(
               meetingId,
               voiceConf,
