@@ -112,7 +112,7 @@ object VoiceApp extends SystemConfiguration {
       muted:       Boolean
   )(implicit context: ActorContext): Unit = {
     for {
-      mutedUser <- VoiceUsers.userMuted(liveMeeting.voiceUsers, voiceUserId, muted,"")
+      mutedUser <- VoiceUsers.userMuted(liveMeeting.voiceUsers, voiceUserId, muted)
     } yield {
       if (!muted) {
         // Make sure lock settings are in effect (ralam dec 6, 2019)
@@ -320,8 +320,7 @@ object VoiceApp extends SystemConfiguration {
       floor = false,
       lastFloorTime = "0",
       hold,
-      uuid,
-      ""
+      uuid
     )
     VoiceUsers.add(liveMeeting.voiceUsers, voiceUserState)
 
@@ -341,8 +340,7 @@ object VoiceApp extends SystemConfiguration {
         liveMeeting.props.meetingProp.intId,
         voiceConf,
         voiceUserId,
-        true,
-        ""
+        true
       )
       outGW.send(event)
     }
@@ -452,8 +450,7 @@ object VoiceApp extends SystemConfiguration {
       liveMeeting.props.meetingProp.intId,
       liveMeeting.props.voiceProp.voiceConf,
       voiceUserId,
-      !enabled,
-      ""
+      !enabled
     )
     outGW.send(muteEvent)
 
