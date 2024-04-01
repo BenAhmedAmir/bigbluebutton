@@ -27,8 +27,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
       val meetingId = liveMeeting.props.meetingProp.intId
       val voiceConf = liveMeeting.props.voiceProp.voiceConf
 
-      log.info("Received mute user request. meetingId=" + meetingId + " userId="
-        + msg.body.userId)
+      log.info("Received mute user request. meetingId=" + meetingId + " userId=" + msg.body.userId)
 
       val permissions = MeetingStatus2x.getPermissions(liveMeeting.status)
       for {
@@ -49,19 +48,27 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
           msg.body.userId == msg.header.userId) {
           // unmuting self while not moderator and mic disabled. Do not allow.
         } else {
-          if (u.muted != msg.body.mute) {
-            log.info("Send mute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
-            val event = MsgBuilder.buildMuteUserInVoiceConfSysMsg(
-              meetingId,
-              voiceConf,
-              u.voiceUserId,
-              msg.body.mute
-            )
-            outGW.send(event)
+          // Check if the user is a viewer or guest and if they are muted by a moderator
+          val isViewerOrGuest = requester.role == Roles.VIEWER_ROLE || requester.role == Roles.GUEST_ROLE
+          val mutedByModerator = permissions.mutedByModerator.contains(u.intId)
+          if (isViewerOrGuest && mutedByModerator && msg.body.mute) {
+            // User is a viewer/guest muted by moderator, and trying to unmute themselves
+            log.info("User is muted by moderator and cannot unmute themselves.")
+            // You may want to send a message to inform the user that they cannot unmute themselves
+          } else {
+            if (u.muted != msg.body.mute) {
+              log.info("Send mute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
+              val event = MsgBuilder.buildMuteUserInVoiceConfSysMsg(
+                meetingId,
+                voiceConf,
+                u.voiceUserId,
+                msg.body.mute
+              )
+              outGW.send(event)
+            }
           }
         }
       }
     }
-
   }
 }
