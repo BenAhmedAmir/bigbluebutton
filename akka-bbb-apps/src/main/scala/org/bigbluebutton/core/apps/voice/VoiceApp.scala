@@ -341,7 +341,8 @@ object VoiceApp extends SystemConfiguration {
         liveMeeting.props.meetingProp.intId,
         voiceConf,
         voiceUserId,
-        true
+        true,
+        ""
       )
       outGW.send(event)
     }
@@ -451,7 +452,8 @@ object VoiceApp extends SystemConfiguration {
       liveMeeting.props.meetingProp.intId,
       liveMeeting.props.voiceProp.voiceConf,
       voiceUserId,
-      !enabled
+      !enabled,
+      ""
     )
     outGW.send(muteEvent)
 
