@@ -43,8 +43,8 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
       } yield {
 
         if (requester.role != Roles.MODERATOR_ROLE
-          && u.muted && u.mutedBy == Roles.MODERATOR_ROLE
-          && msg.body.userId == msg.header.userId) {
+          && u.muted &&
+          msg.body.userId == msg.header.userId) {
           // unmuting self while not moderator and was muted by a moderator. Do not allow.
         } else {
           if (u.muted != msg.body.mute) {
@@ -56,7 +56,6 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               msg.body.mute
             )
             outGW.send(event)
-            VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, Roles.MODERATOR_ROLE) // Set the mutedBy field here
           }
         }
       }
