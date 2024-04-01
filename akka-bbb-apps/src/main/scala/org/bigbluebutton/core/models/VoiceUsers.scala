@@ -48,11 +48,12 @@ object VoiceUsers {
     users.removeFromCache(intId)
   }
 
-  def userMuted(users: VoiceUsers, voiceUserId: String, muted: Boolean): Option[VoiceUserState] = {
+  def userMuted(users: VoiceUsers, voiceUserId: String, muted: Boolean, mutedBy: String): Option[VoiceUserState] = {
     for {
       u <- findWithVoiceUserId(users, voiceUserId)
     } yield {
       val vu = u.modify(_.muted).setTo(muted)
+        .modify(_.mutedBy).setTo(mutedBy)
         .modify(_.talking).setTo(false)
         .modify(_.lastStatusUpdateOn).setTo(System.currentTimeMillis())
       users.save(vu)
@@ -200,5 +201,6 @@ case class VoiceUserState(
     floor:              Boolean,
     lastFloorTime:      String,
     hold:               Boolean,
-    uuid:               String
+    uuid:               String,
+    mutedBy:            String
 )
