@@ -40,7 +40,11 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
           msg.body.userId
         )
       } yield {
-
+        log.info("u.mutedBy ::::::::  " + u.mutedBy)
+        log.info("msg.body.userId :::::::::: "+ msg.body.userId)
+        log.info("u.muted :::::::: " +u.muted)
+        log.info("requester.role ====== " +requester.role)
+        log.info("msg.header.userId ====== " +msg.header.userId)
         if (requester.role != Roles.MODERATOR_ROLE
           && u.muted && u.mutedBy == Roles.MODERATOR_ROLE
           && msg.body.userId == msg.header.userId) {
