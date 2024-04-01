@@ -68,7 +68,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               msg.body.mute
             )
             outGW.send(event)
-            log.info("logloglogloglogloglogloglog"+event)
+            log.info("logloglogloglogloglogloglog" + event)
             VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
             log.info("######################################################")
             log.info("######################################################")
