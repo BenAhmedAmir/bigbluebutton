@@ -41,8 +41,7 @@ import org.bigbluebutton.core2.message.senders.MsgBuilder
         } yield {
 
           if (requester.role != Roles.MODERATOR_ROLE
-            && u.muted && u.mutedBy == Roles.MODERATOR_ROLE
-            && msg.body.userId == msg.header.userId) {
+            && u.muted && msg.body.userId == msg.header.userId) {
             // unmuting self while not moderator and was muted by a moderator. Do not allow.
           } else {
             if (u.muted != msg.body.mute) {
