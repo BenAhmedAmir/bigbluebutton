@@ -74,7 +74,7 @@ public:
     # active. This also allows to change virtual backgrounds without
     # restarting webcam.
     enableWebcamSelectorButton: true
-    enableTalkingIndicator: true
+    enableTalkingIndicator: false
     enableCameraBrightness: true
     mirrorOwnWebcam: false
     viewersInWebcam: 8
@@ -296,7 +296,7 @@ public:
   externalVideoPlayer:
     enabled: true
   kurento:
-    wsUrl: HOST
+    wsUrl: wss://bbb.ddns.net/bbb-webrtc-sfu
     cameraWsOptions:
       # Valid for video-provider. Time (ms) before its WS connection times out
       # and tries to reconnect.
