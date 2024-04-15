@@ -11,11 +11,11 @@ import SpeechService from '/imports/ui/components/audio/captions/speech/service'
 import { UsersContext } from '/imports/ui/components/components-data/users-context/context';
 
 const APP_CONFIG = Meteor.settings.public.app;
-const { enableTalkingIndicator } = APP_CONFIG;
+// const { enableTalkingIndicator } = APP_CONFIG;
 const TALKING_INDICATOR_MUTE_INTERVAL = 500;
 const TALKING_INDICATORS_MAX = 8;
 
-const TalkingIndicatorContainer = (props) => {
+const TalkingIndicatorContainer = ({ enableTalkingIndicator, ...props }) => {
   const usingUsersContext = useContext(UsersContext);
   const { users } = usingUsersContext;
 
