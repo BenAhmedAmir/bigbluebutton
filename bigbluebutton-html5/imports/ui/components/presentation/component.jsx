@@ -428,10 +428,11 @@ class Presentation extends PureComponent {
   onFullscreenChange() {
     const { isFullscreen } = this.state;
     const newIsFullscreen = FullscreenService.isFullScreen(
-      this.refPresentationContainer
+      this.refPresentationContainer,
     );
     if (isFullscreen !== newIsFullscreen) {
       this.setState({ isFullscreen: newIsFullscreen });
+      Session.set('presentationIsFullscreen', newIsFullscreen);
     }
   }
 
@@ -791,16 +792,20 @@ class Presentation extends PureComponent {
     const { presentationToolbarMinWidth } = DEFAULT_VALUES;
 
     const isLargePresentation =
-      (svgWidth > presentationToolbarMinWidth || isMobile) &&
+      (svgWidth > presentationToolbarMinWidth) &&
       !(
-        layoutType === LAYOUT_TYPE.VIDEO_FOCUS &&
-        numCameras > 0 &&
-        !fullscreenContext
+        layoutType === LAYOUT_TYPE.VIDEO_FOCUS
+        && numCameras > 0
+        && !fullscreenContext
       );
 
     const containerWidth = isLargePresentation
       ? svgWidth
       : presentationToolbarMinWidth;
+
+    const mobileAwareContainerWidth = isMobile
+      ? presentationBounds.width
+      : containerWidth;
 
     const slideContent = currentSlide?.content
       ? `${intl.formatMessage(intlMessages.slideContentStart)}
@@ -892,7 +897,7 @@ class Presentation extends PureComponent {
                   isToolbarVisible={isToolbarVisible}
                   isViewersAnnotationsLocked={isViewersAnnotationsLocked}
                 />
-                {isFullscreen && <PollingContainer />}
+                <div id="presentation-polling-placeholder" />
               </div>
               {!tldrawIsMounting && (
                 <Styled.PresentationToolbar
@@ -900,7 +905,7 @@ class Presentation extends PureComponent {
                     this.refPresentationToolbar = ref;
                   }}
                   style={{
-                    width: containerWidth,
+                    width: mobileAwareContainerWidth,
                   }}
                 >
                   {this.renderPresentationToolbar(svgWidth)}

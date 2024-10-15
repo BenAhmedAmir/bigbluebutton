@@ -16,7 +16,7 @@ import {
 import Styled from './styles';
 import PanToolInjector from './pan-tool-injector/component';
 import {
-  findRemoved, filterInvalidShapes, mapLanguage, sendShapeChanges, usePrevious,
+  findRemoved, filterInvalidShapes, mapLanguage, sendShapeChanges, usePrevious, TextUtil,
 } from './utils';
 import { isEqual } from 'radash';
 
@@ -27,6 +27,14 @@ const SMALLEST_DOCK_WIDTH = 710;
 const TOOLBAR_SMALL = 28;
 const TOOLBAR_LARGE = 32;
 const MOUNTED_RESIZE_DELAY = 1500;
+
+const LETTER_SPACING = '-0.03em';
+const LINE_HEIGHT = 1.2;
+const fontSizeMap = {
+  small: 12,
+  medium: 16,
+  large: 20
+};
 
 export default function Whiteboard(props) {
   const {
@@ -94,6 +102,7 @@ export default function Whiteboard(props) {
   const [zoom, setZoom] = React.useState(HUNDRED_PERCENT);
   const [tldrawZoom, setTldrawZoom] = React.useState(1);
   const zoomValueRef = React.useRef(zoomValue);
+  const isMouseDownRef = React.useRef(false);
   const [isMounting, setIsMounting] = React.useState(true);
   const prevShapes = usePrevious(shapes);
   const prevSlidePosition = usePrevious(slidePosition);
@@ -145,8 +154,11 @@ export default function Whiteboard(props) {
     } else {
       setIsPanning(false);
       setPanSelected(false);
-      panButton.classList.add('selectOverride');
-      panButton.classList.remove('select');
+      if (panButton) {
+        // only presenter has the pan button
+        panButton.classList.add('selectOverride');
+        panButton.classList.remove('select');
+      }
     }
   };
 
@@ -218,6 +230,7 @@ export default function Whiteboard(props) {
         tldrawAPI?.completeSession?.();
       }
     }
+    isMouseDownRef.current = false;
   };
 
   const checkVisibility = () => {
@@ -256,12 +269,18 @@ export default function Whiteboard(props) {
     window.dispatchEvent(new Event('resize'));
   }
 
+  const setIsMouseDown = () => {
+    isMouseDownRef.current = true;
+  }
+
   React.useEffect(() => {
     document.addEventListener('mouseup', checkClientBounds);
     document.addEventListener('visibilitychange', checkVisibility);
+    document.addEventListener('mousedown', setIsMouseDown);
 
     return () => {
       document.removeEventListener('mouseup', checkClientBounds);
+      document.removeEventListener('mousedown', setIsMouseDown);
       document.removeEventListener('visibilitychange', checkVisibility);
       const canvas = document.getElementById('canvas');
       if (canvas) {
@@ -465,15 +484,14 @@ export default function Whiteboard(props) {
 
   // change tldraw camera when slidePosition changes
   React.useEffect(() => {
+    const camera = tldrawAPI?.getPageState()?.camera;
     if (tldrawAPI && !isPresenter && curPageId && slidePosition) {
       const newZoom = calculateZoom(slidePosition.viewBoxWidth, slidePosition.viewBoxHeight);
       tldrawAPI?.setCamera([slidePosition.x, slidePosition.y], newZoom, 'zoomed');
     }
 
-    const camera = tldrawAPI?.getPageState()?.camera;
     if (isPresenter && slidePosition && camera) {
       const zoomFitSlide = calculateZoom(slidePosition.width, slidePosition.height);
-      const zoomCamera = (zoomFitSlide * zoomValue) / HUNDRED_PERCENT;
       let zoomToolbar = Math.round(
         ((HUNDRED_PERCENT * camera.zoom) / zoomFitSlide) * 100,
       ) / 100;
@@ -483,6 +501,28 @@ export default function Whiteboard(props) {
       }
     }
   }, [curPageId, slidePosition]);
+
+  React.useEffect(() => {
+    if (isPresenter && slidePosition && !isMounting) {
+      const zoomFitSlide = calculateZoom(slidePosition?.width, slidePosition?.height);
+      const zoomCamera = (zoomFitSlide * zoomValue) / HUNDRED_PERCENT;
+      let viewedRegionW = SlideCalcUtil.calcViewedRegionWidth(
+        tldrawAPI?.viewport?.width, slidePosition?.width,
+      );
+      let viewedRegionH = SlideCalcUtil.calcViewedRegionHeight(
+        tldrawAPI?.viewport?.height, slidePosition?.height,
+      );
+
+      zoomSlide(
+        parseInt(curPageId, 10),
+        podId,
+        viewedRegionW,
+        viewedRegionH,
+        slidePosition?.x,
+        slidePosition?.y,
+      );
+    }
+  }, [curPageId]);
 
   // update zoom according to toolbar
   React.useEffect(() => {
@@ -614,6 +654,12 @@ export default function Whiteboard(props) {
   const handleOnKeyDown = (event) => {
     const { which, ctrlKey } = event;
 
+    if (isMouseDownRef.current) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
     switch (which) {
       case KEY_CODES.ARROW_LEFT:
       case KEY_CODES.PAGE_UP:
@@ -708,6 +754,24 @@ export default function Whiteboard(props) {
 
   const onPatch = (e, t, reason) => {
     if (!e?.pageState || !reason) return;
+
+    function updateTextShapeSize(shape, textUtil, fsm) {
+      // Create a new object for estimated shape
+      const estimatedShape = {
+        ...shape,
+        style: {
+          ...shape.style,
+          fontFamily: shape.style.fontFamily || 'Comic Sans MS, cursive, sans-serif',
+          fontSize: fsm[shape.style.size] || 16,
+          letterSpacing: LETTER_SPACING,
+          lineHeight: LINE_HEIGHT,
+        },
+      };
+      // Calculate and set size
+      const measuredBounds = textUtil.getBoundsEstimate(estimatedShape);
+      // Assign size to a new object to avoid modifying the original shape parameter
+      return { ...shape, size: [measuredBounds.width, measuredBounds.height] };
+    }
 
     if (((isPanning || panSelected) && (reason === 'selected' || reason === 'set_hovered_id'))) {
       e.patchState(
@@ -851,15 +915,16 @@ export default function Whiteboard(props) {
       }
 
       if (e?.session?.initialShape?.type === 'text' && !shapes[patchedShape.id]) {
-        // check for maxShapes
+        // Check for maxShapes
         const currentShapes = e?.document?.pages[e?.currentPageId]?.shapes;
         const shapeNumberExceeded = Object.keys(currentShapes).length - 1 > maxNumberOfAnnotations;
         if (shapeNumberExceeded) {
           notifyShapeNumberExceeded(intl, maxNumberOfAnnotations);
           e?.cancelSession?.();
         } else {
-          patchedShape.userId = currentUser?.userId;
-          persistShape(patchedShape, whiteboardId, isModerator);
+          const updatedShape = { ...patchedShape, userId: currentUser?.userId };
+          const newShapeWithSize = updateTextShapeSize(updatedShape, TextUtil, fontSizeMap);
+          persistShape(newShapeWithSize, whiteboardId, isModerator);
         }
       } else {
         const diff = {
@@ -867,6 +932,11 @@ export default function Whiteboard(props) {
           point: patchedShape.point,
           text: patchedShape.text,
         };
+
+        if (patchedShape.type === 'text') {
+          const updatedShape = updateTextShapeSize(patchedShape, TextUtil, fontSizeMap);
+          diff.size = updatedShape.size;
+        }
         persistShape(diff, whiteboardId, isModerator);
       }
     }

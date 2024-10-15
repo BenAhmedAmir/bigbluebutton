@@ -68,6 +68,15 @@ const FreeJoinLabel = styled.label`
   }
 `;
 
+const BreakoutSlideLabel = styled.label`
+  font-size: ${fontSizeSmall};
+  font-weight: bolder;
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizeSmall};
+  margin-bottom: 0.2rem;
+`
+
 const BreakoutNameInput = styled.input`
   width: 100%;
   text-align: center;
@@ -104,12 +113,13 @@ const SpanWarn = styled.span`
   `}
 
   ${({ valid }) => !valid && `
-    margin: .25rem;
+    margin-top: .75rem;
     position: absolute;
     font-size: ${fontSizeSmall};
     color: ${colorDanger};
     font-weight: 200;
     white-space: nowrap;
+    z-index: 1;
   `}
 `;
 
@@ -376,4 +386,5 @@ export default {
   SubTitle,
   Content,
   ContentContainer,
+  BreakoutSlideLabel,
 };
