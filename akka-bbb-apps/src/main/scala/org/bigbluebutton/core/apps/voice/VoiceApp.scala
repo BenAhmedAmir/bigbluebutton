@@ -112,7 +112,7 @@ object VoiceApp extends SystemConfiguration {
       muted:       Boolean
   )(implicit context: ActorContext): Unit = {
     for {
-      mutedUser <- VoiceUsers.userMuted(liveMeeting.voiceUsers, voiceUserId, muted)
+      mutedUser <- VoiceUsers.userMuted(liveMeeting.voiceUsers, voiceUserId, muted,voiceUserId)
     } yield {
       if (!muted) {
         // Make sure lock settings are in effect (ralam dec 6, 2019)
