@@ -320,7 +320,9 @@ object VoiceApp extends SystemConfiguration {
       floor = false,
       lastFloorTime = "0",
       hold,
-      uuid
+      uuid,
+      mutedBy = None
+
     )
 
     val prevTransparentLOStatus = VoiceHdlrHelpers.transparentListenOnlyAllowed(

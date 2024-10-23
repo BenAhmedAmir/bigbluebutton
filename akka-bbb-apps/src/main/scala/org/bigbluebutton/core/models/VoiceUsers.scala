@@ -215,4 +215,5 @@ case class VoiceUserState(
     lastFloorTime:      String,
     hold:               Boolean,
     uuid:               String,
+    mutedBy:            Option[String],
 )
