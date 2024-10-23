@@ -41,10 +41,10 @@ import org.bigbluebutton.core2.message.senders.MsgBuilder
         } yield {
 
           if (requester.role != Roles.MODERATOR_ROLE
-            && u.muted
+            && u.muted 
             && msg.body.userId == msg.header.userId
             && u.mutedBy != msg.body.userId) {
-            // unmuting self while not moderator and was muted by a moderator. Do not allow.
+            // unmuting self while not moderator and was muted by someone else. Do not allow.
           } else {
             if (u.muted != msg.body.mute) {
               log.info("Send mute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
@@ -55,7 +55,7 @@ import org.bigbluebutton.core2.message.senders.MsgBuilder
                 msg.body.mute
               )
               outGW.send(event)
-              VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute)
+              VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
             }
           }
         }

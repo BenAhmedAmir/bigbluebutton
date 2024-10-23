@@ -47,7 +47,7 @@ trait UserConnectedToGlobalAudioMsgHdlr {
         lastFloorTime = "0",
         hold = false,
         uuid = UUID.randomUUID().toString,
-        mutedBy = None
+        mutedBy = ""
       )
 
       VoiceUsers.add(liveMeeting.voiceUsers, vu)
