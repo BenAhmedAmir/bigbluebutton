@@ -3,6 +3,7 @@ package org.bigbluebutton.core.apps.users
 import org.bigbluebutton.common2.msgs._
 import org.bigbluebutton.core.models.{ Users2x, VoiceUserState, VoiceUsers }
 import org.bigbluebutton.core.running.{ MeetingActor, OutMsgRouter }
+import java.util.UUID
 
 trait UserConnectedToGlobalAudioMsgHdlr {
   this: MeetingActor =>
@@ -45,7 +46,8 @@ trait UserConnectedToGlobalAudioMsgHdlr {
         floor = false,
         lastFloorTime = "0",
         hold = false,
-        uuid = "unused"
+        uuid = UUID.randomUUID().toString,
+        mutedBy = None
       )
 
       VoiceUsers.add(liveMeeting.voiceUsers, vu)
