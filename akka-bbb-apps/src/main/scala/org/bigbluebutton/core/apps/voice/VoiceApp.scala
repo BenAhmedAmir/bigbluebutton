@@ -321,7 +321,7 @@ object VoiceApp extends SystemConfiguration {
       lastFloorTime = "0",
       hold,
       uuid,
-      mutedBy = ""
+      mutedBy = None
 
     )
 
