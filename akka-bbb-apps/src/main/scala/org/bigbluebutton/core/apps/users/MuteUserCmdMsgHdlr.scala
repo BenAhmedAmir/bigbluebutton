@@ -55,7 +55,9 @@ import org.bigbluebutton.core2.message.senders.MsgBuilder
                 msg.body.mute
               )
               outGW.send(event)
-              VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
+              if (msg.body.mute) {
+                VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
+              }
             }
           }
         }

@@ -68,8 +68,8 @@ object VoiceUsers {
       val vu = u.modify(_.muted).setTo(muted)
         .modify(_.talking).setTo(false)
         .modify(_.lastStatusUpdateOn).setTo(System.currentTimeMillis())
-        // .modify(_.mutedBy).setTo(if (muted) Some(mutedBy) else None) // Update mutedBy
-        .modify(_.mutedBy).setTo(mutedBy)
+        .modify(_.mutedBy).setTo(if (muted) Some(mutedBy) else None) // Set mutedBy when muted
+//        .modify(_.mutedBy).setTo(mutedBy)
       users.save(vu)
       vu
     }
