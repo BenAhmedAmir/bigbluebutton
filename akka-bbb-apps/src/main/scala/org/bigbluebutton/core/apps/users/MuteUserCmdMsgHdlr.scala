@@ -62,8 +62,9 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
             msg.body.mute
           )
           VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
-        } else if (requester.role == Roles.MODERATOR_ROLE || (msg.body.mute && u.mutedBy == msg.header.userId)) {
-          // Allow moderators to mute/unmute and allow users to mute themselves
+        } else if (requester.role == Roles.MODERATOR_ROLE || 
+          (msg.body.mute && msg.body.userId == msg.header.userId)) {
+          // Allow moderators to mute/unmute and allow users to only mute themselves
           if (u.muted != msg.body.mute) {
             log.info("Send mute/unmute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
             VoiceApp.muteUserInVoiceConf(
@@ -76,18 +77,6 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
             }
           }
-        } else if (requester.role != Roles.MODERATOR_ROLE
-          && msg.body.mute
-          && msg.body.userId == msg.header.userId) {
-          // Allow users to mute themselves
-          log.info("Send mute self request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
-          VoiceApp.muteUserInVoiceConf(
-            liveMeeting,
-            outGW,
-            u.intId,
-            msg.body.mute
-          )
-          VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
         }
       }
     }
