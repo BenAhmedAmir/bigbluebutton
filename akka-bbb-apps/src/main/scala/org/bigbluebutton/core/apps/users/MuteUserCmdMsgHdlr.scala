@@ -1,13 +1,16 @@
 package org.bigbluebutton.core.apps.users
 
 import org.bigbluebutton.common2.msgs.MuteUserCmdMsg
-import org.bigbluebutton.core.apps.{PermissionCheck, RightsManagementTrait}
-import org.bigbluebutton.core.models.{Roles, Users2x, VoiceUsers}
-import org.bigbluebutton.core.running.{LiveMeeting, OutMsgRouter}
+import org.bigbluebutton.core.apps.{ PermissionCheck, RightsManagementTrait }
+import org.bigbluebutton.core.apps.voice.VoiceApp
+import org.bigbluebutton.core.models.{ Roles, Users2x, VoiceUsers }
+import org.bigbluebutton.core.running.{ LiveMeeting, OutMsgRouter }
 import org.bigbluebutton.core2.MeetingStatus2x
 import org.bigbluebutton.core2.message.senders.MsgBuilder
+
 trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
   this: UsersApp =>
+
   val liveMeeting: LiveMeeting
   val outGW: OutMsgRouter
 
@@ -41,34 +44,33 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
       } yield {
 
         if (requester.role != Roles.MODERATOR_ROLE
-          && u.muted
-          && msg.body.userId == msg.header.userId
-          && u.mutedBy != msg.body.userId) {
-          // unmuting self while not moderator and was muted by someone else. Do not allow.
+          && permissions.disableMic
+          && requester.locked
+          && u.muted &&
+          msg.body.userId == msg.header.userId) {
+          // unmuting self while not moderator and mic disabled. Do not allow.
         } else if (requester.role != Roles.MODERATOR_ROLE
           && !msg.body.mute
           && msg.body.userId == msg.header.userId
           && u.mutedBy == msg.body.userId) {
           // Allow unmuting self if the user muted themselves
           log.info("Send unmute self request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
-          val event = MsgBuilder.buildMuteUserInVoiceConfSysMsg(
-            meetingId,
-            voiceConf,
-            u.voiceUserId,
+          VoiceApp.muteUserInVoiceConf(
+            liveMeeting,
+            outGW,
+            u.intId,
             msg.body.mute
           )
-          outGW.send(event)
           VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
         } else {
           if (u.muted != msg.body.mute) {
             log.info("Send mute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
-            val event = MsgBuilder.buildMuteUserInVoiceConfSysMsg(
-              meetingId,
-              voiceConf,
-              u.voiceUserId,
+            VoiceApp.muteUserInVoiceConf(
+              liveMeeting,
+              outGW,
+              u.intId,
               msg.body.mute
             )
-            outGW.send(event)
             if (msg.body.mute) {
               VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
             }
