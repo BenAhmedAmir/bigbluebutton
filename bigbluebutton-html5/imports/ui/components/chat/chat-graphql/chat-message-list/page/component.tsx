@@ -20,7 +20,7 @@ interface ChatListPageContainerProps {
   setLastSender: (page: number, message: string) => void;
   lastSenderPreviousPage: string | undefined;
   // eslint-disable-next-line react/no-unused-prop-types
-  lastSeenAt: string,
+  lastSeenAt: string;
   chatId: string;
   markMessageAsSeen: (message: Message) => void;
   scrollRef: React.RefObject<HTMLDivElement>;
@@ -30,7 +30,7 @@ interface ChatListPageProps {
   messages: Array<Message>;
   lastSenderPreviousPage: string | undefined;
   page: number;
-  markMessageAsSeen: (message: Message)=> void;
+  markMessageAsSeen: (message: Message) => void;
   scrollRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -70,30 +70,40 @@ const ChatListPageContainer: React.FC<ChatListPageContainerProps> = ({
   markMessageAsSeen,
   scrollRef,
 }) => {
-  const { setChatMessagesGraphqlVariablesAndQuery } = useContext(PluginsContext);
+  const { setChatMessagesGraphqlVariablesAndQuery } =
+    useContext(PluginsContext);
 
   const isPublicChat = chatId === PUBLIC_GROUP_CHAT_KEY;
-  const chatQuery = isPublicChat
-    ? CHAT_MESSAGE_PUBLIC_SUBSCRIPTION
-    : CHAT_MESSAGE_PRIVATE_SUBSCRIPTION;
-  const defaultVariables = { offset: (page) * pageSize, limit: pageSize };
-  const variables = isPublicChat
-    ? defaultVariables : { ...defaultVariables, requestedChatId: chatId };
+  // const chatQuery = isPublicChat
+  //   ? CHAT_MESSAGE_PUBLIC_SUBSCRIPTION
+  //   : CHAT_MESSAGE_PRIVATE_SUBSCRIPTION;
+  const chatQuery = CHAT_MESSAGE_PUBLIC_SUBSCRIPTION;
 
-  const resp = useLoadedChatMessages((msg) => msg) as GraphqlDataHookSubscriptionResponse<Message[]>;
+  const defaultVariables = { offset: page * pageSize, limit: pageSize };
+  const variables = isPublicChat
+    ? defaultVariables
+    : { ...defaultVariables, requestedChatId: chatId };
+
+  const resp = useLoadedChatMessages(
+    (msg) => msg
+  ) as GraphqlDataHookSubscriptionResponse<Message[]>;
 
   const chatMessageData = resp?.data;
   useEffect(() => {
-    setChatMessagesGraphqlVariablesAndQuery(
-      {
-        query: chatQuery,
-        variables,
-      },
-    );
+    setChatMessagesGraphqlVariablesAndQuery({
+      query: chatQuery,
+      variables,
+    });
   }, [chatId, page, pageSize]);
   if (chatMessageData) {
-    if (chatMessageData.length > 0 && chatMessageData[chatMessageData.length - 1].user?.userId) {
-      setLastSender(page, chatMessageData[chatMessageData.length - 1].user?.userId);
+    if (
+      chatMessageData.length > 0 &&
+      chatMessageData[chatMessageData.length - 1].user?.userId
+    ) {
+      setLastSender(
+        page,
+        chatMessageData[chatMessageData.length - 1].user?.userId
+      );
     }
 
     return (
@@ -105,7 +115,8 @@ const ChatListPageContainer: React.FC<ChatListPageContainerProps> = ({
         scrollRef={scrollRef}
       />
     );
-  } return (<></>);
+  }
+  return <></>;
 };
 
 export default ChatListPageContainer;

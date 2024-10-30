@@ -3,7 +3,11 @@ import { gql } from '@apollo/client';
 
 export const CHAT_MESSAGE_PUBLIC_SUBSCRIPTION = gql`
   subscription chatMessages($limit: Int!, $offset: Int!) {
-    chat_message_public(limit: $limit, offset: $offset, order_by: { createdAt: asc }) {
+    chat_message_public(
+      limit: $limit
+      offset: $offset
+      order_by: { createdAt: asc }
+    ) {
       user {
         name
         userId
@@ -25,7 +29,11 @@ export const CHAT_MESSAGE_PUBLIC_SUBSCRIPTION = gql`
 `;
 
 export const CHAT_MESSAGE_PRIVATE_SUBSCRIPTION = gql`
-  subscription chatMessages($limit: Int!, $offset: Int!, $requestedChatId: String!) {
+  subscription chatMessages(
+    $limit: Int!
+    $offset: Int!
+    $requestedChatId: String!
+  ) {
     chat_message_private(
       limit: $limit
       offset: $offset
