@@ -74,10 +74,10 @@ const ChatListPageContainer: React.FC<ChatListPageContainerProps> = ({
     useContext(PluginsContext);
 
   const isPublicChat = chatId === PUBLIC_GROUP_CHAT_KEY;
-  // const chatQuery = isPublicChat
-  //   ? CHAT_MESSAGE_PUBLIC_SUBSCRIPTION
-  //   : CHAT_MESSAGE_PRIVATE_SUBSCRIPTION;
-  const chatQuery = CHAT_MESSAGE_PUBLIC_SUBSCRIPTION;
+  const chatQuery = isPublicChat
+    ? CHAT_MESSAGE_PUBLIC_SUBSCRIPTION
+    : CHAT_MESSAGE_PRIVATE_SUBSCRIPTION;
+  // const chatQuery = CHAT_MESSAGE_PUBLIC_SUBSCRIPTION;
 
   const defaultVariables = { offset: page * pageSize, limit: pageSize };
   const variables = isPublicChat
