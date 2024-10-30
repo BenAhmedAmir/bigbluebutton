@@ -62,9 +62,10 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
             msg.body.mute
           )
           VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
-        } else {
+        } else if (requester.role == Roles.MODERATOR_ROLE || (msg.body.mute && u.mutedBy == msg.header.userId)) {
+          // Allow moderators to mute/unmute and allow users to mute themselves
           if (u.muted != msg.body.mute) {
-            log.info("Send mute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
+            log.info("Send mute/unmute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
             VoiceApp.muteUserInVoiceConf(
               liveMeeting,
               outGW,
