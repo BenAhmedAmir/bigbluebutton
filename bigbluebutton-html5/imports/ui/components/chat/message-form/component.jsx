@@ -86,7 +86,9 @@ class MessageForm extends PureComponent {
     this.handleMessageKeyDown = this.handleMessageKeyDown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setMessageHint = this.setMessageHint.bind(this);
-    this.handleUserTyping = throttle(this.handleUserTyping.bind(this), 2000, { trailing: false });
+    this.handleUserTyping = throttle(this.handleUserTyping.bind(this), 2000, {
+      trailing: false,
+    });
     this.typingIndicator = CHAT_CONFIG.typingIndicator.enabled;
   }
 
@@ -101,12 +103,7 @@ class MessageForm extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      chatId,
-      connected,
-      locked,
-      partnerIsLoggedOut,
-    } = this.props;
+    const { chatId, connected, locked, partnerIsLoggedOut } = this.props;
     const { message } = this.state;
     const { isMobile } = deviceInfo;
 
@@ -120,14 +117,15 @@ class MessageForm extends PureComponent {
         {
           error: null,
           hasErrors: false,
-        }, this.setMessageState(),
+        },
+        this.setMessageState()
       );
     }
 
     if (
-      connected !== prevProps.connected
-      || locked !== prevProps.locked
-      || partnerIsLoggedOut !== prevProps.partnerIsLoggedOut
+      connected !== prevProps.connected ||
+      locked !== prevProps.locked ||
+      partnerIsLoggedOut !== prevProps.partnerIsLoggedOut
     ) {
       this.setMessageHint();
     }
@@ -148,13 +146,8 @@ class MessageForm extends PureComponent {
   }
 
   setMessageHint() {
-    const {
-      connected,
-      disabled,
-      intl,
-      locked,
-      partnerIsLoggedOut,
-    } = this.props;
+    const { connected, disabled, intl, locked, partnerIsLoggedOut } =
+      this.props;
 
     let chatDisabledHint = null;
 
@@ -176,17 +169,18 @@ class MessageForm extends PureComponent {
 
   setMessageState() {
     const { chatId, UnsentMessagesCollection } = this.props;
-    const unsentMessageByChat = UnsentMessagesCollection.findOne({ chatId },
-      { fields: { message: 1 } });
-    this.setState({ message: unsentMessageByChat ? unsentMessageByChat.message : '' });
+    const unsentMessageByChat = UnsentMessagesCollection.findOne(
+      { chatId },
+      { fields: { message: 1 } }
+    );
+    this.setState({
+      message: unsentMessageByChat ? unsentMessageByChat.message : '',
+    });
   }
 
   updateUnsentMessagesCollection(chatId, message) {
     const { UnsentMessagesCollection } = this.props;
-    UnsentMessagesCollection.upsert(
-      { chatId },
-      { $set: { message } },
-    );
+    UnsentMessagesCollection.upsert({ chatId }, { $set: { message } });
   }
 
   handleMessageKeyDown(e) {
@@ -210,10 +204,7 @@ class MessageForm extends PureComponent {
   }
 
   handleMessageChange(e) {
-    const {
-      intl,
-      maxMessageLength,
-    } = this.props;
+    const { intl, maxMessageLength } = this.props;
 
     let message = null;
     let error = null;
@@ -225,17 +216,19 @@ class MessageForm extends PureComponent {
     }
 
     if (message.length > maxMessageLength) {
-      error = intl.formatMessage(
-        messages.errorMaxMessageLength,
-        { 0: maxMessageLength },
-      );
+      error = intl.formatMessage(messages.errorMaxMessageLength, {
+        0: maxMessageLength,
+      });
       message = message.substring(0, maxMessageLength);
     }
 
-    this.setState({
-      message,
-      error,
-    }, this.handleUserTyping(error));
+    this.setState(
+      {
+        message,
+        error,
+      },
+      this.handleUserTyping(error)
+    );
   }
 
   handleSubmit(e) {
@@ -253,8 +246,7 @@ class MessageForm extends PureComponent {
 
     if (msg.length < minMessageLength) return;
 
-    if (disabled
-      || msg.length > maxMessageLength) {
+    if (disabled || msg.length > maxMessageLength) {
       this.setState({ hasErrors: true });
       return;
     }
@@ -262,20 +254,20 @@ class MessageForm extends PureComponent {
     const callback = this.typingIndicator ? stopUserTyping : null;
 
     handleSendMessage(escapeHtml(msg));
-    this.setState({ message: '', error: '', hasErrors: false, showEmojiPicker: false }, callback);
+    this.setState(
+      { message: '', error: '', hasErrors: false, showEmojiPicker: false },
+      callback
+    );
   }
 
   handleEmojiSelect(emojiObject) {
     const { message } = this.state;
     const cursor = this.textarea.selectionStart;
 
-    this.setState(
-      {
-        message: message.slice(0, cursor)
-        + emojiObject.native
-        + message.slice(cursor),
-      },
-    );
+    this.setState({
+      message:
+        message.slice(0, cursor) + emojiObject.native + message.slice(cursor),
+    });
 
     const newCursor = cursor + emojiObject.native.length;
     setTimeout(() => this.textarea.setSelectionRange(newCursor, newCursor), 10);
@@ -301,58 +293,67 @@ class MessageForm extends PureComponent {
 
     return (
       <Styled.EmojiButton
-        onClick={() => this.setState((prevState) => ({
-          showEmojiPicker: !prevState.showEmojiPicker,
-        }))}
-        icon="happy"
-        color="light"
+        onClick={() =>
+          this.setState((prevState) => ({
+            showEmojiPicker: !prevState.showEmojiPicker,
+          }))
+        }
+        icon='happy'
+        color='light'
         ghost
-        type="button"
+        type='button'
         circle
         hideLabel
         label={intl.formatMessage(messages.emojiButtonLabel)}
-        data-test="emojiPickerButton"
+        data-test='emojiPickerButton'
       />
     );
   }
 
   renderForm() {
-    const {
-      intl,
-      chatTitle,
-      title,
-      disabled,
-      idChatOpen,
-      partnerIsLoggedOut,
-    } = this.props;
+    const { intl, chatTitle, title, disabled, idChatOpen, partnerIsLoggedOut } =
+      this.props;
 
-    const {
-      hasErrors, error, message,
-    } = this.state;
+    const { hasErrors, error, message } = this.state;
 
     return (
       <Styled.Form
-        ref={(ref) => { this.form = ref; }}
+        ref={(ref) => {
+          this.form = ref;
+        }}
         onSubmit={this.handleSubmit}
       >
         {this.renderEmojiPicker()}
         <Styled.Wrapper>
           <Styled.Input
-            id="message-input"
-            innerRef={(ref) => { this.textarea = ref; return this.textarea; }}
-            placeholder={intl.formatMessage(messages.inputPlaceholder, { 0: title })}
-            aria-label={intl.formatMessage(messages.inputLabel, { 0: chatTitle })}
+            id='message-input'
+            innerRef={(ref) => {
+              this.textarea = ref;
+              return this.textarea;
+            }}
+            placeholder={intl.formatMessage(messages.inputPlaceholder, {
+              0: title,
+            })}
+            aria-label={intl.formatMessage(messages.inputLabel, {
+              0: chatTitle,
+            })}
             aria-invalid={hasErrors ? 'true' : 'false'}
-            autoCorrect="off"
-            autoComplete="off"
-            spellCheck="true"
+            autoCorrect='off'
+            autoComplete='off'
+            spellCheck='true'
             disabled={disabled || partnerIsLoggedOut}
             value={message}
             onChange={this.handleMessageChange}
             onKeyDown={this.handleMessageKeyDown}
-            onPaste={(e) => { e.stopPropagation(); }}
-            onCut={(e) => { e.stopPropagation(); }}
-            onCopy={(e) => { e.stopPropagation(); }}
+            onPaste={(e) => {
+              e.stopPropagation();
+            }}
+            onCut={(e) => {
+              e.stopPropagation();
+            }}
+            onCopy={(e) => {
+              e.stopPropagation();
+            }}
             async
           />
           {ENABLE_EMOJI_PICKER && this.renderEmojiButton()}
@@ -360,13 +361,13 @@ class MessageForm extends PureComponent {
             hideLabel
             circle
             aria-label={intl.formatMessage(messages.submitLabel)}
-            type="submit"
+            type='submit'
             disabled={disabled || partnerIsLoggedOut}
             label={intl.formatMessage(messages.submitLabel)}
-            color="primary"
-            icon="send"
-            onClick={() => { }}
-            data-test="sendMessageButton"
+            color='primary'
+            icon='send'
+            onClick={() => {}}
+            data-test='sendMessageButton'
           />
         </Styled.Wrapper>
         <TypingIndicatorContainer {...{ idChatOpen, error }} />
@@ -378,12 +379,12 @@ class MessageForm extends PureComponent {
     if (!isChatEnabled()) return null;
 
     return ENABLE_EMOJI_PICKER ? (
-      <ClickOutside
-        onClick={() => this.handleClickOutside()}
-      >
+      <ClickOutside onClick={() => this.handleClickOutside()}>
         {this.renderForm()}
       </ClickOutside>
-    ) : this.renderForm();
+    ) : (
+      this.renderForm()
+    );
   }
 }
 
