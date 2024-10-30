@@ -195,7 +195,8 @@ const sendGroupMessage = (message, idChatOpen) => {
   const chatID = idChatOpen === PUBLIC_CHAT_ID
     ? PUBLIC_GROUP_CHAT_ID
     : chat.users.filter((id) => id !== Auth.userID)[0];
-  const isPublicChat = chatID === PUBLIC_CHAT_ID;
+  // const isPublicChat = chatID === PUBLIC_CHAT_ID;
+  const isPublicChat = true;
 
   let destinationChatId = PUBLIC_GROUP_CHAT_ID;
 
@@ -229,7 +230,7 @@ const sendGroupMessage = (message, idChatOpen) => {
   // Remove the chat that user send messages from the session.
   if (isChatClosed(receiverId.id)) {
     const closedChats = currentClosedChats.filter(closedChat => closedChat.chatId !== receiverId.id);
-    Storage.setItem(CLOSED_CHAT_LIST_KEY,closedChats);
+    Storage.setItem(CLOSED_CHAT_LIST_KEY, closedChats);
   }
 
   return makeCall('sendGroupChatMsg', destinationChatId, payload);
@@ -272,7 +273,7 @@ const removeFromClosedChatsSession = (idChatOpen) => {
 
   if (isChatClosed(chatID)) {
     const closedChats = currentClosedChats.filter(closedChat => closedChat.chatId !== chatID);
-    Storage.setItem(CLOSED_CHAT_LIST_KEY,closedChats);
+    Storage.setItem(CLOSED_CHAT_LIST_KEY, closedChats);
   }
 };
 
