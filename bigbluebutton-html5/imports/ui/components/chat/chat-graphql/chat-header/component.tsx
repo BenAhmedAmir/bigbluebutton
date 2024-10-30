@@ -2,7 +2,11 @@ import React from 'react';
 import Header from '/imports/ui/components/common/control-header/component';
 import { useMutation, useQuery } from '@apollo/client';
 import { defineMessages, useIntl } from 'react-intl';
-import { GET_CHAT_DATA, GetChatDataResponse, CLOSE_PRIVATE_CHAT_MUTATION } from './queries';
+import {
+  GET_CHAT_DATA,
+  GetChatDataResponse,
+  CLOSE_PRIVATE_CHAT_MUTATION,
+} from './queries';
 import closePrivateChat from './services';
 import { layoutSelect, layoutDispatch } from '../../../layout/context';
 import { useShortcut } from '../../../../core/hooks/useShortcut';
@@ -34,8 +38,11 @@ const intlMessages = defineMessages({
     description: 'Private chat title',
   },
 });
-
-const ChatHeader: React.FC<ChatHeaderProps> = ({ chatId, isPublicChat, title }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({
+  chatId,
+  isPublicChat,
+  title,
+}) => {
   const HIDE_CHAT_AK = useShortcut('hideprivatechat');
   const CLOSE_CHAT_AK = useShortcut('closeprivatechat');
   const layoutContextDispatch = layoutDispatch();
@@ -43,10 +50,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ chatId, isPublicChat, title }) 
   const [updateVisible] = useMutation(CLOSE_PRIVATE_CHAT_MUTATION);
   return (
     <Header
-      data-test="chatTitle"
+      data-test='chatTitle'
       leftButtonProps={{
         accessKey: chatId !== 'public' ? HIDE_CHAT_AK : null,
-        'aria-label': intl.formatMessage(intlMessages.hideChatLabel, { 0: title }),
+        'aria-label': intl.formatMessage(intlMessages.hideChatLabel, {
+          0: title,
+        }),
         'data-test': isPublicChat ? 'hidePublicChat' : 'hidePrivateChat',
         label: title,
         onClick: () => {
@@ -66,7 +75,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ chatId, isPublicChat, title }) 
       }}
       rightButtonProps={{
         accessKey: CLOSE_CHAT_AK,
-        'aria-label': intl.formatMessage(intlMessages.closeChatLabel, { 0: title }),
+        'aria-label': intl.formatMessage(intlMessages.closeChatLabel, {
+          0: title,
+        }),
         'data-test': 'closePrivateChat',
         icon: 'close',
         label: intl.formatMessage(intlMessages.closeChatLabel, { 0: title }),
@@ -125,14 +136,13 @@ const ChatHeaderContainer: React.FC = () => {
     );
   }
   const isPublicChat = chatData.chat[0]?.public;
-  const title = isPublicChat ? intl.formatMessage(intlMessages.titlePublic)
-    : intl.formatMessage(intlMessages.titlePrivate, { 0: chatData?.chat[0]?.participant?.name });
+  const title = isPublicChat
+    ? intl.formatMessage(intlMessages.titlePublic)
+    : intl.formatMessage(intlMessages.titlePrivate, {
+        0: chatData?.chat[0]?.participant?.name,
+      });
   return (
-    <ChatHeader
-      chatId={idChatOpen}
-      isPublicChat={isPublicChat}
-      title={title}
-    />
+    <ChatHeader chatId={idChatOpen} isPublicChat={isPublicChat} title={title} />
   );
 };
 
