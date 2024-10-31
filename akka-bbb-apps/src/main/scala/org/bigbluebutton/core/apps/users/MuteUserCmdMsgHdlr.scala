@@ -61,7 +61,10 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               u.intId,
               msg.body.mute
             )
-            VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
+            // Update mutedBy to moderator's ID when muting, clear it when unmuting
+            val newMutedBy = if (msg.body.mute) Some(msg.header.userId) else None
+            VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, newMutedBy.getOrElse(""))
+            log.info("Updated mute status by moderator. mutedBy=" + newMutedBy)
           }
         } else if (msg.body.userId == msg.header.userId) {
           // Handle self mute/unmute for regular users
