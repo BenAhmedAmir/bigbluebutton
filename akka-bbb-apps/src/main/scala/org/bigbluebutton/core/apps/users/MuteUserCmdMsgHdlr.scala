@@ -1,10 +1,10 @@
 package org.bigbluebutton.core.apps.users
 
 import org.bigbluebutton.common2.msgs.MuteUserCmdMsg
-import org.bigbluebutton.core.apps.{ PermissionCheck, RightsManagementTrait }
+import org.bigbluebutton.core.apps.{PermissionCheck, RightsManagementTrait}
 import org.bigbluebutton.core.apps.voice.VoiceApp
-import org.bigbluebutton.core.models.{ Roles, Users2x, VoiceUsers }
-import org.bigbluebutton.core.running.{ LiveMeeting, OutMsgRouter }
+import org.bigbluebutton.core.models.{Roles, Users2x, VoiceUsers}
+import org.bigbluebutton.core.running.{LiveMeeting, OutMsgRouter}
 import org.bigbluebutton.core2.MeetingStatus2x
 import org.bigbluebutton.core2.message.senders.MsgBuilder
 
@@ -51,10 +51,10 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
         } else if (requester.role == Roles.MODERATOR_ROLE) {
           // Allow moderators to mute/unmute anyone
           if (u.muted != msg.body.mute) {
-            log.info("Moderator mute/unmute request. meetingId=" + meetingId + 
-                    " moderatorId=" + msg.header.userId +
-                    " userId=" + u.intId + 
-                    " mute=" + msg.body.mute)
+            log.info("Moderator mute/unmute request. meetingId=" + meetingId +
+              " moderatorId=" + msg.header.userId +
+              " userId=" + u.intId +
+              " mute=" + msg.body.mute)
             VoiceApp.muteUserInVoiceConf(
               liveMeeting,
               outGW,
@@ -66,7 +66,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
             VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, newMutedBy.getOrElse(""))
             log.info("Updated mute status by moderator. mutedBy=" + newMutedBy)
           }
-      } else if (msg.body.userId == msg.header.userId) {
+        } else if (msg.body.userId == msg.header.userId) {
           // Handle self mute/unmute for regular users
           log.info("Self mute/unmute request. mute=" + msg.body.mute +
             " mutedBy=" + u.mutedBy +
@@ -96,7 +96,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
             log.info("Viewer cannot unmute themselves because they were muted by a moderator.")
           }
         }
-
       }
+      }
+    }
   }
-}
