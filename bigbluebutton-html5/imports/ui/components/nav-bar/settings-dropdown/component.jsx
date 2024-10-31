@@ -11,7 +11,10 @@ import BBBMenu from '/imports/ui/components/common/menu/component';
 import ShortcutHelpComponent from '/imports/ui/components/shortcut-help/component';
 import withShortcutHelper from '/imports/ui/components/shortcut-help/service';
 import FullscreenService from '/imports/ui/components/common/fullscreen-button/service';
-import { colorDanger, colorWhite } from '/imports/ui/stylesheets/styled-components/palette';
+import {
+  colorDanger,
+  colorWhite,
+} from '/imports/ui/stylesheets/styled-components/palette';
 import Styled from './styles';
 import browserInfo from '/imports/utils/browserInfo';
 import deviceInfo from '/imports/utils/deviceInfo';
@@ -133,7 +136,9 @@ const defaultProps = {
 const ALLOW_FULLSCREEN = Meteor.settings.public.app.allowFullscreen;
 const BBB_TABLET_APP_CONFIG = Meteor.settings.public.app.bbbTabletApp;
 const { isSafari, isTabletApp } = browserInfo;
-const FULLSCREEN_CHANGE_EVENT = isSafari ? 'webkitfullscreenchange' : 'fullscreenchange';
+const FULLSCREEN_CHANGE_EVENT = isSafari
+  ? 'webkitfullscreenchange'
+  : 'fullscreenchange';
 
 class SettingsDropdown extends PureComponent {
   constructor(props) {
@@ -144,7 +149,7 @@ class SettingsDropdown extends PureComponent {
       isShortcutHelpModalOpen: false,
       isSettingsMenuModalOpen: false,
       isEndMeetingConfirmationModalOpen: false,
-      isMobileAppModalOpen:false,
+      isMobileAppModalOpen: false,
       isFullscreen: false,
       isLayoutModalOpen: false,
     };
@@ -154,36 +159,43 @@ class SettingsDropdown extends PureComponent {
 
     this.leaveSession = this.leaveSession.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
-    this.setSettingsMenuModalIsOpen = this.setSettingsMenuModalIsOpen.bind(this);
-    this.setEndMeetingConfirmationModalIsOpen = this.setEndMeetingConfirmationModalIsOpen.bind(this);
+    this.setSettingsMenuModalIsOpen =
+      this.setSettingsMenuModalIsOpen.bind(this);
+    this.setEndMeetingConfirmationModalIsOpen =
+      this.setEndMeetingConfirmationModalIsOpen.bind(this);
     this.setMobileAppModalIsOpen = this.setMobileAppModalIsOpen.bind(this);
     this.setAboutModalIsOpen = this.setAboutModalIsOpen.bind(this);
-    this.setShortcutHelpModalIsOpen = this.setShortcutHelpModalIsOpen.bind(this);
+    this.setShortcutHelpModalIsOpen =
+      this.setShortcutHelpModalIsOpen.bind(this);
     this.setLayoutModalIsOpen = this.setLayoutModalIsOpen.bind(this);
   }
 
   componentDidMount() {
-    document.documentElement.addEventListener(FULLSCREEN_CHANGE_EVENT, this.onFullscreenChange);
+    document.documentElement.addEventListener(
+      FULLSCREEN_CHANGE_EVENT,
+      this.onFullscreenChange
+    );
   }
 
   componentWillUnmount() {
-    document.documentElement.removeEventListener(FULLSCREEN_CHANGE_EVENT, this.onFullscreenChange);
+    document.documentElement.removeEventListener(
+      FULLSCREEN_CHANGE_EVENT,
+      this.onFullscreenChange
+    );
   }
 
   onFullscreenChange() {
     const { isFullscreen } = this.state;
-    const newIsFullscreen = FullscreenService.isFullScreen(document.documentElement);
+    const newIsFullscreen = FullscreenService.isFullScreen(
+      document.documentElement
+    );
     if (isFullscreen !== newIsFullscreen) {
       this.setState({ isFullscreen: newIsFullscreen });
     }
   }
 
   getFullscreenItem(menuItems) {
-    const {
-      intl,
-      noIOSFullscreen,
-      handleToggleFullscreen,
-    } = this.props;
+    const { intl, noIOSFullscreen, handleToggleFullscreen } = this.props;
     const { isFullscreen } = this.state;
 
     if (noIOSFullscreen || !ALLOW_FULLSCREEN) return null;
@@ -198,17 +210,13 @@ class SettingsDropdown extends PureComponent {
       fullscreenIcon = 'exit_fullscreen';
     }
 
-    return (
-      menuItems.push(
-        {
-          key: 'list-item-fullscreen',
-          icon: fullscreenIcon,
-          label: fullscreenLabel,
-          description: fullscreenDesc,
-          onClick: handleToggleFullscreen,
-        },
-      )
-    );
+    return menuItems.push({
+      key: 'list-item-fullscreen',
+      icon: fullscreenIcon,
+      label: fullscreenLabel,
+      description: fullscreenDesc,
+      onClick: handleToggleFullscreen,
+    });
   }
 
   leaveSession() {
@@ -219,23 +227,23 @@ class SettingsDropdown extends PureComponent {
   }
 
   setAboutModalIsOpen(value) {
-    this.setState({isAboutModalOpen: value})
+    this.setState({ isAboutModalOpen: value });
   }
-  
+
   setShortcutHelpModalIsOpen(value) {
-    this.setState({isShortcutHelpModalOpen: value})
+    this.setState({ isShortcutHelpModalOpen: value });
   }
-  
+
   setSettingsMenuModalIsOpen(value) {
-    this.setState({isSettingsMenuModalOpen: value})
+    this.setState({ isSettingsMenuModalOpen: value });
   }
-  
+
   setEndMeetingConfirmationModalIsOpen(value) {
-    this.setState({isEndMeetingConfirmationModalOpen: value})
+    this.setState({ isEndMeetingConfirmationModalOpen: value });
   }
-  
+
   setMobileAppModalIsOpen(value) {
-    this.setState({isMobileAppModalOpen: value})
+    this.setState({ isMobileAppModalOpen: value });
   }
 
   setLayoutModalIsOpen(value) {
@@ -244,8 +252,15 @@ class SettingsDropdown extends PureComponent {
 
   renderMenuItems() {
     const {
-      intl, amIModerator, isBreakoutRoom, isMeteorConnected, audioCaptionsEnabled,
-      audioCaptionsActive, audioCaptionsSet, isMobile, isDirectLeaveButtonEnabled,
+      intl,
+      amIModerator,
+      isBreakoutRoom,
+      isMeteorConnected,
+      audioCaptionsEnabled,
+      audioCaptionsActive,
+      audioCaptionsSet,
+      isMobile,
+      isDirectLeaveButtonEnabled,
     } = this.props;
 
     const { isIos } = deviceInfo;
@@ -261,134 +276,137 @@ class SettingsDropdown extends PureComponent {
     this.menuItems = [];
 
     this.getFullscreenItem(this.menuItems);
-
-    this.menuItems.push(
-      {
-        key: 'list-item-settings',
-        icon: 'settings',
-        dataTest: 'settings',
-        label: intl.formatMessage(intlMessages.settingsLabel),
-        description: intl.formatMessage(intlMessages.settingsDesc),
-        onClick: () => this.setSettingsMenuModalIsOpen(true),
-      },
-      {
-        key: 'list-item-about',
-        icon: 'about',
-        dataTest: 'aboutModal',
-        label: intl.formatMessage(intlMessages.aboutLabel),
-        description: intl.formatMessage(intlMessages.aboutDesc),
-        onClick: () => this.setAboutModalIsOpen(true),
-      },
-    );
-
-    if (helpButton) {
+    if (amIModerator) {
       this.menuItems.push(
         {
-          key: 'list-item-help',
-          icon: 'help',
-          iconRight: 'popout_window',
-          label: intl.formatMessage(intlMessages.helpLabel),
-          dataTest: 'helpButton',
-          description: intl.formatMessage(intlMessages.helpDesc),
-          onClick: () => window.open(`${helpLink}`),
+          key: 'list-item-settings',
+          icon: 'settings',
+          dataTest: 'settings',
+          label: intl.formatMessage(intlMessages.settingsLabel),
+          description: intl.formatMessage(intlMessages.settingsDesc),
+          onClick: () => this.setSettingsMenuModalIsOpen(true),
         },
+        {
+          key: 'list-item-about',
+          icon: 'about',
+          dataTest: 'aboutModal',
+          label: intl.formatMessage(intlMessages.aboutLabel),
+          description: intl.formatMessage(intlMessages.aboutDesc),
+          onClick: () => this.setAboutModalIsOpen(true),
+        }
       );
     }
 
-    if (isIos &&
+    if (helpButton && amIModerator) {
+      this.menuItems.push({
+        key: 'list-item-help',
+        icon: 'help',
+        iconRight: 'popout_window',
+        label: intl.formatMessage(intlMessages.helpLabel),
+        dataTest: 'helpButton',
+        description: intl.formatMessage(intlMessages.helpDesc),
+        onClick: () => window.open(`${helpLink}`),
+      });
+    }
+
+    if (
+      isIos &&
       !isTabletApp &&
       BBB_TABLET_APP_CONFIG.enabled == true &&
-      BBB_TABLET_APP_CONFIG.iosAppStoreUrl !== '') {
-      this.menuItems.push(
-        {
-          key: 'list-item-help',
-          icon: 'popout_window',
-          label: intl.formatMessage(intlMessages.openAppLabel),
-          onClick: () => this.setMobileAppModalIsOpen(true),
-         }
-      );
+      BBB_TABLET_APP_CONFIG.iosAppStoreUrl !== '' &&
+      amIModerator
+    ) {
+      this.menuItems.push({
+        key: 'list-item-help',
+        icon: 'popout_window',
+        label: intl.formatMessage(intlMessages.openAppLabel),
+        onClick: () => this.setMobileAppModalIsOpen(true),
+      });
     }
 
     if (audioCaptionsEnabled && isMobile) {
-      this.menuItems.push(
-        {
-          key: 'audioCaptions',
-          dataTest: 'audioCaptions',
-          icon: audioCaptionsActive ? 'closed_caption_stop' : 'closed_caption',
-          label: intl.formatMessage(
-            audioCaptionsActive ? intlMessages.stopCaption : intlMessages.startCaption,
-          ),
-          onClick: () => audioCaptionsSet(!audioCaptionsActive),
-        },
-      );
+      this.menuItems.push({
+        key: 'audioCaptions',
+        dataTest: 'audioCaptions',
+        icon: audioCaptionsActive ? 'closed_caption_stop' : 'closed_caption',
+        label: intl.formatMessage(
+          audioCaptionsActive
+            ? intlMessages.stopCaption
+            : intlMessages.startCaption
+        ),
+        onClick: () => audioCaptionsSet(!audioCaptionsActive),
+      });
     }
 
     const enableLayoutButton = isLayoutsEnabled();
-
-    this.menuItems.push(
-      {
+    if (amIModerator) {
+      this.menuItems.push({
         key: 'list-item-shortcuts',
         icon: 'shortcuts',
         label: intl.formatMessage(intlMessages.hotkeysLabel),
         description: intl.formatMessage(intlMessages.hotkeysDesc),
         onClick: () => this.setShortcutHelpModalIsOpen(true),
         divider: !isDirectLeaveButtonEnabled && !enableLayoutButton,
-      },
-    );
-
-    if (enableLayoutButton) {
-      this.menuItems.push(
-        {
-          key: 'list-item-layout-modal',
-          icon: 'manage_layout',
-          label: intl.formatMessage(intlMessages.layoutModal),
-          onClick: () => this.setLayoutModalIsOpen(true),
-          divider: !isDirectLeaveButtonEnabled,
-        },
-      );
+      });
     }
 
-    if (allowLogoutSetting && isMeteorConnected && !isDirectLeaveButtonEnabled) {
-      this.menuItems.push(
-        {
-          key: 'list-item-logout',
-          dataTest: 'logout',
-          icon: 'logout',
-          label: intl.formatMessage(intlMessages.leaveSessionLabel),
-          description: intl.formatMessage(intlMessages.leaveSessionDesc),
-          onClick: () => this.leaveSession(),
-        },
-      );
+    if (enableLayoutButton && amIModerator) {
+      this.menuItems.push({
+        key: 'list-item-layout-modal',
+        icon: 'manage_layout',
+        label: intl.formatMessage(intlMessages.layoutModal),
+        onClick: () => this.setLayoutModalIsOpen(true),
+        divider: !isDirectLeaveButtonEnabled,
+      });
     }
 
-    if (allowedToEndMeeting && isMeteorConnected && !isDirectLeaveButtonEnabled) {
+    if (
+      allowLogoutSetting &&
+      isMeteorConnected &&
+      !isDirectLeaveButtonEnabled
+    ) {
+      this.menuItems.push({
+        key: 'list-item-logout',
+        dataTest: 'logout',
+        icon: 'logout',
+        label: intl.formatMessage(intlMessages.leaveSessionLabel),
+        description: intl.formatMessage(intlMessages.leaveSessionDesc),
+        onClick: () => this.leaveSession(),
+      });
+    }
+
+    if (
+      allowedToEndMeeting &&
+      isMeteorConnected &&
+      !isDirectLeaveButtonEnabled
+    ) {
       const customStyles = { background: colorDanger, color: colorWhite };
 
-      this.menuItems.push(
-        {
-          key: 'list-item-end-meeting',
-          icon: 'close',
-          label: intl.formatMessage(intlMessages.endMeetingForAllLabel),
-          description: intl.formatMessage(intlMessages.endMeetingDesc),
-          customStyles,
-          onClick: () => this.setEndMeetingConfirmationModalIsOpen(true),
-        },
-      );
+      this.menuItems.push({
+        key: 'list-item-end-meeting',
+        icon: 'close',
+        label: intl.formatMessage(intlMessages.endMeetingForAllLabel),
+        description: intl.formatMessage(intlMessages.endMeetingDesc),
+        customStyles,
+        onClick: () => this.setEndMeetingConfirmationModalIsOpen(true),
+      });
     }
 
     return this.menuItems;
   }
 
   renderModal(isOpen, setIsOpen, priority, Component, otherOptions) {
-    return isOpen ? <Component 
-      {...{
-        ...otherOptions,
-        onRequestClose: () => setIsOpen(false),
-        priority,
-        setIsOpen,
-        isOpen
-      }}
-    /> : null
+    return isOpen ? (
+      <Component
+        {...{
+          ...otherOptions,
+          onRequestClose: () => setIsOpen(false),
+          priority,
+          setIsOpen,
+          isOpen,
+        }}
+      />
+    ) : null;
   }
 
   render() {
@@ -400,8 +418,14 @@ class SettingsDropdown extends PureComponent {
       isRTL,
     } = this.props;
 
-    const { isAboutModalOpen, isShortcutHelpModalOpen, isSettingsMenuModalOpen,
-      isEndMeetingConfirmationModalOpen, isMobileAppModalOpen, isLayoutModalOpen } = this.state;
+    const {
+      isAboutModalOpen,
+      isShortcutHelpModalOpen,
+      isSettingsMenuModalOpen,
+      isEndMeetingConfirmationModalOpen,
+      isMobileAppModalOpen,
+      isLayoutModalOpen,
+    } = this.state;
 
     const customStyles = { top: '1rem' };
 
@@ -410,21 +434,21 @@ class SettingsDropdown extends PureComponent {
         <BBBMenu
           accessKey={OPEN_OPTIONS_AK}
           customStyles={!isMobile ? customStyles : null}
-          trigger={(
+          trigger={
             <Styled.DropdownButton
               state={isDropdownOpen ? 'open' : 'closed'}
               label={intl.formatMessage(intlMessages.optionsLabel)}
-              icon="more"
-              data-test="optionsButton"
-              color="dark"
-              size="md"
+              icon='more'
+              data-test='optionsButton'
+              color='dark'
+              size='md'
               circle
               hideLabel
               // FIXME: Without onClick react proptypes keep warning
               // even after the DropdownTrigger inject an onClick handler
               onClick={() => null}
             />
-          )}
+          }
           actions={this.renderMenuItems()}
           opts={{
             id: 'app-settings-dropdown-menu',
@@ -433,21 +457,52 @@ class SettingsDropdown extends PureComponent {
             elevation: 3,
             getcontentanchorel: null,
             fullwidth: 'true',
-            anchorOrigin: { vertical: 'bottom', horizontal: isRTL ? 'left' : 'right' },
-            transformorigin: { vertical: 'top', horizontal: isRTL ? 'left' : 'right' },
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: isRTL ? 'left' : 'right',
+            },
+            transformorigin: {
+              vertical: 'top',
+              horizontal: isRTL ? 'left' : 'right',
+            },
           }}
         />
-        {this.renderModal(isAboutModalOpen, this.setAboutModalIsOpen, "low",
-          AboutContainer)}
-        {this.renderModal(isShortcutHelpModalOpen, this.setShortcutHelpModalIsOpen, 
-          "low", ShortcutHelpComponent)}
-        {this.renderModal(isSettingsMenuModalOpen, this.setSettingsMenuModalIsOpen, 
-          "low", SettingsMenuContainer)}
-        {this.renderModal(isEndMeetingConfirmationModalOpen, this.setEndMeetingConfirmationModalIsOpen, 
-          "low", EndMeetingConfirmationContainer)}
-        {this.renderModal(isMobileAppModalOpen, this.setMobileAppModalIsOpen, "low", 
-          MobileAppModal)}
-        {this.renderModal(isLayoutModalOpen, this.setLayoutModalIsOpen, 'low', LayoutModalContainer)}
+        {this.renderModal(
+          isAboutModalOpen,
+          this.setAboutModalIsOpen,
+          'low',
+          AboutContainer
+        )}
+        {this.renderModal(
+          isShortcutHelpModalOpen,
+          this.setShortcutHelpModalIsOpen,
+          'low',
+          ShortcutHelpComponent
+        )}
+        {this.renderModal(
+          isSettingsMenuModalOpen,
+          this.setSettingsMenuModalIsOpen,
+          'low',
+          SettingsMenuContainer
+        )}
+        {this.renderModal(
+          isEndMeetingConfirmationModalOpen,
+          this.setEndMeetingConfirmationModalIsOpen,
+          'low',
+          EndMeetingConfirmationContainer
+        )}
+        {this.renderModal(
+          isMobileAppModalOpen,
+          this.setMobileAppModalIsOpen,
+          'low',
+          MobileAppModal
+        )}
+        {this.renderModal(
+          isLayoutModalOpen,
+          this.setLayoutModalIsOpen,
+          'low',
+          LayoutModalContainer
+        )}
       </>
     );
   }
