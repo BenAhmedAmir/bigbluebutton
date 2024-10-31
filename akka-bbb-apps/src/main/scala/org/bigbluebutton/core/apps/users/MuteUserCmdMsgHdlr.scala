@@ -65,37 +65,38 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
             val newMutedBy = if (msg.body.mute) Some(msg.header.userId) else None
             VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, newMutedBy.getOrElse(""))
             log.info("Updated mute status by moderator. mutedBy=" + newMutedBy)
-          } else if (msg.body.userId == msg.header.userId) {
-            // Handle self mute/unmute for regular users
-            log.info("Self mute/unmute request. mute=" + msg.body.mute +
-              " mutedBy=" + u.mutedBy +
-              " userId=" + msg.header.userId +
-              " userMuted=" + u.muted)
+          }
+      } else if (msg.body.userId == msg.header.userId) {
+          // Handle self mute/unmute for regular users
+          log.info("Self mute/unmute request. mute=" + msg.body.mute +
+            " mutedBy=" + u.mutedBy +
+            " userId=" + msg.header.userId +
+            " userMuted=" + u.muted)
 
-            // Check if user was muted by a moderator
-            val mutedByModerator = u.mutedBy match {
-              case Some(muterId) =>
-                Users2x.findWithIntId(liveMeeting.users2x, muterId).exists(_.role == Roles.MODERATOR_ROLE)
-              case None => false
-            }
+          // Check if user was muted by a moderator
+          val mutedByModerator = u.mutedBy match {
+            case Some(muterId) =>
+              Users2x.findWithIntId(liveMeeting.users2x, muterId).exists(_.role == Roles.MODERATOR_ROLE)
+            case None => false
+          }
 
-            // Allow muting self anytime, but only allow unmuting if not muted by a moderator
-            if (msg.body.mute || (!msg.body.mute && !mutedByModerator)) {
-              log.info("Executing mute/unmute self request. meetingId=" + meetingId +
-                " userId=" + u.intId +
-                " user=" + u)
-              VoiceApp.muteUserInVoiceConf(
-                liveMeeting,
-                outGW,
-                u.intId,
-                msg.body.mute
-              )
-              VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
-            } else {
-              log.info("Viewer cannot unmute themselves because they were muted by a moderator.")
-            }
-          }}
+          // Allow muting self anytime, but only allow unmuting if not muted by a moderator
+          if (msg.body.mute || (!msg.body.mute && !mutedByModerator)) {
+            log.info("Executing mute/unmute self request. meetingId=" + meetingId +
+              " userId=" + u.intId +
+              " user=" + u)
+            VoiceApp.muteUserInVoiceConf(
+              liveMeeting,
+              outGW,
+              u.intId,
+              msg.body.mute
+            )
+            VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
+          } else {
+            log.info("Viewer cannot unmute themselves because they were muted by a moderator.")
+          }
+        }
+
       }
-    }
   }
 }
