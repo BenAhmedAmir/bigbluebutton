@@ -67,8 +67,7 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
                    " userId=" + msg.header.userId + 
                    " userMuted=" + u.muted)
           
-          if (msg.body.mute || (!msg.body.mute && u.mutedBy == msg.header.userId)) {
-            // Allow self-muting and self-unmuting if user muted themselves
+          if (msg.body.mute || !msg.body.mute) {  // Allow both mute and unmute for self
             log.info("Executing mute/unmute self request. meetingId=" + meetingId + 
                     " userId=" + u.intId + 
                     " user=" + u)
