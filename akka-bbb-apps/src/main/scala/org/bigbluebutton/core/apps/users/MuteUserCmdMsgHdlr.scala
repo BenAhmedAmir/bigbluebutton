@@ -42,29 +42,14 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
           msg.body.userId
         )
       } yield {
-
         if (requester.role != Roles.MODERATOR_ROLE
           && permissions.disableMic
           && requester.locked
           && u.muted &&
           msg.body.userId == msg.header.userId) {
           // unmuting self while not moderator and mic disabled. Do not allow.
-        } else if (requester.role != Roles.MODERATOR_ROLE
-          && !msg.body.mute
-          && msg.body.userId == msg.header.userId
-          && u.mutedBy == msg.body.userId) {
-          // Allow unmuting self if the user muted themselves
-          log.info("Send unmute self request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
-          VoiceApp.muteUserInVoiceConf(
-            liveMeeting,
-            outGW,
-            u.intId,
-            msg.body.mute
-          )
-          VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
-        } else if (requester.role == Roles.MODERATOR_ROLE || 
-          (msg.body.mute && msg.body.userId == msg.header.userId)) {
-          // Allow moderators to mute/unmute and allow users to only mute themselves
+        } else if (requester.role == Roles.MODERATOR_ROLE) {
+          // Allow moderators to mute/unmute anyone
           if (u.muted != msg.body.mute) {
             log.info("Send mute/unmute user request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
             VoiceApp.muteUserInVoiceConf(
@@ -73,9 +58,20 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               u.intId,
               msg.body.mute
             )
-            if (msg.body.mute) {
-              VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
-            }
+            VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
+          }
+        } else if (msg.body.userId == msg.header.userId) {
+          // Handle self mute/unmute for regular users
+          if (msg.body.mute || (!msg.body.mute && u.mutedBy == msg.header.userId)) {
+            // Allow if: trying to mute self OR trying to unmute self when self-muted
+            log.info("Send mute/unmute self request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
+            VoiceApp.muteUserInVoiceConf(
+              liveMeeting,
+              outGW,
+              u.intId,
+              msg.body.mute
+            )
+            VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
           }
         }
       }
