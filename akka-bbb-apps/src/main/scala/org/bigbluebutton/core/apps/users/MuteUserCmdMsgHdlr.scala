@@ -67,8 +67,14 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
                    " userId=" + msg.header.userId + 
                    " userMuted=" + u.muted)
           
+          // Check if user was muted by a moderator
+          val mutedByModerator = {
+            val mutedBy = Users2x.findWithIntId(liveMeeting.users2x, u.mutedBy.getOrElse(""))
+            mutedBy.exists(_.role == Roles.MODERATOR_ROLE)
+          }
+          
           // Allow muting self anytime, but only allow unmuting if not muted by a moderator
-          if (msg.body.mute || (!msg.body.mute && !u.muted)) {
+          if (msg.body.mute || (!msg.body.mute && !mutedByModerator)) {
             log.info("Executing mute/unmute self request. meetingId=" + meetingId + 
                     " userId=" + u.intId + 
                     " user=" + u)
