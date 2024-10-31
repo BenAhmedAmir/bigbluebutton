@@ -62,9 +62,16 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
           }
         } else if (msg.body.userId == msg.header.userId) {
           // Handle self mute/unmute for regular users
+          log.info("Self mute/unmute request. mute=" + msg.body.mute + 
+                   " mutedBy=" + u.mutedBy + 
+                   " userId=" + msg.header.userId + 
+                   " userMuted=" + u.muted)
+          
           if (msg.body.mute || (!msg.body.mute && u.mutedBy == msg.header.userId)) {
             // Allow self-muting and self-unmuting if user muted themselves
-            log.info("Send mute/unmute self request. meetingId=" + meetingId + " userId=" + u.intId + " user=" + u)
+            log.info("Executing mute/unmute self request. meetingId=" + meetingId + 
+                    " userId=" + u.intId + 
+                    " user=" + u)
             VoiceApp.muteUserInVoiceConf(
               liveMeeting,
               outGW,
@@ -72,6 +79,8 @@ trait MuteUserCmdMsgHdlr extends RightsManagementTrait {
               msg.body.mute
             )
             VoiceUsers.userMuted(liveMeeting.voiceUsers, u.voiceUserId, msg.body.mute, msg.header.userId)
+          } else {
+            log.info("Mute/unmute condition not met. User cannot unmute themselves.")
           }
         }
       }
