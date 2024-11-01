@@ -195,8 +195,11 @@ const sendGroupMessage = (message, idChatOpen) => {
   const chatID = idChatOpen === PUBLIC_CHAT_ID
     ? PUBLIC_GROUP_CHAT_ID
     : chat.users.filter((id) => id !== Auth.userID)[0];
-  // const isPublicChat = chatID === PUBLIC_CHAT_ID;
-  const isPublicChat = true;
+
+  const user = Users.findOne({ meetingId: Auth.meetingID, userId: Auth.userID },
+    { fields: { locked: 1, role: 1 } });
+  const isPublicChat = user.role === ROLE_MODERATOR;
+  // const isPublicChat = true;
 
   let destinationChatId = PUBLIC_GROUP_CHAT_ID;
 
