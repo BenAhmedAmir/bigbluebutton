@@ -205,8 +205,13 @@ const ChatContainer = (props) => {
 
       const timeWindowsValues = isPublicChat
         ? [
-            ...(!contextChat?.syncing
+            ...(amIModerator
               ? Object.values(contextChat?.preJoinMessages || {})
+              : Object.values(contextChat?.preJoinMessages || {}).filter(
+                  (message) => message.senderRole === 'MODERATOR'
+                )),
+            ...(!contextChat?.syncing
+              ? []
               : [
                   {
                     id: sysMessagesIds.syncId,
