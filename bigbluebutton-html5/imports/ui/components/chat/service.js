@@ -208,7 +208,7 @@ const sendGroupMessage = (message, idChatOpen) => {
   const { userID: senderUserId } = Auth;
   const receiverId = { id: chatID };
 
-  if (!isPublicChat) {
+  if (isPublicChat) {
     const privateChat = GroupChat.findOne({ users: { $all: [chatID, senderUserId] } },
       { fields: { chatId: 1 } });
 

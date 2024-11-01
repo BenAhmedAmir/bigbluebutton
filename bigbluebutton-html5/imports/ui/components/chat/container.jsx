@@ -225,9 +225,14 @@ const ChatContainer = (props) => {
                   },
                 ]),
             ...systemMessagesIds.map((item) => systemMessages[item]),
-            ...Object.values(contextChat?.posJoinMessages || {}),
+            ...(amIModerator
+              ? Object.values(contextChat?.posJoinMessages || {})
+              : Object.values(contextChat?.posJoinMessages || {}).filter(
+                  (message) => message.senderRole === 'MODERATOR'
+                )),
           ]
         : [...Object.values(contextChat?.messageGroups || {})];
+
       if (previousChatId !== idChatOpen) {
         previousChatId = idChatOpen;
       }
