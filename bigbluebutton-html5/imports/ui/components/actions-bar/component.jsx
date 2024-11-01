@@ -21,29 +21,39 @@ class ActionsBar extends PureComponent {
       isCaptionsReaderMenuModalOpen: false,
     };
 
-    this.setCaptionsReaderMenuModalIsOpen = this.setCaptionsReaderMenuModalIsOpen.bind(this);
+    this.setCaptionsReaderMenuModalIsOpen =
+      this.setCaptionsReaderMenuModalIsOpen.bind(this);
     this.setRenderRaiseHand = this.renderRaiseHand.bind(this);
     this.actionsBarRef = React.createRef();
   }
 
   setCaptionsReaderMenuModalIsOpen(value) {
-    this.setState({ isCaptionsReaderMenuModalOpen: value })
+    this.setState({ isCaptionsReaderMenuModalOpen: value });
   }
 
   renderRaiseHand() {
     const {
-      isReactionsButtonEnabled, isRaiseHandButtonEnabled, setEmojiStatus, currentUser, intl,
+      isReactionsButtonEnabled,
+      isRaiseHandButtonEnabled,
+      setEmojiStatus,
+      currentUser,
+      intl,
     } = this.props;
 
-    return (<>
-      {isReactionsButtonEnabled ?
-        <>
-          <Styled.Separator />
-          <ReactionsButtonContainer actionsBarRef={this.actionsBarRef} />
-        </> :
-        isRaiseHandButtonEnabled ? <RaiseHandDropdownContainer {...{ setEmojiStatus, currentUser, intl }} />
-          : null}
-    </>);
+    return (
+      <>
+        {isReactionsButtonEnabled ? (
+          <>
+            <Styled.Separator />
+            <ReactionsButtonContainer actionsBarRef={this.actionsBarRef} />
+          </>
+        ) : isRaiseHandButtonEnabled ? (
+          <RaiseHandDropdownContainer
+            {...{ setEmojiStatus, currentUser, intl }}
+          />
+        ) : null}
+      </>
+    );
   }
 
   render() {
@@ -80,79 +90,74 @@ class ActionsBar extends PureComponent {
 
     const { isCaptionsReaderMenuModalOpen } = this.state;
 
-    const shouldShowOptionsButton = (isPresentationEnabled() && isThereCurrentPresentation)
-      || isSharingVideo || hasScreenshare || isSharedNotesPinned;
+    const shouldShowOptionsButton =
+      (isPresentationEnabled() && isThereCurrentPresentation) ||
+      isSharingVideo ||
+      hasScreenshare ||
+      isSharedNotesPinned;
     return (
       <Styled.ActionsBar
         ref={this.actionsBarRef}
-        style={
-          {
-            height: actionsBarStyle.innerHeight,
-          }
-        }
+        style={{
+          height: actionsBarStyle.innerHeight,
+        }}
       >
         <Styled.Left>
-          <ActionsDropdown {...{
-            amIPresenter,
-            amIModerator,
-            isPollingEnabled,
-            isSelectRandomUserEnabled,
-            allowExternalVideo,
-            handleTakePresenter,
-            intl,
-            isSharingVideo,
-            stopExternalVideoShare,
-            isTimerActive,
-            isTimerEnabled,
-            isMeteorConnected,
-            setMeetingLayout,
-            setPushLayout,
-            presentationIsOpen,
-            showPushLayout,
-            hasCameraAsContent,
-            setPresentationFitToWidth,
-          }}
+          <ActionsDropdown
+            {...{
+              amIPresenter,
+              amIModerator,
+              isPollingEnabled,
+              isSelectRandomUserEnabled,
+              allowExternalVideo,
+              handleTakePresenter,
+              intl,
+              isSharingVideo,
+              stopExternalVideoShare,
+              isTimerActive,
+              isTimerEnabled,
+              isMeteorConnected,
+              setMeetingLayout,
+              setPushLayout,
+              presentationIsOpen,
+              showPushLayout,
+              hasCameraAsContent,
+              setPresentationFitToWidth,
+            }}
           />
-          {isCaptionsAvailable
-            ? (
-              <>
-                <CaptionsButtonContainer {...{ intl,
-                  setIsOpen: this.setCaptionsReaderMenuModalIsOpen,}} />
-                {
-                  isCaptionsReaderMenuModalOpen ? <CaptionsReaderMenuContainer
-                    {...{
-                      onRequestClose: () => this.setCaptionsReaderMenuModalIsOpen(false),
-                      priority: "low",
-                      setIsOpen: this.setCaptionsReaderMenuModalIsOpen,
-                      isOpen: isCaptionsReaderMenuModalOpen,
-                    }}
-                  /> : null
-                }
-              </>
-            )
-            : null}
-          { !deviceInfo.isMobile
-            ? (
-              <AudioCaptionsButtonContainer />
-            )
-            : null }
+          {isCaptionsAvailable ? (
+            <>
+              <CaptionsButtonContainer
+                {...{ intl, setIsOpen: this.setCaptionsReaderMenuModalIsOpen }}
+              />
+              {isCaptionsReaderMenuModalOpen ? (
+                <CaptionsReaderMenuContainer
+                  {...{
+                    onRequestClose: () =>
+                      this.setCaptionsReaderMenuModalIsOpen(false),
+                    priority: 'low',
+                    setIsOpen: this.setCaptionsReaderMenuModalIsOpen,
+                    isOpen: isCaptionsReaderMenuModalOpen,
+                  }}
+                />
+              ) : null}
+            </>
+          ) : null}
+          {!deviceInfo.isMobile ? <AudioCaptionsButtonContainer /> : null}
         </Styled.Left>
         <Styled.Center>
           <AudioControlsContainer />
-          {enableVideo
-            ? (
-              <JoinVideoOptionsContainer />
-            )
-            : null}
-          <ScreenshareButtonContainer {...{
-            amIPresenter,
-            isMeteorConnected,
-          }}
+          {enableVideo ? <JoinVideoOptionsContainer /> : null}
+          <ScreenshareButtonContainer
+            {...{
+              amIPresenter,
+              isMeteorConnected,
+            }}
           />
-        {isRaiseHandButtonCentered && this.renderRaiseHand()}
+          {isRaiseHandButtonCentered && this.renderRaiseHand()}
         </Styled.Center>
         <Styled.Right>
-          { shouldShowOptionsButton ?
+          {shouldShowOptionsButton && amIPresenter ? (
             <PresentationOptionsContainer
               presentationIsOpen={presentationIsOpen}
               setPresentationIsOpen={setPresentationIsOpen}
@@ -164,8 +169,7 @@ class ActionsBar extends PureComponent {
               hasGenericContent={hasGenericContent}
               hasCameraAsContent={hasCameraAsContent}
             />
-            : null
-          }
+          ) : null}
           {!isRaiseHandButtonCentered && this.renderRaiseHand()}
         </Styled.Right>
       </Styled.ActionsBar>
