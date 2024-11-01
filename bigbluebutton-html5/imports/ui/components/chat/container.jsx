@@ -5,7 +5,10 @@ import { throttle } from '/imports/utils/throttle';
 import Auth from '/imports/ui/services/auth';
 import Storage from '/imports/ui/services/storage/session';
 import { meetingIsBreakout } from '/imports/ui/components/app/service';
-import { ChatContext, getLoginTime } from '../components-data/chat-context/context';
+import {
+  ChatContext,
+  getLoginTime,
+} from '../components-data/chat-context/context';
 import { GroupChatContext } from '../components-data/group-chat-context/context';
 import { UsersContext } from '../components-data/users-context/context';
 import ChatLogger from '/imports/ui/components/chat/chat-logger/ChatLogger';
@@ -44,7 +47,8 @@ const intlMessages = defineMessages({
   },
   partnerDisconnected: {
     id: 'app.chat.partnerDisconnected',
-    description: 'System chat message when the private chat partnet disconnect from the meeting',
+    description:
+      'System chat message when the private chat partnet disconnect from the meeting',
   },
   loading: {
     id: 'app.chat.loading',
@@ -56,11 +60,15 @@ let previousChatId = null;
 let prevSync = false;
 let prevPartnerIsLoggedOut = false;
 
-let globalAppplyStateToProps = () => { };
+let globalAppplyStateToProps = () => {};
 
-const throttledFunc = throttle(() => {
-  globalAppplyStateToProps();
-}, DEBOUNCE_TIME, { trailing: true, leading: true });
+const throttledFunc = throttle(
+  () => {
+    globalAppplyStateToProps();
+  },
+  DEBOUNCE_TIME,
+  { trailing: true, leading: true }
+);
 
 const ChatContainer = (props) => {
   const {
@@ -96,22 +104,26 @@ const ChatContainer = (props) => {
   const systemMessages = {
     [sysMessagesIds.welcomeId]: {
       id: sysMessagesIds.welcomeId,
-      content: [{
-        id: sysMessagesIds.welcomeId,
-        text: welcomeProp.welcomeMsg,
-        time: loginTime,
-      }],
+      content: [
+        {
+          id: sysMessagesIds.welcomeId,
+          text: welcomeProp.welcomeMsg,
+          time: loginTime,
+        },
+      ],
       key: sysMessagesIds.welcomeId,
       time: loginTime,
       sender: null,
     },
     [sysMessagesIds.moderatorId]: {
       id: sysMessagesIds.moderatorId,
-      content: [{
-        id: sysMessagesIds.moderatorId,
-        text: modOnlyMessage,
-        time: loginTime + 1,
-      }],
+      content: [
+        {
+          id: sysMessagesIds.moderatorId,
+          text: modOnlyMessage,
+          time: loginTime + 1,
+        },
+      ],
       key: sysMessagesIds.moderatorId,
       time: loginTime + 1,
       sender: null,
@@ -130,14 +142,17 @@ const ChatContainer = (props) => {
   const usingGroupChatContext = useContext(GroupChatContext);
   const [stateLastMsg, setLastMsg] = useState(null);
 
-  const [
-    stateTimeWindows, setTimeWindows,
-  ] = useState(isPublicChat ? [...systemMessagesIds.map((item) => systemMessages[item])] : []);
+  const [stateTimeWindows, setTimeWindows] = useState(
+    isPublicChat
+      ? [...systemMessagesIds.map((item) => systemMessages[item])]
+      : []
+  );
   const [lastTimeWindowValuesBuild, setLastTimeWindowValuesBuild] = useState(0);
 
   const { groupChat } = usingGroupChatContext;
   const participants = groupChat[idChatOpen]?.participants;
-  const chatName = participants?.filter((user) => user.id !== Auth.userID)[0]?.name;
+  const chatName = participants?.filter((user) => user.id !== Auth.userID)[0]
+    ?.name;
   const title = chatName
     ? intl.formatMessage(intlMessages.titlePrivate, { 0: chatName })
     : intl.formatMessage(intlMessages.titlePublic);
@@ -146,51 +161,72 @@ const ChatContainer = (props) => {
 
   let isChatLocked;
   if (!isPublicChat) {
-    const idUser = participants?.filter((user) => user.id !== Auth.userID)[0]?.id;
-    partnerIsLoggedOut = !!(users[Auth.meetingID][idUser]?.loggedOut
-      || users[Auth.meetingID][idUser]?.ejected);
-    isChatLocked = isChatLockedPrivate && !(users[Auth.meetingID][idUser]?.role === ROLE_MODERATOR);
+    const idUser = participants?.filter((user) => user.id !== Auth.userID)[0]
+      ?.id;
+    partnerIsLoggedOut = !!(
+      users[Auth.meetingID][idUser]?.loggedOut ||
+      users[Auth.meetingID][idUser]?.ejected
+    );
+    isChatLocked =
+      isChatLockedPrivate &&
+      !(users[Auth.meetingID][idUser]?.role === ROLE_MODERATOR);
   } else if (users[Auth.meetingID][Auth.userID]?.chatLocked === true) {
-      isChatLocked = true;
+    isChatLocked = true;
   } else {
     isChatLocked = isChatLockedPublic;
   }
 
-  const contextChat = usingChatContext?.chats[isPublicChat ? PUBLIC_GROUP_CHAT_KEY : chatID];
+  const contextChat =
+    usingChatContext?.chats[isPublicChat ? PUBLIC_GROUP_CHAT_KEY : chatID];
+  console.log('contextChat', contextChat);
   const lastTimeWindow = contextChat?.lastTimewindow;
-  const lastMsg = contextChat && (isPublicChat
-    ? contextChat?.preJoinMessages[lastTimeWindow] || contextChat?.posJoinMessages[lastTimeWindow]
-    : contextChat?.messageGroups[lastTimeWindow]);
+  const lastMsg =
+    contextChat &&
+    (isPublicChat
+      ? contextChat?.preJoinMessages[lastTimeWindow] ||
+        contextChat?.posJoinMessages[lastTimeWindow]
+      : contextChat?.messageGroups[lastTimeWindow]);
   ChatLogger.debug('ChatContainer::render::chatData', contextChat);
   const applyPropsToState = () => {
-    ChatLogger.debug('ChatContainer::applyPropsToState::chatData', lastMsg, stateLastMsg, contextChat?.syncing);
+    ChatLogger.debug(
+      'ChatContainer::applyPropsToState::chatData',
+      lastMsg,
+      stateLastMsg,
+      contextChat?.syncing
+    );
     if (
-      (lastMsg?.lastTimestamp !== stateLastMsg?.lastTimestamp)
-      || (previousChatId !== idChatOpen)
-      || (prevSync !== contextChat?.syncing)
-      || (prevPartnerIsLoggedOut !== partnerIsLoggedOut)
+      lastMsg?.lastTimestamp !== stateLastMsg?.lastTimestamp ||
+      previousChatId !== idChatOpen ||
+      prevSync !== contextChat?.syncing ||
+      prevPartnerIsLoggedOut !== partnerIsLoggedOut
     ) {
       prevSync = contextChat?.syncing;
       prevPartnerIsLoggedOut = partnerIsLoggedOut;
 
       const timeWindowsValues = isPublicChat
         ? [
-          ...(
-            !contextChat?.syncing ? Object.values(contextChat?.preJoinMessages || {}) : [
-              {
-                id: sysMessagesIds.syncId,
-                content: [{
-                  id: 'synced',
-                  text: intl.formatMessage(intlMessages.loading, { 0: contextChat?.syncedPercent }),
-                  time: loginTime + 1,
-                }],
-                key: sysMessagesIds.syncId,
-                time: loginTime + 1,
-                sender: null,
-              },
-            ]
-          ), ...systemMessagesIds.map((item) => systemMessages[item]),
-          ...Object.values(contextChat?.posJoinMessages || {})]
+            ...(!contextChat?.syncing
+              ? Object.values(contextChat?.preJoinMessages || {})
+              : [
+                  {
+                    id: sysMessagesIds.syncId,
+                    content: [
+                      {
+                        id: 'synced',
+                        text: intl.formatMessage(intlMessages.loading, {
+                          0: contextChat?.syncedPercent,
+                        }),
+                        time: loginTime + 1,
+                      },
+                    ],
+                    key: sysMessagesIds.syncId,
+                    time: loginTime + 1,
+                    sender: null,
+                  },
+                ]),
+            ...systemMessagesIds.map((item) => systemMessages[item]),
+            ...Object.values(contextChat?.posJoinMessages || {}),
+          ]
         : [...Object.values(contextChat?.messageGroups || {})];
       if (previousChatId !== idChatOpen) {
         previousChatId = idChatOpen;
@@ -201,11 +237,17 @@ const ChatContainer = (props) => {
         const id = `partner-disconnected-${time}`;
         const messagePartnerLoggedOut = {
           id,
-          content: [{
-            id,
-            text: escapeHtml(intl.formatMessage(intlMessages.partnerDisconnected, { 0: chatName })),
-            time,
-          }],
+          content: [
+            {
+              id,
+              text: escapeHtml(
+                intl.formatMessage(intlMessages.partnerDisconnected, {
+                  0: chatName,
+                })
+              ),
+              time,
+            },
+          ],
           time,
           sender: null,
         };
@@ -223,49 +265,54 @@ const ChatContainer = (props) => {
 
   ChatService.removePackagedClassAttribute(
     ['ReactVirtualized__Grid', 'ReactVirtualized__Grid__innerScrollContainer'],
-    'role',
+    'role'
   );
 
   return (
-    <Chat {...{
-      idChatOpen,
-      isChatLocked,
-      ...restProps,
-      chatID,
-      amIModerator,
-      count: (contextChat?.unreadTimeWindows.size || 0),
-      timeWindowsValues: stateTimeWindows,
-      dispatch: usingChatContext?.dispatch,
-      title,
-      syncing: contextChat?.syncing,
-      syncedPercent: contextChat?.syncedPercent,
-      chatName,
-      contextChat,
-      layoutContextDispatch,
-      lastTimeWindowValuesBuild,
-      partnerIsLoggedOut,
-    }}
+    <Chat
+      {...{
+        idChatOpen,
+        isChatLocked,
+        ...restProps,
+        chatID,
+        amIModerator,
+        count: contextChat?.unreadTimeWindows.size || 0,
+        timeWindowsValues: stateTimeWindows,
+        dispatch: usingChatContext?.dispatch,
+        title,
+        syncing: contextChat?.syncing,
+        syncedPercent: contextChat?.syncedPercent,
+        chatName,
+        contextChat,
+        layoutContextDispatch,
+        lastTimeWindowValuesBuild,
+        partnerIsLoggedOut,
+      }}
     >
       {children}
     </Chat>
   );
 };
 
-export default lockContextContainer(injectIntl(withTracker(({ intl, userLocks }) => {
-  const isChatLockedPublic = userLocks.userPublicChat;
-  const isChatLockedPrivate = userLocks.userPrivateChat;
+export default lockContextContainer(
+  injectIntl(
+    withTracker(({ intl, userLocks }) => {
+      const isChatLockedPublic = userLocks.userPublicChat;
+      const isChatLockedPrivate = userLocks.userPrivateChat;
 
-  const { connected: isMeteorConnected } = Meteor.status();
+      const { connected: isMeteorConnected } = Meteor.status();
 
-  return {
-    intl,
-    isChatLockedPublic,
-    isChatLockedPrivate,
-    isMeteorConnected,
-    meetingIsBreakout: meetingIsBreakout(),
-    loginTime: getLoginTime(),
-    actions: {
-      handleClosePrivateChat: ChatService.closePrivateChat,
-    },
-  };
-})(ChatContainer)));
+      return {
+        intl,
+        isChatLockedPublic,
+        isChatLockedPrivate,
+        isMeteorConnected,
+        meetingIsBreakout: meetingIsBreakout(),
+        loginTime: getLoginTime(),
+        actions: {
+          handleClosePrivateChat: ChatService.closePrivateChat,
+        },
+      };
+    })(ChatContainer)
+  )
+);

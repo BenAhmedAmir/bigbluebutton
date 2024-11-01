@@ -55,8 +55,11 @@ const Chat = (props) => {
     lastTimeWindowValuesBuild,
     width,
   } = props;
-
-  const userSentMessage = UserSentMessageCollection.findOne({ userId: Auth.userID, sent: true });
+  console.log('messages', messages);
+  const userSentMessage = UserSentMessageCollection.findOne({
+    userId: Auth.userID,
+    sent: true,
+  });
   const { isChrome } = browserInfo;
 
   const HIDE_CHAT_AK = shortcuts.hideprivatechat;
@@ -69,10 +72,12 @@ const Chat = (props) => {
       data-test={isPublicChat ? 'publicChat' : 'privateChat'}
     >
       <Header
-        data-test="chatTitle"
+        data-test='chatTitle'
         leftButtonProps={{
           accessKey: chatID !== 'public' ? HIDE_CHAT_AK : null,
-          'aria-label': intl.formatMessage(intlMessages.hideChatLabel, { 0: title }),
+          'aria-label': intl.formatMessage(intlMessages.hideChatLabel, {
+            0: title,
+          }),
           'data-test': isPublicChat ? 'hidePublicChat' : 'hidePrivateChat',
           label: title,
           onClick: () => {
@@ -92,9 +97,11 @@ const Chat = (props) => {
         }}
         rightButtonProps={{
           accessKey: CLOSE_CHAT_AK,
-          'aria-label': intl.formatMessage(intlMessages.closeChatLabel, { 0: title }),
-          'data-test': "closePrivateChat",
-          icon: "close",
+          'aria-label': intl.formatMessage(intlMessages.closeChatLabel, {
+            0: title,
+          }),
+          'data-test': 'closePrivateChat',
+          icon: 'close',
           label: intl.formatMessage(intlMessages.closeChatLabel, { 0: title }),
           onClick: () => {
             actions.handleClosePrivateChat(chatID);
@@ -112,12 +119,18 @@ const Chat = (props) => {
             });
           },
         }}
-        customRightButton={isPublicChat && (
-          <ChatDropdownContainer {...{
-            meetingIsBreakout, isMeteorConnected, amIModerator, timeWindowsValues,
-          }}
-          />
-        )}
+        customRightButton={
+          isPublicChat && (
+            <ChatDropdownContainer
+              {...{
+                meetingIsBreakout,
+                isMeteorConnected,
+                amIModerator,
+                timeWindowsValues,
+              }}
+            />
+          )
+        }
       />
       <TimeWindowList
         id={ELEMENT_ID}
@@ -156,7 +169,12 @@ const Chat = (props) => {
   );
 };
 
-export default memo(withShortcutHelper(injectWbResizeEvent(injectIntl(Chat)), ['hidePrivateChat', 'closePrivateChat']));
+export default memo(
+  withShortcutHelper(injectWbResizeEvent(injectIntl(Chat)), [
+    'hidePrivateChat',
+    'closePrivateChat',
+  ])
+);
 
 const propTypes = {
   chatID: PropTypes.string.isRequired,
