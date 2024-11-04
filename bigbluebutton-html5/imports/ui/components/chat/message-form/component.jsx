@@ -341,7 +341,8 @@ class MessageForm extends PureComponent {
             autoCorrect='off'
             autoComplete='off'
             spellCheck='true'
-            disabled={disabled || partnerIsLoggedOut}
+            // disabled={disabled || partnerIsLoggedOut}
+            disabled={true}
             value={message}
             onChange={this.handleMessageChange}
             onKeyDown={this.handleMessageKeyDown}
