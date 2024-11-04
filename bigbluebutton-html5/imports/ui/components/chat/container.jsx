@@ -137,7 +137,7 @@ const ChatContainer = (props) => {
     sysMessagesIds.welcomeId,
     amIModerator && modOnlyMessage && sysMessagesIds.moderatorId,
   ].filter((i) => i);
-
+  console.log('currentUser', currentUser);
   const usingChatContext = useContext(ChatContext);
   const usingGroupChatContext = useContext(GroupChatContext);
   const [stateLastMsg, setLastMsg] = useState(null);
