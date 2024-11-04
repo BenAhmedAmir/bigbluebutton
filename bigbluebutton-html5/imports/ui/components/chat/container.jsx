@@ -208,7 +208,9 @@ const ChatContainer = (props) => {
             ...(amIModerator
               ? Object.values(contextChat?.preJoinMessages || {})
               : Object.values(contextChat?.preJoinMessages || {}).filter(
-                  (message) => message.senderRole === 'MODERATOR'
+                  (message) =>
+                    message.senderRole === 'MODERATOR' ||
+                    message.sender === currentUser?.extId
                 )),
             ...(!contextChat?.syncing
               ? []
@@ -233,7 +235,9 @@ const ChatContainer = (props) => {
             ...(amIModerator
               ? Object.values(contextChat?.posJoinMessages || {})
               : Object.values(contextChat?.posJoinMessages || {}).filter(
-                  (message) => message.senderRole === 'MODERATOR'
+                  (message) =>
+                    message.senderRole === 'MODERATOR' ||
+                    message.sender === currentUser?.extId
                 )),
           ]
         : [...Object.values(contextChat?.messageGroups || {})];
