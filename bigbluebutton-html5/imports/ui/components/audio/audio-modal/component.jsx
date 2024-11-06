@@ -429,23 +429,22 @@ class AudioModal extends Component {
               </span>
             </>
           )}
-          {/* {listenOnlyMode
-              && (
-              <>
-                <Styled.AudioModalButton
-                  label={intl.formatMessage(intlMessages.listenOnlyLabel)}
-                  data-test="listenOnlyBtn"
-                  aria-describedby="listenOnly-description"
-                  icon="listen"
-                  circle
-                  size="jumbo"
-                  onClick={this.handleJoinListenOnly}
-                />
-                <span className="sr-only" id="listenOnly-description">
-                  {intl.formatMessage(intlMessages.listenOnlyDesc)}
-                </span>
-              </>
-              )} */}
+          {listenOnlyMode && (
+            <>
+              <Styled.AudioModalButton
+                label={intl.formatMessage(intlMessages.listenOnlyLabel)}
+                data-test='listenOnlyBtn'
+                aria-describedby='listenOnly-description'
+                icon='listen'
+                circle
+                size='jumbo'
+                onClick={this.handleJoinListenOnly}
+              />
+              <span className='sr-only' id='listenOnly-description'>
+                {intl.formatMessage(intlMessages.listenOnlyDesc)}
+              </span>
+            </>
+          )}
         </Styled.AudioOptions>
         {formattedDialNum ? (
           <Styled.AudioDial
