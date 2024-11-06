@@ -200,8 +200,8 @@ public:
         userJoinPushAlerts: false
         userLeaveAudioAlerts: false
         userLeavePushAlerts: false
-        raiseHandAudioAlerts: true
-        raiseHandPushAlerts: true
+        raiseHandAudioAlerts: false
+        raiseHandPushAlerts: false
         guestWaitingAudioAlerts: true
         guestWaitingPushAlerts: true
         wakeLock: true
