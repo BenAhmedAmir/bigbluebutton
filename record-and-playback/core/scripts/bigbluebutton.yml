@@ -52,10 +52,13 @@ show_moderator_viewpoint: false
 #     - next_step
 #     - another_step-format
 steps:
-  archive: "sanity"
-  sanity: "captions"
-  captions: "process:presentation"
-  "process:presentation": "publish:presentation"
+  archive: 'sanity'
+  sanity: 'captions'
+  captions:
+    - 'process:presentation'
+    - 'process:video'
+  'process:presentation': 'publish:presentation'
+  'process:video': 'publish:video'
 
 # For PRODUCTION
 log_dir: /var/log/bigbluebutton
@@ -65,7 +68,6 @@ published_dir: /var/bigbluebutton/published
 captions_dir: /var/bigbluebutton/captions
 playback_host: 127.0.0.1
 playback_protocol: http
-
 # For DEVELOPMENT
 # This allows us to run the scripts manually
 #scripts_dir: /home/ubuntu/dev/bigbluebutton/record-and-playback/core/scripts
