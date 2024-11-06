@@ -402,35 +402,35 @@ class UserListItem extends PureComponent {
         },
         icon: userIsPinned ? 'pin-video_off' : 'pin-video_on',
       },
-      {
-        allowed:
-          isChatEnabled() &&
-          enablePrivateChat &&
-          !isDialInUser &&
-          !meetingIsBreakout &&
-          isMeteorConnected &&
-          !showNestedOptions,
-        key: 'activeChat',
-        label: intl.formatMessage(messages.StartPrivateChat),
-        onClick: () => {
-          this.handleClose();
-          getGroupChatPrivate(currentUser.userId, user);
-          layoutContextDispatch({
-            type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
-            value: true,
-          });
-          layoutContextDispatch({
-            type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
-            value: PANELS.CHAT,
-          });
-          layoutContextDispatch({
-            type: ACTIONS.SET_ID_CHAT_OPEN,
-            value: user.userId,
-          });
-        },
-        icon: 'chat',
-        dataTest: 'startPrivateChat',
-      },
+      // {
+      //   allowed:
+      //     isChatEnabled() &&
+      //     enablePrivateChat &&
+      //     !isDialInUser &&
+      //     !meetingIsBreakout &&
+      //     isMeteorConnected &&
+      //     !showNestedOptions,
+      //   key: 'activeChat',
+      //   label: intl.formatMessage(messages.StartPrivateChat),
+      //   onClick: () => {
+      //     this.handleClose();
+      //     getGroupChatPrivate(currentUser.userId, user);
+      //     layoutContextDispatch({
+      //       type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
+      //       value: true,
+      //     });
+      //     layoutContextDispatch({
+      //       type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
+      //       value: PANELS.CHAT,
+      //     });
+      //     layoutContextDispatch({
+      //       type: ACTIONS.SET_ID_CHAT_OPEN,
+      //       value: user.userId,
+      //     });
+      //   },
+      //   icon: 'chat',
+      //   dataTest: 'startPrivateChat',
+      // },
       {
         allowed:
           isChatEnabled() &&
