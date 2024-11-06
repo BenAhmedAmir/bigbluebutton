@@ -49,11 +49,11 @@ const messages = defineMessages({
   },
   lockPublicChat: {
     id: 'app.userList.menu.lockPublicChat.label',
-    description: 'label for option to lock user\'s public chat',
+    description: "label for option to lock user's public chat",
   },
   unlockPublicChat: {
     id: 'app.userList.menu.unlockPublicChat.label',
-    description: 'label for option to lock user\'s public chat',
+    description: "label for option to lock user's public chat",
   },
   StartPrivateChat: {
     id: 'app.userList.menu.chat.label',
@@ -200,7 +200,7 @@ class UserListItem extends PureComponent {
    * @return True if the content fit on the screen, false otherwise.
    */
   static checkIfDropdownIsVisible(contentOffSetTop, contentOffsetHeight) {
-    return (contentOffSetTop + contentOffsetHeight) < window.innerHeight;
+    return contentOffSetTop + contentOffsetHeight < window.innerHeight;
   }
 
   constructor(props) {
@@ -220,7 +220,8 @@ class UserListItem extends PureComponent {
     this.getDropdownMenuParent = this.getDropdownMenuParent.bind(this);
     this.renderUserAvatar = this.renderUserAvatar.bind(this);
     this.resetMenuState = this.resetMenuState.bind(this);
-    this.setConfirmationModalIsOpen = this.setConfirmationModalIsOpen.bind(this);
+    this.setConfirmationModalIsOpen =
+      this.setConfirmationModalIsOpen.bind(this);
 
     this.title = uniqueId('dropdown-title-');
     this.seperator = uniqueId('action-separator-');
@@ -257,7 +258,9 @@ class UserListItem extends PureComponent {
       // eslint-disable-next-line react/no-find-dom-node
       const list = findDOMNode(this.list);
       const children = [].slice.call(list.children);
-      children.find((child) => child.getAttribute('role') === 'menuitem').focus();
+      children
+        .find((child) => child.getAttribute('role') === 'menuitem')
+        .focus();
 
       this.setState({
         isActionsOpen: true,
@@ -325,7 +328,12 @@ class UserListItem extends PureComponent {
     const amIPresenter = currentUser.presenter;
     const amIModerator = currentUser.role === ROLE_MODERATOR;
     const actionPermissions = getAvailableActions(
-      amIModerator, meetingIsBreakout, user, voiceUser, usersProp, amIPresenter,
+      amIModerator,
+      meetingIsBreakout,
+      user,
+      voiceUser,
+      usersProp,
+      amIPresenter
     );
 
     const {
@@ -346,12 +354,14 @@ class UserListItem extends PureComponent {
 
     const { disablePrivateChat } = lockSettingsProps;
 
-    const enablePrivateChat = currentUser.role === ROLE_MODERATOR
-      ? allowedToChatPrivately
-      : allowedToChatPrivately
-      && (!(currentUser.locked && disablePrivateChat)
-        || hasPrivateChatBetweenUsers(currentUser.userId, user.userId)
-        || user.role === ROLE_MODERATOR) && isMeteorConnected;
+    const enablePrivateChat =
+      currentUser.role === ROLE_MODERATOR
+        ? allowedToChatPrivately
+        : allowedToChatPrivately &&
+          (!(currentUser.locked && disablePrivateChat) ||
+            hasPrivateChatBetweenUsers(currentUser.userId, user.userId) ||
+            user.role === ROLE_MODERATOR) &&
+          isMeteorConnected;
 
     const { allowUserLookup } = Meteor.settings.public.app;
     const userLocked = user.locked && user.role !== ROLE_MODERATOR;
@@ -359,7 +369,8 @@ class UserListItem extends PureComponent {
 
     const availableActions = [
       {
-        allowed: allowedToChangeStatus && !showNestedOptions && isMeteorConnected,
+        allowed:
+          allowedToChangeStatus && !showNestedOptions && isMeteorConnected,
         key: 'setstatus',
         label: intl.formatMessage(messages.statusTriggerLabel),
         onClick: () => this.setState({ showNestedOptions: true }),
@@ -368,7 +379,8 @@ class UserListItem extends PureComponent {
         dataTest: 'setStatus',
       },
       {
-        allowed: showNestedOptions && isMeteorConnected && allowedToChangeStatus,
+        allowed:
+          showNestedOptions && isMeteorConnected && allowedToChangeStatus,
         key: 'back',
         label: intl.formatMessage(messages.backTriggerLabel),
         onClick: () => this.setState({ showNestedOptions: false }),
@@ -376,10 +388,11 @@ class UserListItem extends PureComponent {
         divider: true,
       },
       {
-        allowed: isSharingWebcam
-          && isMeteorConnected
-          && VideoService.isVideoPinEnabledForCurrentUser()
-          && !showNestedOptions,
+        allowed:
+          isSharingWebcam &&
+          isMeteorConnected &&
+          VideoService.isVideoPinEnabledForCurrentUser() &&
+          !showNestedOptions,
         key: 'pinVideo',
         label: userIsPinned
           ? intl.formatMessage(messages.UnpinUserWebcam)
@@ -390,12 +403,13 @@ class UserListItem extends PureComponent {
         icon: userIsPinned ? 'pin-video_off' : 'pin-video_on',
       },
       {
-        allowed: isChatEnabled()
-          && enablePrivateChat
-          && !isDialInUser
-          && !meetingIsBreakout
-          && isMeteorConnected
-          && !showNestedOptions,
+        allowed:
+          isChatEnabled() &&
+          enablePrivateChat &&
+          !isDialInUser &&
+          !meetingIsBreakout &&
+          isMeteorConnected &&
+          !showNestedOptions,
         key: 'activeChat',
         label: intl.formatMessage(messages.StartPrivateChat),
         onClick: () => {
@@ -418,13 +432,16 @@ class UserListItem extends PureComponent {
         dataTest: 'startPrivateChat',
       },
       {
-        allowed: isChatEnabled()
-          && user.role !== ROLE_MODERATOR
-          && currentUser.role === ROLE_MODERATOR
-          && !isDialInUser
-          && isMeteorConnected,
+        allowed:
+          isChatEnabled() &&
+          user.role !== ROLE_MODERATOR &&
+          currentUser.role === ROLE_MODERATOR &&
+          !isDialInUser &&
+          isMeteorConnected,
         key: 'lockChat',
-        label: userChatLocked ? intl.formatMessage(messages.unlockPublicChat) : intl.formatMessage(messages.lockPublicChat),
+        label: userChatLocked
+          ? intl.formatMessage(messages.unlockPublicChat)
+          : intl.formatMessage(messages.lockPublicChat),
         onClick: () => {
           this.handleClose();
           toggleUserChatLock(user.userId, !userChatLocked);
@@ -441,10 +458,11 @@ class UserListItem extends PureComponent {
         dataTest: 'togglePublicChat',
       },
       {
-        allowed: allowedToResetStatus
-          && user.emoji !== 'none'
-          && isMeteorConnected
-          && !showNestedOptions,
+        allowed:
+          allowedToResetStatus &&
+          user.emoji !== 'none' &&
+          isMeteorConnected &&
+          !showNestedOptions,
         key: 'clearStatus',
         label: intl.formatMessage(messages.ClearStatusLabel),
         onClick: () => {
@@ -454,10 +472,11 @@ class UserListItem extends PureComponent {
         icon: 'clear_status',
       },
       {
-        allowed: allowedToMuteAudio
-          && isMeteorConnected
-          && !meetingIsBreakout
-          && !showNestedOptions,
+        allowed:
+          allowedToMuteAudio &&
+          isMeteorConnected &&
+          !meetingIsBreakout &&
+          !showNestedOptions,
         key: 'mute',
         label: intl.formatMessage(messages.MuteUserAudioLabel),
         onClick: () => {
@@ -467,11 +486,12 @@ class UserListItem extends PureComponent {
         icon: 'mute',
       },
       {
-        allowed: allowedToUnmuteAudio
-          && !userLocks.userMic
-          && isMeteorConnected
-          && !meetingIsBreakout
-          && !showNestedOptions,
+        allowed:
+          allowedToUnmuteAudio &&
+          !userLocks.userMic &&
+          isMeteorConnected &&
+          !meetingIsBreakout &&
+          !showNestedOptions,
         key: 'unmute',
         label: intl.formatMessage(messages.UnmuteUserAudioLabel),
         onClick: () => {
@@ -479,27 +499,35 @@ class UserListItem extends PureComponent {
           this.handleClose();
         },
         icon: 'unmute',
-        dataTest: 'unmuteUser'
+        dataTest: 'unmuteUser',
       },
       {
-        allowed: allowedToChangeWhiteboardAccess
-          && !user.presenter
-          && isMeteorConnected
-          && !isDialInUser
-          && !showNestedOptions,
+        allowed:
+          allowedToChangeWhiteboardAccess &&
+          !user.presenter &&
+          isMeteorConnected &&
+          !isDialInUser &&
+          !showNestedOptions,
         key: 'changeWhiteboardAccess',
         label: user.whiteboardAccess
           ? intl.formatMessage(messages.removeWhiteboardAccess)
           : intl.formatMessage(messages.giveWhiteboardAccess),
         onClick: () => {
-          WhiteboardService.changeWhiteboardAccess(user.userId, !user.whiteboardAccess);
+          WhiteboardService.changeWhiteboardAccess(
+            user.userId,
+            !user.whiteboardAccess
+          );
           this.handleClose();
         },
         icon: 'pen_tool',
         dataTest: 'changeWhiteboardAccess',
       },
       {
-        allowed: allowedToSetPresenter && isMeteorConnected && !isDialInUser && !showNestedOptions,
+        allowed:
+          allowedToSetPresenter &&
+          isMeteorConnected &&
+          !isDialInUser &&
+          !showNestedOptions,
         key: 'setPresenter',
         label: isMe(user.userId)
           ? intl.formatMessage(messages.takePresenterLabel)
@@ -534,9 +562,13 @@ class UserListItem extends PureComponent {
         dataTest: 'demoteToViewer',
       },
       {
-        allowed: allowedToChangeUserLockStatus && isMeteorConnected && !showNestedOptions,
+        allowed:
+          allowedToChangeUserLockStatus &&
+          isMeteorConnected &&
+          !showNestedOptions,
         key: 'unlockUser',
-        label: userLocked ? intl.formatMessage(messages.UnlockUserLabel, { 0: user.name })
+        label: userLocked
+          ? intl.formatMessage(messages.UnlockUserLabel, { 0: user.name })
           : intl.formatMessage(messages.LockUserLabel, { 0: user.name }),
         onClick: () => {
           this.onActionsHide(toggleUserLock(user.userId, !userLocked));
@@ -560,21 +592,20 @@ class UserListItem extends PureComponent {
         key: 'remove',
         label: intl.formatMessage(messages.RemoveUserLabel, { 0: user.name }),
         onClick: () => {
-          this.onActionsHide(
-            this.setConfirmationModalIsOpen(true),
-          );
+          this.onActionsHide(this.setConfirmationModalIsOpen(true));
 
           this.handleClose();
         },
         icon: 'circle_close',
-        dataTest: 'removeUser'
+        dataTest: 'removeUser',
       },
       {
-        allowed: allowedToEjectCameras
-          && user.isSharingWebcam
-          && isMeteorConnected
-          && !meetingIsBreakout
-          && !showNestedOptions,
+        allowed:
+          allowedToEjectCameras &&
+          user.isSharingWebcam &&
+          isMeteorConnected &&
+          !meetingIsBreakout &&
+          !showNestedOptions,
         key: 'ejectUserCameras',
         label: intl.formatMessage(messages.ejectUserCamerasLabel),
         onClick: () => {
@@ -582,13 +613,14 @@ class UserListItem extends PureComponent {
           this.handleClose();
         },
         icon: 'video_off',
-        dataTest: 'ejectCamera'
+        dataTest: 'ejectCamera',
       },
       {
-        allowed: allowedToSetAway
-          && isMeteorConnected,
+        allowed: allowedToSetAway && isMeteorConnected,
         key: 'setAway',
-        label: intl.formatMessage(user.away ? messages.notAwayLabel : messages.awayLabel),
+        label: intl.formatMessage(
+          user.away ? messages.notAwayLabel : messages.awayLabel
+        ),
         onClick: () => {
           this.onActionsHide(setUserAway(user.userId, !user.away));
           this.handleClose();
@@ -645,10 +677,10 @@ class UserListItem extends PureComponent {
   }
 
   /**
-  * Check if the dropdown is visible and is opened by the user
-  *
-  * @return True if is visible and opened by the user
-  */
+   * Check if the dropdown is visible and is opened by the user
+   *
+   * @return True if is visible and opened by the user
+   */
   isDropdownActivedByUser() {
     const { isActionsOpen, dropdownVisible } = this.state;
 
@@ -670,9 +702,10 @@ class UserListItem extends PureComponent {
       size: '1.3rem',
     };
 
-    const userAvatarFiltered = (user.raiseHand === true || user.away === true || user.reaction !== 'none')
-      ? ''
-      : user.avatar;
+    const userAvatarFiltered =
+      user.raiseHand === true || user.away === true || user.reaction !== 'none'
+        ? ''
+        : user.avatar;
 
     const emojiIcons = [
       {
@@ -687,27 +720,46 @@ class UserListItem extends PureComponent {
 
     const getIconUser = () => {
       if (user.raiseHand === true) {
-        return isReactionsEnabled 
-          ? <em-emoji key={emojiIcons[0].id} native={emojiIcons[0].native}  emoji={emojiIcons[0]} {...emojiProps} />
-          : <Icon iconName={normalizeEmojiName('raiseHand')} />;
-      } if (user.away === true) {
-        return isReactionsEnabled 
-          ? <em-emoji key="away" native={emojiIcons[1].native} emoji={emojiIcons[1]} {...emojiProps} />
-          : <Icon iconName={normalizeEmojiName('away')} />;
-      } if (user.emoji !== 'none' && user.emoji !== 'notAway') {
+        return isReactionsEnabled ? (
+          <em-emoji
+            key={emojiIcons[0].id}
+            native={emojiIcons[0].native}
+            emoji={emojiIcons[0]}
+            {...emojiProps}
+          />
+        ) : (
+          <Icon iconName={normalizeEmojiName('raiseHand')} />
+        );
+      }
+      if (user.away === true) {
+        return isReactionsEnabled ? (
+          <em-emoji
+            key='away'
+            native={emojiIcons[1].native}
+            emoji={emojiIcons[1]}
+            {...emojiProps}
+          />
+        ) : (
+          <Icon iconName={normalizeEmojiName('away')} />
+        );
+      }
+      if (user.emoji !== 'none' && user.emoji !== 'notAway') {
         return <Icon iconName={normalizeEmojiName(user.emoji)} />;
-      } if (user.reaction !== 'none') {
+      }
+      if (user.reaction !== 'none') {
         return user.reaction;
-      } if (user.name) {
+      }
+      if (user.name) {
         return user.name.toLowerCase().slice(0, 2);
-      } return '??';
+      }
+      return '??';
     };
 
     const { clientType } = user;
     const isVoiceOnly = clientType === 'dial-in-user';
 
     const iconUser = getIconUser();
-    const iconVoiceOnlyUser = (<Icon iconName="volume_level_2" />);
+    const iconVoiceOnlyUser = <Icon iconName='volume_level_2' />;
     const userIcon = isVoiceOnly ? iconVoiceOnlyUser : iconUser;
 
     return (
@@ -721,15 +773,12 @@ class UserListItem extends PureComponent {
         noVoice={!voiceUser.isVoiceUser}
         color={user.color}
         whiteboardAccess={user.whiteboardAccess}
-        emoji={user.emoji !== 'none'}
+        // emoji={user.emoji !== 'none'}
+        emoji={'none'}
         hasReaction={user.reaction !== 'none'}
         avatar={userAvatarFiltered}
       >
-        {
-          userInBreakout
-            && !meetingIsBreakout
-            ? breakoutSequence : userIcon
-        }
+        {userInBreakout && !meetingIsBreakout ? breakoutSequence : userIcon}
       </Styled.UserAvatarComponent>
     );
   }
@@ -754,84 +803,84 @@ class UserListItem extends PureComponent {
       removeUser,
     } = this.props;
 
-    const {
-      isActionsOpen,
-      selected,
-      isConfirmationModalOpen
-    } = this.state;
+    const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
 
-    if (!user) return (
-      <Styled.SkeletonUserItemContents>
-        <SkeletonTheme baseColor="#DCE4EC">
-          <div style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}>
-            <Styled.UserItemInnerContents>
-              <Styled.UserAvatar data-test="userAvatar">
-                <UserAvatar isSkeleton={true}>
-                  <Skeleton circle="true"/>
-                </UserAvatar>
-              </Styled.UserAvatar>
-              <Styled.UserName>
-                <Styled.UserNameMain>
-                  <Styled.SkeletonWrapper>
-                    <Skeleton />
-                  </Styled.SkeletonWrapper>
-                </Styled.UserNameMain>
-                <Styled.UserNameSub>
-                  <Styled.SkeletonWrapper>
-                    <Skeleton />
-                  </Styled.SkeletonWrapper>
-                </Styled.UserNameSub>
-              </Styled.UserName>
-            </Styled.UserItemInnerContents>
-          </div>
-        </SkeletonTheme>
-      </Styled.SkeletonUserItemContents>
-    );
+    if (!user)
+      return (
+        <Styled.SkeletonUserItemContents>
+          <SkeletonTheme baseColor='#DCE4EC'>
+            <div style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}>
+              <Styled.UserItemInnerContents>
+                <Styled.UserAvatar data-test='userAvatar'>
+                  <UserAvatar isSkeleton={true}>
+                    <Skeleton circle='true' />
+                  </UserAvatar>
+                </Styled.UserAvatar>
+                <Styled.UserName>
+                  <Styled.UserNameMain>
+                    <Styled.SkeletonWrapper>
+                      <Skeleton />
+                    </Styled.SkeletonWrapper>
+                  </Styled.UserNameMain>
+                  <Styled.UserNameSub>
+                    <Styled.SkeletonWrapper>
+                      <Skeleton />
+                    </Styled.SkeletonWrapper>
+                  </Styled.UserNameSub>
+                </Styled.UserName>
+              </Styled.UserItemInnerContents>
+            </div>
+          </SkeletonTheme>
+        </Styled.SkeletonUserItemContents>
+      );
 
     const actions = this.getUsersActions();
 
     const you = isMe(user.userId) ? intl.formatMessage(messages.you) : '';
 
-    const presenter = (user.presenter)
+    const presenter = user.presenter
       ? intl.formatMessage(messages.presenter)
       : '';
 
-    const userAriaLabel = intl.formatMessage(
-      messages.userAriaLabel,
-      {
-        0: user.name,
-        1: presenter,
-        2: you,
-        3: user.emoji,
-      },
-    );
+    const userAriaLabel = intl.formatMessage(messages.userAriaLabel, {
+      0: user.name,
+      1: presenter,
+      2: you,
+      3: user.emoji,
+    });
 
     const userNameSub = [];
 
     if (user.isSharingWebcam && LABEL.sharingWebcam) {
       userNameSub.push(
         <span key={uniqueId('video-')}>
-          { user.pin === true
-            ? <Icon iconName="pin-video_on" />
-            : <Icon iconName="video" /> }
+          {user.pin === true ? (
+            <Icon iconName='pin-video_on' />
+          ) : (
+            <Icon iconName='video' />
+          )}
           &nbsp;
           {intl.formatMessage(messages.sharingWebcam)}
-        </span>,
+        </span>
       );
     }
 
-    if (((isThisMeetingLocked && user.locked) || user.chatLocked) && user.role !== ROLE_MODERATOR) {
+    if (
+      ((isThisMeetingLocked && user.locked) || user.chatLocked) &&
+      user.role !== ROLE_MODERATOR
+    ) {
       userNameSub.push(
         <span key={uniqueId('lock-')}>
-          <Icon iconName="lock" />
+          <Icon iconName='lock' />
           &nbsp;
           {intl.formatMessage(messages.locked)}
-        </span>,
+        </span>
       );
     }
 
     if (user.role === ROLE_MODERATOR) {
-      if (LABEL.moderator) userNameSub.push(intl.formatMessage(messages.moderator));
+      if (LABEL.moderator)
+        userNameSub.push(intl.formatMessage(messages.moderator));
     }
 
     if (user.mobile) {
@@ -845,71 +894,72 @@ class UserListItem extends PureComponent {
     if (userInBreakout && userLastBreakout) {
       userNameSub.push(
         <span key={uniqueId('breakout-')}>
-          <Icon iconName="rooms" />
+          <Icon iconName='rooms' />
           &nbsp;
           {userLastBreakout.isDefaultName
-            ? intl.formatMessage(messages.breakoutRoom, { 0: userLastBreakout.sequence })
+            ? intl.formatMessage(messages.breakoutRoom, {
+                0: userLastBreakout.sequence,
+              })
             : userLastBreakout.shortName}
-        </span>,
+        </span>
       );
     }
 
     const innerContents = (
       <Styled.UserItemInnerContents>
-        <Styled.UserAvatar data-test="userAvatar" data-test-presenter={user.presenter ? '' : undefined}>
+        <Styled.UserAvatar
+          data-test='userAvatar'
+          data-test-presenter={user.presenter ? '' : undefined}
+        >
           {this.renderUserAvatar()}
         </Styled.UserAvatar>
-        {!compact
-          ? (
-            <Styled.UserName
-              role="button"
-              aria-label={userAriaLabel}
-              aria-expanded={isActionsOpen}
-            >
-              <Styled.UserNameMain>
-                <TooltipContainer title={user.name}>
-                  <span>
-                    {user.name}
-                    &nbsp;
-                  </span>
-                </TooltipContainer>
-                <i>{(isMe(user.userId)) ? `(${intl.formatMessage(messages.you)})` : ''}</i>
-              </Styled.UserNameMain>
-              {
-                userNameSub.length
-                  ? (
-                    <Styled.UserNameSub
-                      aria-hidden
-                      data-test={user.mobile ? 'mobileUser' : undefined}
-                    >
-                      {userNameSub.reduce((prev, curr) => [prev, ' | ', curr])}
-                    </Styled.UserNameSub>
-                  )
-                  : null
-              }
-            </Styled.UserName>
-          )
-          : null}
+        {!compact ? (
+          <Styled.UserName
+            role='button'
+            aria-label={userAriaLabel}
+            aria-expanded={isActionsOpen}
+          >
+            <Styled.UserNameMain>
+              <TooltipContainer title={user.name}>
+                <span>
+                  {user.name}
+                  &nbsp;
+                </span>
+              </TooltipContainer>
+              <i>
+                {isMe(user.userId)
+                  ? `(${intl.formatMessage(messages.you)})`
+                  : ''}
+              </i>
+            </Styled.UserNameMain>
+            {userNameSub.length ? (
+              <Styled.UserNameSub
+                aria-hidden
+                data-test={user.mobile ? 'mobileUser' : undefined}
+              >
+                {userNameSub.reduce((prev, curr) => [prev, ' | ', curr])}
+              </Styled.UserNameSub>
+            ) : null}
+          </Styled.UserName>
+        ) : null}
       </Styled.UserItemInnerContents>
     );
 
-    const contents = !actions.length
-      ? (
-        <Styled.NoActionsListItem
-          data-test={isMe(user.userId) ? 'userListItemCurrent' : 'userListItem'}
-          style={{ direction: isRTL ? 'rtl' : 'ltr' }}
-        >
-          {innerContents}
-        </Styled.NoActionsListItem>
-      )
-      : (
-        <div
-          data-test={isMe(user.userId) ? 'userListItemCurrent' : 'userListItem'}
-          style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}
-        >
-          {innerContents}
-        </div>
-      );
+    const contents = !actions.length ? (
+      <Styled.NoActionsListItem
+        data-test={isMe(user.userId) ? 'userListItemCurrent' : 'userListItem'}
+        style={{ direction: isRTL ? 'rtl' : 'ltr' }}
+      >
+        {innerContents}
+      </Styled.NoActionsListItem>
+    ) : (
+      <div
+        data-test={isMe(user.userId) ? 'userListItemCurrent' : 'userListItem'}
+        style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}
+      >
+        {innerContents}
+      </div>
+    );
 
     if (!actions.length) return contents;
 
@@ -917,43 +967,53 @@ class UserListItem extends PureComponent {
       <>
         <BBBMenu
           trigger={
-            (
-              <Styled.UserItemContents
-                isActionsOpen={isActionsOpen}
-                selected={selected === true}
-                tabIndex={-1}
-                onClick={() => this.setState({ selected: true }, () => Session.set('dropdownOpenUserId', user.userId))}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    this.setState({ selected: true }, () => Session.set('dropdownOpenUserId', user.userId));
-                  }
-                }}
-                role="button"
-              >
-                {contents}
-              </Styled.UserItemContents>
-            )
+            <Styled.UserItemContents
+              isActionsOpen={isActionsOpen}
+              selected={selected === true}
+              tabIndex={-1}
+              onClick={() =>
+                this.setState({ selected: true }, () =>
+                  Session.set('dropdownOpenUserId', user.userId)
+                )
+              }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  this.setState({ selected: true }, () =>
+                    Session.set('dropdownOpenUserId', user.userId)
+                  );
+                }
+              }}
+              role='button'
+            >
+              {contents}
+            </Styled.UserItemContents>
           }
           actions={actions}
           selectedEmoji={user.emoji}
-          onCloseCallback={() => this.setState({ selected: false }, () => Session.set('dropdownOpenUserId', null))}
+          onCloseCallback={() =>
+            this.setState({ selected: false }, () =>
+              Session.set('dropdownOpenUserId', null)
+            )
+          }
           open={selectedUserId === user.userId}
         />
-        {isConfirmationModalOpen ? <ConfirmationModal
-          intl={intl}
-          titleMessageId="app.userList.menu.removeConfirmation.label"
-          titleMessageExtra={user.name}
-          checkboxMessageId="app.userlist.menu.removeConfirmation.desc"
-          confirmParam={user.userId}
-          onConfirm={removeUser}
-          confirmButtonDataTest="removeUserConfirmation"
-          {...{
-            onRequestClose: () => this.setConfirmationModalIsOpen(false),
-            priority: "low",
-            setIsOpen: this.setConfirmationModalIsOpen,
-            isOpen: isConfirmationModalOpen
-          }}
-        /> : null}
+        {isConfirmationModalOpen ? (
+          <ConfirmationModal
+            intl={intl}
+            titleMessageId='app.userList.menu.removeConfirmation.label'
+            titleMessageExtra={user.name}
+            checkboxMessageId='app.userlist.menu.removeConfirmation.desc'
+            confirmParam={user.userId}
+            onConfirm={removeUser}
+            confirmButtonDataTest='removeUserConfirmation'
+            {...{
+              onRequestClose: () => this.setConfirmationModalIsOpen(false),
+              priority: 'low',
+              setIsOpen: this.setConfirmationModalIsOpen,
+              isOpen: isConfirmationModalOpen,
+            }}
+          />
+        ) : null}
       </>
     );
   }
