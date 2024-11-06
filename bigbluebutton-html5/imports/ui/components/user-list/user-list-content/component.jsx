@@ -17,7 +17,8 @@ const propTypes = {
 };
 
 const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
-const ALWAYS_SHOW_WAITING_ROOM = Meteor.settings.public.app.alwaysShowWaitingRoomUI;
+const ALWAYS_SHOW_WAITING_ROOM =
+  Meteor.settings.public.app.alwaysShowWaitingRoomUI;
 
 class UserContent extends PureComponent {
   render() {
@@ -30,26 +31,24 @@ class UserContent extends PureComponent {
       compact,
     } = this.props;
 
-    const showWaitingRoom = (ALWAYS_SHOW_WAITING_ROOM && isWaitingRoomEnabled)
-      || pendingUsers.length > 0;
+    const showWaitingRoom =
+      (ALWAYS_SHOW_WAITING_ROOM && isWaitingRoomEnabled) ||
+      pendingUsers.length > 0;
 
     return (
-      <Styled.Content data-test="userListContent">
+      <Styled.Content data-test='userListContent'>
         {isChatEnabled() ? <UserMessagesContainer /> : null}
         <UserCaptionsContainer />
-        <UserNotesContainer />
-        { isTimerActive && (
-          <TimerContainer
-            isModerator={currentUser?.role === ROLE_MODERATOR}
-          />
-        ) }
-        {showWaitingRoom && currentUser.role === ROLE_MODERATOR
-          ? (
-            <WaitingUsersContainer {...{ pendingUsers }} />
-          ) : null}
+        {/* <UserNotesContainer /> */}
+        {isTimerActive && (
+          <TimerContainer isModerator={currentUser?.role === ROLE_MODERATOR} />
+        )}
+        {showWaitingRoom && currentUser.role === ROLE_MODERATOR ? (
+          <WaitingUsersContainer {...{ pendingUsers }} />
+        ) : null}
         <UserPollsContainer isPresenter={currentUser.presenter} />
         <BreakoutRoomContainer />
-        <UserParticipantsContainer compact={compact}/>
+        <UserParticipantsContainer compact={compact} />
       </Styled.Content>
     );
   }

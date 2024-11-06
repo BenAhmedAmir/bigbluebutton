@@ -160,10 +160,11 @@ const Chat = (props) => {
         chatId={chatID}
         chatTitle={title}
         chatAreaId={ELEMENT_ID}
-        disabled={
-          (amIModerator === false && isPublicChat === true) ||
-          !isMeteorConnected
-        }
+        // disabled={
+        //   (amIModerator === false && isPublicChat === true) ||
+        //   !isMeteorConnected
+        // }
+        disabled={isChatLocked || !isMeteorConnected}
         connected={isMeteorConnected}
         locked={isChatLocked}
         partnerIsLoggedOut={partnerIsLoggedOut}

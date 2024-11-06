@@ -73,9 +73,10 @@ class UserNotes extends Component {
     this.showTitleAlert();
 
     const notesOpen = sidebarContentPanel === PANELS.SHARED_NOTES && !isPinned;
-    const notesClosed = (prevProps.sidebarContentPanel === PANELS.SHARED_NOTES
-                        && sidebarContentPanel !== PANELS.SHARED_NOTES)
-                        || (prevProps.isPinned && !isPinned);
+    const notesClosed =
+      (prevProps.sidebarContentPanel === PANELS.SHARED_NOTES &&
+        sidebarContentPanel !== PANELS.SHARED_NOTES) ||
+      (prevProps.isPinned && !isPinned);
 
     if (notesOpen && unread) {
       NotesService.markNotesAsRead();
@@ -98,13 +99,15 @@ class UserNotes extends Component {
   }
 
   showTitleAlert() {
-    const {
-      intl,
-      isPinned,
-    } = this.props;
+    const { intl, isPinned } = this.props;
     const { pinWasNotified } = this.state;
     if (isPinned && !pinWasNotified) {
-      notify(intl.formatMessage(intlMessages.pinnedNotification), 'info', 'copy', { pauseOnFocusLoss: false });
+      notify(
+        intl.formatMessage(intlMessages.pinnedNotification),
+        'info',
+        'copy',
+        { pauseOnFocusLoss: false }
+      );
       this.setState({
         pinWasNotified: true,
       });
@@ -124,48 +127,61 @@ class UserNotes extends Component {
     let notification = null;
     if (unread && !isPinned) {
       notification = (
-        <Styled.UnreadMessages aria-label={intl.formatMessage(intlMessages.unreadContent)}>
-          <Styled.UnreadMessagesText aria-hidden="true">
+        <Styled.UnreadMessages
+          aria-label={intl.formatMessage(intlMessages.unreadContent)}
+        >
+          <Styled.UnreadMessagesText aria-hidden='true'>
             ···
           </Styled.UnreadMessagesText>
         </Styled.UnreadMessages>
       );
     }
 
-    const showTitle = isPinned ? intl.formatMessage(intlMessages.sharedNotesPinned)
+    const showTitle = isPinned
+      ? intl.formatMessage(intlMessages.sharedNotesPinned)
       : intl.formatMessage(intlMessages.sharedNotes);
     return (
       <Styled.ListItem
         aria-label={showTitle}
-        aria-describedby="lockedNotes"
-        role="button"
+        aria-describedby='lockedNotes'
+        role='button'
         tabIndex={0}
-        onClick={() => NotesService.toggleNotesPanel(sidebarContentPanel, layoutContextDispatch)}
+        onClick={() =>
+          NotesService.toggleNotesPanel(
+            sidebarContentPanel,
+            layoutContextDispatch
+          )
+        }
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
-            NotesService.toggleNotesPanel(sidebarContentPanel, layoutContextDispatch);
+            NotesService.toggleNotesPanel(
+              sidebarContentPanel,
+              layoutContextDispatch
+            );
           }
         }}
         as={isPinned ? 'button' : 'div'}
         disabled={isPinned}
         $disabled={isPinned}
       >
-        <Icon iconName="copy" />
+        <Icon iconName='copy' />
         <div aria-hidden>
-          <Styled.NotesTitle data-test="sharedNotes">
-            { showTitle }
+          <Styled.NotesTitle data-test='sharedNotes'>
+            {showTitle}
           </Styled.NotesTitle>
-          {disableNotes
-            ? (
-              <Styled.NotesLock>
-                <Icon iconName="lock" />
-                <span id="lockedNotes">{`${intl.formatMessage(intlMessages.locked)} ${intl.formatMessage(intlMessages.byModerator)}`}</span>
-              </Styled.NotesLock>
-            ) : null}
-          {isPinned
-            ? (
-              <span className="sr-only">{`${intl.formatMessage(intlMessages.disabled)}`}</span>
-            ) : null}
+          {disableNotes ? (
+            <Styled.NotesLock>
+              <Icon iconName='lock' />
+              <span id='lockedNotes'>{`${intl.formatMessage(
+                intlMessages.locked
+              )} ${intl.formatMessage(intlMessages.byModerator)}`}</span>
+            </Styled.NotesLock>
+          ) : null}
+          {isPinned ? (
+            <span className='sr-only'>{`${intl.formatMessage(
+              intlMessages.disabled
+            )}`}</span>
+          ) : null}
         </div>
         {notification}
       </Styled.ListItem>
@@ -180,14 +196,12 @@ class UserNotes extends Component {
     return (
       <Styled.Messages>
         <Styled.Container>
-          <Styled.SmallTitle data-test="notesTitle">
+          <Styled.SmallTitle data-test='notesTitle'>
             {intl.formatMessage(intlMessages.title)}
           </Styled.SmallTitle>
         </Styled.Container>
         <Styled.ScrollableList>
-          <Styled.List>
-            {this.renderNotes()}
-          </Styled.List>
+          <Styled.List>{this.renderNotes()}</Styled.List>
         </Styled.ScrollableList>
       </Styled.Messages>
     );
