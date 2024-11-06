@@ -615,18 +615,18 @@ class UserListItem extends PureComponent {
         icon: 'video_off',
         dataTest: 'ejectCamera',
       },
-      {
-        allowed: allowedToSetAway && isMeteorConnected,
-        key: 'setAway',
-        label: intl.formatMessage(
-          user.away ? messages.notAwayLabel : messages.awayLabel
-        ),
-        onClick: () => {
-          this.onActionsHide(setUserAway(user.userId, !user.away));
-          this.handleClose();
-        },
-        icon: 'time',
-      },
+      // {
+      //   allowed: allowedToSetAway && isMeteorConnected,
+      //   key: 'setAway',
+      //   label: intl.formatMessage(
+      //     user.away ? messages.notAwayLabel : messages.awayLabel
+      //   ),
+      //   onClick: () => {
+      //     this.onActionsHide(setUserAway(user.userId, !user.away));
+      //     this.handleClose();
+      //   },
+      //   icon: 'time',
+      // },
     ];
 
     const statuses = Object.keys(getEmojiList);

@@ -608,7 +608,7 @@ class AudioModal extends Component {
         ) : null}
         <Styled.AudioModal
           modalName='AUDIO'
-          onRequestClose={closeModal}
+          // onRequestClose={closeModal}
           data-test='audioModal'
           contentLabel={intl.formatMessage(intlMessages.ariaModalTitle)}
           title={
