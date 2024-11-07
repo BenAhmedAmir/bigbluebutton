@@ -25,7 +25,7 @@ const UserParticipantsContainer = (props) => {
   const { videoUsers, whiteboardUsers, reactionUsers } = props;
   const { users: contextUsers, isReady } = useContextUsers();
 
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+  const [searchQuery, setSearchQuery] = useState('');
 
   const currentUser =
     contextUsers && isReady ? contextUsers[Auth.meetingID][Auth.userID] : null;
@@ -39,7 +39,6 @@ const UserParticipantsContainer = (props) => {
       : [];
 
   console.log('users', users);
-  // Filter users by name based on the search query
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -52,12 +51,12 @@ const UserParticipantsContainer = (props) => {
         type='text'
         placeholder='Search by name'
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
       <UserParticipants
         {...{
           currentUser,
-          users: filteredUsers,
+          filteredUsers,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
