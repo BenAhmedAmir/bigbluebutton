@@ -33,11 +33,6 @@ const intlMessages = defineMessages({
     id: 'app.userList.usersTitle',
     description: 'Title for the Header',
   },
-  searchPlaceholder: {
-    id: 'app.userList.searchPlaceholder',
-    description: 'Placeholder text for search input',
-    defaultMessage: 'Search users...',
-  },
 });
 
 const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
@@ -56,7 +51,6 @@ class UserParticipants extends Component {
       selectedUser: null,
       isOpen: false,
       scrollArea: null,
-      searchTerm: '',
     };
 
     this.userRefs = [];
@@ -67,7 +61,6 @@ class UserParticipants extends Component {
     this.rowRenderer = this.rowRenderer.bind(this);
     this.handleClickSelectedUser = this.handleClickSelectedUser.bind(this);
     this.selectEl = this.selectEl.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
   componentDidMount() {
@@ -79,6 +72,7 @@ class UserParticipants extends Component {
     const { compact } = this.props;
     if (!compact) {
       this.refScrollContainer.addEventListener('keydown', this.rove);
+
       this.refScrollContainer.addEventListener(
         'click',
         this.handleClickSelectedUser
@@ -190,10 +184,6 @@ class UserParticipants extends Component {
     this.setState({ selectedUser: ref });
   }
 
-  handleSearchChange(event) {
-    this.setState({ searchTerm: event.target.value });
-  }
-
   render() {
     const {
       intl,
@@ -205,11 +195,7 @@ class UserParticipants extends Component {
       meetingIsBreakout,
       isMeetingMuteOnStart,
     } = this.props;
-    const { isOpen, scrollArea, searchTerm } = this.state;
-
-    const filteredUsers = users.filter((user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const { isOpen, scrollArea } = this.state;
 
     return (
       <Styled.UserListColumn data-test='userList'>
@@ -217,14 +203,8 @@ class UserParticipants extends Component {
           <Styled.Container>
             <Styled.SmallTitle>
               {intl.formatMessage(intlMessages.usersTitle)}
-              {filteredUsers.length > 0 ? ` (${filteredUsers.length})` : null}
+              {users.length > 0 ? ` (${users.length})` : null}
             </Styled.SmallTitle>
-            <Styled.SearchInput
-              type='text'
-              placeholder={intl.formatMessage(intlMessages.searchPlaceholder)}
-              value={searchTerm}
-              onChange={this.handleSearchChange}
-            />
             {currentUser?.role === ROLE_MODERATOR ? (
               <UserOptionsContainer
                 {...{
@@ -254,7 +234,7 @@ class UserParticipants extends Component {
               <Styled.VirtualizedList
                 {...{
                   isOpen,
-                  users: filteredUsers,
+                  users,
                 }}
                 ref={(ref) => {
                   if (ref !== null) {
@@ -267,7 +247,7 @@ class UserParticipants extends Component {
                 }}
                 rowHeight={this.cache.rowHeight}
                 rowRenderer={this.rowRenderer}
-                rowCount={filteredUsers.length || SKELETON_COUNT}
+                rowCount={users.length || SKELETON_COUNT}
                 height={height - 1}
                 width={width - 1}
                 overscanRowCount={30}
