@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import UserListService from '/imports/ui/components/user-list/service';
 import UserParticipants from './component';
@@ -25,48 +25,76 @@ const UserParticipantsContainer = (props) => {
   const { videoUsers, whiteboardUsers, reactionUsers } = props;
   const { users: contextUsers, isReady } = useContextUsers();
 
-  const currentUser = contextUsers && isReady ? contextUsers[Auth.meetingID][Auth.userID] : null;
-  const usersArray = contextUsers && isReady ? Object.values(contextUsers[Auth.meetingID]) : null;
-  const users = contextUsers && isReady ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers) : [];
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+
+  const currentUser =
+    contextUsers && isReady ? contextUsers[Auth.meetingID][Auth.userID] : null;
+  const usersArray =
+    contextUsers && isReady
+      ? Object.values(contextUsers[Auth.meetingID])
+      : null;
+  const users =
+    contextUsers && isReady
+      ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
+      : [];
+
+  // Filter users by name based on the search query
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <UserParticipants {
-    ...{
-      currentUser,
-      users,
-      setEmojiStatus,
-      setUserAway,
-      clearAllEmojiStatus,
-      clearAllReactions,
-      roving,
-      requestUserInformation,
-      isReady,
-      ...props,
-    }
-  }
-    />
+    <div>
+      {/* Search input */}
+      <input
+        type='text'
+        placeholder='Search by name'
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+      />
+      <UserParticipants
+        {...{
+          currentUser,
+          users: filteredUsers, // Pass the filtered list of users
+          setEmojiStatus,
+          setUserAway,
+          clearAllEmojiStatus,
+          clearAllReactions,
+          roving,
+          requestUserInformation,
+          isReady,
+          ...props,
+        }}
+      />
+    </div>
   );
 };
 
 export default withTracker(() => {
   ChatService.removePackagedClassAttribute(
     ['ReactVirtualized__Grid', 'ReactVirtualized__Grid__innerScrollContainer'],
-    'role',
+    'role'
   );
 
   const whiteboardId = WhiteboardService.getCurrentWhiteboardId();
-  const whiteboardUsers = whiteboardId ? WhiteboardService.getMultiUser(whiteboardId) : null;
-  const currentMeeting = Meetings.findOne({ meetingId: Auth.meetingID },
-    { fields: { lockSettingsProps: 1 } });
+  const whiteboardUsers = whiteboardId
+    ? WhiteboardService.getMultiUser(whiteboardId)
+    : null;
+  const currentMeeting = Meetings.findOne(
+    { meetingId: Auth.meetingID },
+    { fields: { lockSettingsProps: 1 } }
+  );
 
   const isMeetingMuteOnStart = () => {
-    const { voiceProp } = Meetings.findOne({ meetingId: Auth.meetingID },
-      { fields: { 'voiceProp.muteOnStart': 1 } });
+    const { voiceProp } = Meetings.findOne(
+      { meetingId: Auth.meetingID },
+      { fields: { 'voiceProp.muteOnStart': 1 } }
+    );
     const { muteOnStart } = voiceProp;
     return muteOnStart;
   };
 
-  return ({
+  return {
     isMeetingMuteOnStart: isMeetingMuteOnStart(),
     meetingIsBreakout: meetingIsBreakout(),
     videoUsers: VideoService.getUsersIdFromVideoStreams(),
@@ -74,5 +102,5 @@ export default withTracker(() => {
     reactionUsers: UserReactionService.getUsersIdFromUserReaction(),
     isThisMeetingLocked: UserListService.isMeetingLocked(Auth.meetingID),
     lockSettingsProps: currentMeeting && currentMeeting.lockSettingsProps,
-  });
+  };
 })(UserParticipantsContainer);
