@@ -56,7 +56,7 @@ const UserParticipantsContainer = (props) => {
       <UserParticipants
         {...{
           currentUser,
-          users: filteredUsers,
+          users,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
