@@ -147,7 +147,7 @@ class ActionsBar extends PureComponent {
         </Styled.Left>
         <Styled.Center>
           <AudioControlsContainer />
-          {enableVideo ? <JoinVideoOptionsContainer /> : null}
+          {enableVideo && amIModerator ? <JoinVideoOptionsContainer /> : null}
           <ScreenshareButtonContainer
             {...{
               amIPresenter,

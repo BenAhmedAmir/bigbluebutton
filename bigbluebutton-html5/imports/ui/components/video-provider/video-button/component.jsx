@@ -13,8 +13,10 @@ import VideoPreviewContainer from '/imports/ui/components/video-preview/containe
 import Settings from '/imports/ui/services/settings';
 import PreviewService from '/imports/ui/components/video-preview/service';
 
-const ENABLE_WEBCAM_SELECTOR_BUTTON = Meteor.settings.public.app.enableWebcamSelectorButton;
-const ENABLE_CAMERA_BRIGHTNESS = Meteor.settings.public.app.enableCameraBrightness;
+const ENABLE_WEBCAM_SELECTOR_BUTTON =
+  Meteor.settings.public.app.enableWebcamSelectorButton;
+const ENABLE_CAMERA_BRIGHTNESS =
+  Meteor.settings.public.app.enableCameraBrightness;
 
 const intlMessages = defineMessages({
   videoSettings: {
@@ -73,14 +75,16 @@ const JoinVideoButton = ({
   const { isMobile } = deviceInfo;
   const isMobileSharingCamera = hasVideoStream && isMobile;
   const isDesktopSharingCamera = hasVideoStream && !isMobile;
-  const shouldEnableWebcamSelectorButton = ENABLE_WEBCAM_SELECTOR_BUTTON
-    && isDesktopSharingCamera;
-  const shouldEnableWebcamVisualEffectsButton = (isVirtualBackgroundsEnabled()
-    || ENABLE_CAMERA_BRIGHTNESS)
-    && hasVideoStream
-    && !isMobile;
-  const exitVideo = () => isDesktopSharingCamera && (!VideoService.isMultipleCamerasEnabled()
-    || shouldEnableWebcamSelectorButton);
+  const shouldEnableWebcamSelectorButton =
+    ENABLE_WEBCAM_SELECTOR_BUTTON && isDesktopSharingCamera;
+  const shouldEnableWebcamVisualEffectsButton =
+    (isVirtualBackgroundsEnabled() || ENABLE_CAMERA_BRIGHTNESS) &&
+    hasVideoStream &&
+    !isMobile;
+  const exitVideo = () =>
+    isDesktopSharingCamera &&
+    (!VideoService.isMultipleCamerasEnabled() ||
+      shouldEnableWebcamSelectorButton);
 
   const [propsToPassModal, setPropsToPassModal] = useState({});
   const [forceOpen, setForceOpen] = useState(false);
@@ -93,8 +97,7 @@ const JoinVideoButton = ({
     if (isVideoPreviewModalOpen && isSelfViewDisabled) {
       setWasSelfViewDisabled(true);
       const obj = {
-        application:
-          { ...Settings.application, selfViewDisable: false },
+        application: { ...Settings.application, selfViewDisable: false },
       };
       updateSettings(obj);
     }
@@ -141,25 +144,23 @@ const JoinVideoButton = ({
     const actions = [];
 
     if (shouldEnableWebcamSelectorButton) {
-      actions.push(
-        {
-          key: 'advancedVideo',
-          label: intl.formatMessage(intlMessages.advancedVideo),
-          onClick: () => handleOpenAdvancedOptions(),
-          dataTest: 'advancedVideoSettingsButton',
-        },
-      );
+      actions.push({
+        key: 'advancedVideo',
+        label: intl.formatMessage(intlMessages.advancedVideo),
+        onClick: () => handleOpenAdvancedOptions(),
+        dataTest: 'advancedVideoSettingsButton',
+      });
     }
 
     if (shouldEnableWebcamVisualEffectsButton) {
-      actions.push(
-        {
-          key: 'virtualBgSelection',
-          label: intl.formatMessage(intlMessages.visualEffects),
-          onClick: () => handleOpenAdvancedOptions((
-          ) => setPropsToPassModal({ isVisualEffects: true })),
-        },
-      );
+      actions.push({
+        key: 'virtualBgSelection',
+        label: intl.formatMessage(intlMessages.visualEffects),
+        onClick: () =>
+          handleOpenAdvancedOptions(() =>
+            setPropsToPassModal({ isVisualEffects: true })
+          ),
+      });
     }
 
     if (actions.length === 0) return null;
@@ -168,16 +169,16 @@ const JoinVideoButton = ({
     return (
       <BBBMenu
         customStyles={!isMobile ? customStyles : null}
-        trigger={(
+        trigger={
           <ButtonEmoji
-            emoji="device_list_selector"
-            data-test="videoDropdownMenu"
+            emoji='device_list_selector'
+            data-test='videoDropdownMenu'
             hideLabel
             label={intl.formatMessage(intlMessages.videoSettings)}
             rotate
             tabIndex={0}
           />
-        )}
+        }
         actions={actions}
         opts={{
           id: 'video-dropdown-menu',
@@ -204,7 +205,7 @@ const JoinVideoButton = ({
           color={isSharing ? 'primary' : 'default'}
           icon={isSharing ? 'video' : 'video_off'}
           ghost={!isSharing}
-          size="lg"
+          size='lg'
           circle
           disabled={!!disableReason}
         />
@@ -217,8 +218,10 @@ const JoinVideoButton = ({
               if (wasSelfViewDisabled) {
                 setTimeout(() => {
                   const obj = {
-                    application:
-                      { ...Settings.application, selfViewDisable: true },
+                    application: {
+                      ...Settings.application,
+                      selfViewDisable: true,
+                    },
                   };
                   updateSettings(obj);
                   setWasSelfViewDisabled(false);
