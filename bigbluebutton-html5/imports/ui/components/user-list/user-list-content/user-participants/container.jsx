@@ -11,6 +11,8 @@ import UserReactionService from '/imports/ui/components/user-reaction/service';
 import WhiteboardService from '/imports/ui/components/whiteboard/service';
 import Meetings from '/imports/api/meetings';
 
+const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
+
 const UserParticipantsContainer = (props) => {
   const {
     formatUsers,
@@ -46,12 +48,16 @@ const UserParticipantsContainer = (props) => {
 
   return (
     <>
-      <input
-        type='text'
-        placeholder='Search by name'
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
+      {currentUser?.role === ROLE_MODERATOR && (
+        <input
+          type='text'
+          style={{ padding: '15px', borderRadius: '10px' }}
+          placeholder='Search by name'
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      )}
+
       <UserParticipants
         {...{
           currentUser,
