@@ -35,10 +35,13 @@ const intlMessages = defineMessages({
   },
   searchPlaceholder: {
     id: 'app.userList.searchPlaceholder',
-    description: 'Placeholder for the search input',
+    description: 'Placeholder text for search input',
     defaultMessage: 'Search users...',
   },
 });
+
+const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
+const SKELETON_COUNT = 10;
 
 class UserParticipants extends Component {
   constructor() {
@@ -53,7 +56,7 @@ class UserParticipants extends Component {
       selectedUser: null,
       isOpen: false,
       scrollArea: null,
-      searchQuery: '',
+      searchTerm: '',
     };
 
     this.userRefs = [];
@@ -67,8 +70,58 @@ class UserParticipants extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
-  handleSearchChange(event) {
-    this.setState({ searchQuery: event.target.value });
+  componentDidMount() {
+    document
+      .getElementById('user-list-virtualized-scroll')
+      ?.getElementsByTagName('div')[0]
+      ?.firstElementChild?.setAttribute('aria-label', 'Users list');
+
+    const { compact } = this.props;
+    if (!compact) {
+      this.refScrollContainer.addEventListener('keydown', this.rove);
+      this.refScrollContainer.addEventListener(
+        'click',
+        this.handleClickSelectedUser
+      );
+    }
+
+    window.addEventListener('beforeunload', () =>
+      Session.set('dropdownOpenUserId', null)
+    );
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.isReady;
+  }
+
+  selectEl(el) {
+    if (!el) return null;
+    if (typeof el.getAttribute === 'function' && el.getAttribute('tabindex'))
+      return el?.focus();
+    this.selectEl(el?.firstChild);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { selectedUser } = this.state;
+
+    if (selectedUser) {
+      const { firstChild } = selectedUser;
+      if (!firstChild.isEqualNode(document.activeElement)) {
+        this.selectEl(selectedUser);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.refScrollContainer.removeEventListener('keydown', this.rove);
+    this.refScrollContainer.removeEventListener(
+      'click',
+      this.handleClickSelectedUser
+    );
+  }
+
+  getScrollContainerRef() {
+    return this.refScrollContainer;
   }
 
   rowRenderer({ index, parent, style, key }) {
@@ -83,14 +136,9 @@ class UserParticipants extends Component {
       lockSettingsProps,
       isThisMeetingLocked,
     } = this.props;
-    const { scrollArea, searchQuery } = this.state;
+    const { scrollArea } = this.state;
     const user = users[index];
     const isRTL = Settings.application.isRTL;
-
-    // Only render if user matches search query
-    if (!user.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return null;
-    }
 
     return (
       <CellMeasurer
@@ -122,6 +170,30 @@ class UserParticipants extends Component {
     );
   }
 
+  handleClickSelectedUser(event) {
+    let selectedUser = null;
+    if (event.path) {
+      selectedUser = event.path.find((p) => p.id && p.id.includes('user-'));
+    }
+    this.setState({ selectedUser });
+  }
+
+  rove(event) {
+    const { roving } = this.props;
+    const { selectedUser, scrollArea } = this.state;
+    const usersItemsRef = findDOMNode(scrollArea.firstChild);
+    event.stopPropagation();
+    roving(event, this.changeState, usersItemsRef, selectedUser);
+  }
+
+  changeState(ref) {
+    this.setState({ selectedUser: ref });
+  }
+
+  handleSearchChange(event) {
+    this.setState({ searchTerm: event.target.value });
+  }
+
   render() {
     const {
       intl,
@@ -133,11 +205,10 @@ class UserParticipants extends Component {
       meetingIsBreakout,
       isMeetingMuteOnStart,
     } = this.props;
-    const { isOpen, scrollArea, searchQuery } = this.state;
+    const { isOpen, scrollArea, searchTerm } = this.state;
 
-    // Filtered users based on search query
     const filteredUsers = users.filter((user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -146,13 +217,13 @@ class UserParticipants extends Component {
           <Styled.Container>
             <Styled.SmallTitle>
               {intl.formatMessage(intlMessages.usersTitle)}
-              {users.length > 0 ? ` (${filteredUsers.length})` : null}
+              {filteredUsers.length > 0 ? ` (${filteredUsers.length})` : null}
             </Styled.SmallTitle>
             <Styled.SearchInput
               type='text'
-              value={searchQuery}
-              onChange={this.handleSearchChange}
               placeholder={intl.formatMessage(intlMessages.searchPlaceholder)}
+              value={searchTerm}
+              onChange={this.handleSearchChange}
             />
             {currentUser?.role === ROLE_MODERATOR ? (
               <UserOptionsContainer
@@ -183,7 +254,7 @@ class UserParticipants extends Component {
               <Styled.VirtualizedList
                 {...{
                   isOpen,
-                  users,
+                  users: filteredUsers,
                 }}
                 ref={(ref) => {
                   if (ref !== null) {
