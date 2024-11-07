@@ -38,10 +38,12 @@ const UserParticipantsContainer = (props) => {
       ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
       : [];
 
+  console.log('users', users);
   // Filter users by name based on the search query
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  console.log('filteredUsers', filteredUsers);
 
   return (
     <div>
@@ -55,7 +57,7 @@ const UserParticipantsContainer = (props) => {
       <UserParticipants
         {...{
           currentUser,
-          users: filteredUsers, // Pass the filtered list of users
+          users: filteredUsers,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
