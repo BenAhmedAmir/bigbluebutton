@@ -24,29 +24,35 @@ const UserListItemContainer = (props) => {
     hasPrivateChatBetweenUsers,
   } = UserListService;
 
-  return <UserListItem {
-    ...{
-      layoutContextDispatch,
-      toggleVoice,
-      removeUser,
-      toggleUserLock,
-      toggleUserChatLock,
-      changeRole,
-      ejectUserCameras,
-      assignPresenter,
-      getAvailableActions,
-      normalizeEmojiName,
-      getGroupChatPrivate,
-      hasPrivateChatBetweenUsers,
-      ...props,
-    }
-  } />;
+  return (
+    <UserListItem
+      {...{
+        layoutContextDispatch,
+        toggleVoice,
+        removeUser,
+        toggleUserLock,
+        toggleUserChatLock,
+        changeRole,
+        ejectUserCameras,
+        assignPresenter,
+        getAvailableActions,
+        normalizeEmojiName,
+        getGroupChatPrivate,
+        hasPrivateChatBetweenUsers,
+        ...props,
+      }}
+    />
+  );
 };
 const isMe = (intId) => intId === Auth.userID;
 
 export default withTracker(({ user }) => {
-  const findUserInBreakout = user ? BreakoutService.getBreakoutUserIsIn(user.userId) : false;
-  const findUserLastBreakout = user ? BreakoutService.getBreakoutUserWasIn(user.userId, null) : null;
+  const findUserInBreakout = user
+    ? BreakoutService.getBreakoutUserIsIn(user.userId)
+    : false;
+  const findUserLastBreakout = user
+    ? BreakoutService.getBreakoutUserWasIn(user.userId, null)
+    : null;
   const breakoutSequence = (findUserInBreakout || {}).sequence;
 
   return {
