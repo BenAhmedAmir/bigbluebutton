@@ -45,8 +45,7 @@ const UserParticipantsContainer = (props) => {
   console.log('filteredUsers', filteredUsers);
 
   return (
-    <div>
-      {/* Search input */}
+    <>
       <input
         type='text'
         placeholder='Search by name'
@@ -56,7 +55,7 @@ const UserParticipantsContainer = (props) => {
       <UserParticipants
         {...{
           currentUser,
-          users,
+          users: filteredUsers,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
@@ -67,7 +66,7 @@ const UserParticipantsContainer = (props) => {
           ...props,
         }}
       />
-    </div>
+    </>
   );
 };
 
