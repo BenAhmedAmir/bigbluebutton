@@ -3,11 +3,7 @@ import { defineMessages } from 'react-intl';
 import PropTypes from 'prop-types';
 import Styled from './styles';
 import { findDOMNode } from 'react-dom';
-import {
-  AutoSizer,
-  CellMeasurer,
-  CellMeasurerCache,
-} from 'react-virtualized';
+import { AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
 import UserListItemContainer from './user-list-item/container';
 import UserOptionsContainer from './user-options/container';
 import Settings from '/imports/ui/services/settings';
@@ -37,10 +33,12 @@ const intlMessages = defineMessages({
     id: 'app.userList.usersTitle',
     description: 'Title for the Header',
   },
+  searchPlaceholder: {
+    id: 'app.userList.searchPlaceholder',
+    description: 'Placeholder for the search input',
+    defaultMessage: 'Search users...',
+  },
 });
-
-const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
-const SKELETON_COUNT = 10;
 
 class UserParticipants extends Component {
   constructor() {
@@ -55,6 +53,7 @@ class UserParticipants extends Component {
       selectedUser: null,
       isOpen: false,
       scrollArea: null,
+      searchQuery: '',
     };
 
     this.userRefs = [];
@@ -65,63 +64,14 @@ class UserParticipants extends Component {
     this.rowRenderer = this.rowRenderer.bind(this);
     this.handleClickSelectedUser = this.handleClickSelectedUser.bind(this);
     this.selectEl = this.selectEl.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
-  componentDidMount() {
-    document.getElementById('user-list-virtualized-scroll')?.getElementsByTagName('div')[0]?.firstElementChild?.setAttribute('aria-label', 'Users list');
-
-    const { compact } = this.props;
-    if (!compact) {
-      this.refScrollContainer.addEventListener(
-        'keydown',
-        this.rove,
-      );
-
-      this.refScrollContainer.addEventListener(
-        'click',
-        this.handleClickSelectedUser,
-      );
-    }
-
-    window.addEventListener('beforeunload', () => Session.set('dropdownOpenUserId', null));
+  handleSearchChange(event) {
+    this.setState({ searchQuery: event.target.value });
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.isReady;
-  }
-
-  selectEl(el) {
-    if (!el) return null;
-    if (typeof el.getAttribute === 'function' && el.getAttribute('tabindex')) return el?.focus();
-    this.selectEl(el?.firstChild);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { selectedUser } = this.state;
-
-    if (selectedUser) {
-      const { firstChild } = selectedUser;
-      if (!firstChild.isEqualNode(document.activeElement)) {
-        this.selectEl(selectedUser);
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    this.refScrollContainer.removeEventListener('keydown', this.rove);
-    this.refScrollContainer.removeEventListener('click', this.handleClickSelectedUser);
-  }
-
-  getScrollContainerRef() {
-    return this.refScrollContainer;
-  }
-
-  rowRenderer({
-    index,
-    parent,
-    style,
-    key,
-  }) {
+  rowRenderer({ index, parent, style, key }) {
     const {
       compact,
       setEmojiStatus,
@@ -133,9 +83,14 @@ class UserParticipants extends Component {
       lockSettingsProps,
       isThisMeetingLocked,
     } = this.props;
-    const { scrollArea } = this.state;
+    const { scrollArea, searchQuery } = this.state;
     const user = users[index];
     const isRTL = Settings.application.isRTL;
+
+    // Only render if user matches search query
+    if (!user.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return null;
+    }
 
     return (
       <CellMeasurer
@@ -145,11 +100,7 @@ class UserParticipants extends Component {
         parent={parent}
         rowIndex={index}
       >
-        <span
-          style={style}
-          key={key}
-          id={`user-${user?.userId || ''}`}
-        >
+        <span style={style} key={key} id={`user-${user?.userId || ''}`}>
           <UserListItemContainer
             {...{
               compact,
@@ -171,26 +122,6 @@ class UserParticipants extends Component {
     );
   }
 
-  handleClickSelectedUser(event) {
-    let selectedUser = null;
-    if (event.path) {
-      selectedUser = event.path.find(p => p.id && p.id.includes('user-'));
-    }
-    this.setState({ selectedUser });
-  }
-
-  rove(event) {
-    const { roving } = this.props;
-    const { selectedUser, scrollArea } = this.state;
-    const usersItemsRef = findDOMNode(scrollArea.firstChild);
-    event.stopPropagation();
-    roving(event, this.changeState, usersItemsRef, selectedUser);
-  }
-
-  changeState(ref) {
-    this.setState({ selectedUser: ref });
-  }
-
   render() {
     const {
       intl,
@@ -202,44 +133,51 @@ class UserParticipants extends Component {
       meetingIsBreakout,
       isMeetingMuteOnStart,
     } = this.props;
-    const { isOpen, scrollArea } = this.state;
+    const { isOpen, scrollArea, searchQuery } = this.state;
+
+    // Filtered users based on search query
+    const filteredUsers = users.filter((user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
-      <Styled.UserListColumn data-test="userList">
-        {
-          !compact
-            ? (
-              <Styled.Container>
-                <Styled.SmallTitle>
-                  {intl.formatMessage(intlMessages.usersTitle)}
-                  {users.length > 0 ? ` (${users.length})` : null}
-                </Styled.SmallTitle>
-                {currentUser?.role === ROLE_MODERATOR
-                  ? (
-                    <UserOptionsContainer {...{
-                      clearAllEmojiStatus,
-                      clearAllReactions,
-                      meetingIsBreakout,
-                      isMeetingMuteOnStart,
-                    }}
-                    />
-                  ) : null
-                }
-
-              </Styled.Container>
-            )
-            : <Styled.Separator />
-        }
+      <Styled.UserListColumn data-test='userList'>
+        {!compact ? (
+          <Styled.Container>
+            <Styled.SmallTitle>
+              {intl.formatMessage(intlMessages.usersTitle)}
+              {users.length > 0 ? ` (${filteredUsers.length})` : null}
+            </Styled.SmallTitle>
+            <Styled.SearchInput
+              type='text'
+              value={searchQuery}
+              onChange={this.handleSearchChange}
+              placeholder={intl.formatMessage(intlMessages.searchPlaceholder)}
+            />
+            {currentUser?.role === ROLE_MODERATOR ? (
+              <UserOptionsContainer
+                {...{
+                  clearAllEmojiStatus,
+                  clearAllReactions,
+                  meetingIsBreakout,
+                  isMeetingMuteOnStart,
+                }}
+              />
+            ) : null}
+          </Styled.Container>
+        ) : (
+          <Styled.Separator />
+        )}
         <Styled.VirtualizedScrollableList
           id={'user-list-virtualized-scroll'}
-          aria-label="Users list"
-          role="region"
+          aria-label='Users list'
+          role='region'
           tabIndex={0}
           ref={(ref) => {
             this.refScrollContainer = ref;
           }}
         >
-          <span id="participants-destination" />
+          <span id='participants-destination' />
           <AutoSizer>
             {({ height, width }) => (
               <Styled.VirtualizedList
@@ -258,7 +196,7 @@ class UserParticipants extends Component {
                 }}
                 rowHeight={this.cache.rowHeight}
                 rowRenderer={this.rowRenderer}
-                rowCount={users.length || SKELETON_COUNT}
+                rowCount={filteredUsers.length || SKELETON_COUNT}
                 height={height - 1}
                 width={width - 1}
                 overscanRowCount={30}
