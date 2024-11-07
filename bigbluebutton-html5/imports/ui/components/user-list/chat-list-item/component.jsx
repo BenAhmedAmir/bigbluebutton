@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
 import { debounce } from '/imports/utils/debounce';
@@ -7,10 +7,13 @@ import Styled from './styles';
 import UserAvatar from '/imports/ui/components/user-avatar/component';
 import { ACTIONS, PANELS } from '../../layout/enums';
 import Icon from '/imports/ui/components/common/icon/component';
+import { UsersContext } from '/imports/ui/components/components-data/users-context/context';
+import Auth from '/imports/ui/services/auth';
 
 const DEBOUNCE_TIME = 1000;
 const CHAT_CONFIG = Meteor.settings.public.chat;
 const PUBLIC_CHAT_KEY = CHAT_CONFIG.public_id;
+const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
 
 let globalAppplyStateToProps = () => {};
 
@@ -142,7 +145,10 @@ const ChatListItem = (props) => {
       });
     }
   };
-
+  const usingUsersContext = useContext(UsersContext);
+  const { users } = usingUsersContext;
+  const currentUser = users[Auth.meetingID][Auth.userID];
+  const amIModerator = currentUser.role === ROLE_MODERATOR;
   const localizedChatName = isPublicChat(chat)
     ? intl.formatMessage(intlMessages.titlePublic)
     : chat.name;
@@ -200,15 +206,13 @@ const ChatListItem = (props) => {
             </Styled.ChatNameMain>
           ) : null}
         </Styled.ChatName>
-        {/* {(stateUreadCount > 0)
-          ? (
-            <Styled.UnreadMessages aria-label={arialabel}>
-              <Styled.UnreadMessagesText aria-hidden="true">
-                {stateUreadCount}
-              </Styled.UnreadMessagesText>
-            </Styled.UnreadMessages>
-          )
-          : null} */}
+        {stateUreadCount > 0 && amIModerator ? (
+          <Styled.UnreadMessages aria-label={arialabel}>
+            <Styled.UnreadMessagesText aria-hidden='true'>
+              {stateUreadCount}
+            </Styled.UnreadMessagesText>
+          </Styled.UnreadMessages>
+        ) : null}
       </Styled.ChatListItemLink>
     </Styled.ChatListItem>
   );
