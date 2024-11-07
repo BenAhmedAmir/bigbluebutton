@@ -52,7 +52,7 @@ const UserParticipantsContainer = (props) => {
           style={{
             padding: '10px',
             borderRadius: '10px',
-            margi: '15px',
+            margin: '15px',
             border: '1px solid #2ba7df',
           }}
           placeholder='Search by name'
