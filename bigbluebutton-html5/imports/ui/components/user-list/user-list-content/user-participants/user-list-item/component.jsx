@@ -805,34 +805,34 @@ class UserListItem extends PureComponent {
 
     const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
 
-    if (!user)
-      return (
-        <Styled.SkeletonUserItemContents>
-          <SkeletonTheme baseColor='#DCE4EC'>
-            <div style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}>
-              <Styled.UserItemInnerContents>
-                <Styled.UserAvatar data-test='userAvatar'>
-                  <UserAvatar isSkeleton={true}>
-                    <Skeleton circle='true' />
-                  </UserAvatar>
-                </Styled.UserAvatar>
-                <Styled.UserName>
-                  <Styled.UserNameMain>
-                    <Styled.SkeletonWrapper>
-                      <Skeleton />
-                    </Styled.SkeletonWrapper>
-                  </Styled.UserNameMain>
-                  <Styled.UserNameSub>
-                    <Styled.SkeletonWrapper>
-                      <Skeleton />
-                    </Styled.SkeletonWrapper>
-                  </Styled.UserNameSub>
-                </Styled.UserName>
-              </Styled.UserItemInnerContents>
-            </div>
-          </SkeletonTheme>
-        </Styled.SkeletonUserItemContents>
-      );
+    // if (!user)
+    //   return (
+    //     <Styled.SkeletonUserItemContents>
+    //       <SkeletonTheme baseColor='#DCE4EC'>
+    //         <div style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}>
+    //           <Styled.UserItemInnerContents>
+    //             <Styled.UserAvatar data-test='userAvatar'>
+    //               <UserAvatar isSkeleton={true}>
+    //                 <Skeleton circle='true' />
+    //               </UserAvatar>
+    //             </Styled.UserAvatar>
+    //             <Styled.UserName>
+    //               <Styled.UserNameMain>
+    //                 <Styled.SkeletonWrapper>
+    //                   <Skeleton />
+    //                 </Styled.SkeletonWrapper>
+    //               </Styled.UserNameMain>
+    //               <Styled.UserNameSub>
+    //                 <Styled.SkeletonWrapper>
+    //                   <Skeleton />
+    //                 </Styled.SkeletonWrapper>
+    //               </Styled.UserNameSub>
+    //             </Styled.UserName>
+    //           </Styled.UserItemInnerContents>
+    //         </div>
+    //       </SkeletonTheme>
+    //     </Styled.SkeletonUserItemContents>
+    //   );
 
     const actions = this.getUsersActions();
 
