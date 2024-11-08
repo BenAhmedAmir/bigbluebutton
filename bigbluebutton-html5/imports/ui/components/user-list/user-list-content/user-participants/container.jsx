@@ -40,12 +40,10 @@ const UserParticipantsContainer = (props) => {
       ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
       : [];
 
-  const filteredUsers =
-    searchQuery !== ''
-      ? users.filter((user) =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : users;
+  console.log('users', users);
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   console.log('filteredUsers', filteredUsers);
 
   return (
@@ -56,7 +54,7 @@ const UserParticipantsContainer = (props) => {
           style={{
             padding: '10px',
             borderRadius: '10px',
-            margi: '15px',
+            margin: '15px',
             border: '1px solid #2ba7df',
           }}
           placeholder='Search by name'
@@ -68,7 +66,7 @@ const UserParticipantsContainer = (props) => {
       <UserParticipants
         {...{
           currentUser,
-          users: filteredUsers,
+          users: searchQuery !== '' ? filteredUsers : users,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
