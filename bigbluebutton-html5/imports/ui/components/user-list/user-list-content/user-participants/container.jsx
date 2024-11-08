@@ -40,12 +40,9 @@ const UserParticipantsContainer = (props) => {
       ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
       : [];
 
-  const filteredUsers =
-    searchQuery !== ''
-      ? users.filter((user) =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : users;
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <>
@@ -67,7 +64,7 @@ const UserParticipantsContainer = (props) => {
       <UserParticipants
         {...{
           currentUser,
-          users: filteredUsers,
+          users: searchQuery !== '' ? filteredUsers : users,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
