@@ -466,8 +466,8 @@ const getAvailableActions = (
     && !isDialInUser
     && !isBreakoutRoom
     && !(isSubjectUserGuest
-          && usersProp.authenticatedGuest
-          && !usersProp.allowPromoteGuestToModerator);
+      && usersProp.authenticatedGuest
+      && !usersProp.allowPromoteGuestToModerator);
 
   const allowedToDemote = amIModerator
     && !amISubjectUser
@@ -475,8 +475,8 @@ const getAvailableActions = (
     && !isDialInUser
     && !isBreakoutRoom
     && !(isSubjectUserGuest
-          && usersProp.authenticatedGuest
-          && !usersProp.allowPromoteGuestToModerator);
+      && usersProp.authenticatedGuest
+      && !usersProp.allowPromoteGuestToModerator);
 
   const allowedToChangeStatus = amISubjectUser && USER_STATUS_ENABLED;
 
@@ -669,7 +669,7 @@ const getGroupChatPrivate = (senderUserId, receiver) => {
 
     if (ChatService.isChatClosed(chat.chatId)) {
       const closedChats = currentClosedChats.filter(closedChat => closedChat.chatId !== chat.chatId);
-      Storage.setItem(CLOSED_CHAT_LIST_KEY,closedChats);
+      Storage.setItem(CLOSED_CHAT_LIST_KEY, closedChats);
     }
   }
 };
