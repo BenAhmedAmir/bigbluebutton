@@ -79,6 +79,8 @@ const Talking = styled.div`
 
   ${({ talking, animations }) => talking && animations && css`
     animation: ${pulse} 1s infinite ease-in;
+    box-shadow: 0 0 0 6px currentColor;
+    opacity: 0.8;
   `}
 
   &::before {
@@ -91,8 +93,9 @@ const Talking = styled.div`
       left: 0;
       background-color: currentColor;
       border-radius: inherit;
-      box-shadow: 0 0 0 4px currentColor;
-      opacity: .5;
+      
+      box-shadow:  0 0 8px 6px currentColor;
+      opacity: .7;
     `}
   }
 `;

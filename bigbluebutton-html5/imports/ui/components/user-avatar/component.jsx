@@ -54,11 +54,11 @@ const UserAvatar = ({
   isSkeleton,
 }) => (
   <>
-    {isSkeleton && (<Styled.Skeleton>{children}</Styled.Skeleton>)}
+    {isSkeleton && <Styled.Skeleton>{children}</Styled.Skeleton>}
 
     {!isSkeleton && (
       <Styled.Avatar
-        aria-hidden="true"
+        aria-hidden='true'
         data-test={moderator ? 'moderatorAvatar' : 'viewerAvatar'}
         moderator={moderator}
         presenter={presenter}
@@ -73,22 +73,15 @@ const UserAvatar = ({
           color, // We need the same color on both for the border
         }}
       >
-
         <Styled.Talking talking={talking && !muted} animations={animations} />
 
-        {avatar.length !== 0 && !emoji
-          ? (
-            <Styled.Image>
-              <Styled.Img
-                moderator={moderator}
-                src={avatar}
-              />
-            </Styled.Image>
-          ) : (
-            <Styled.Content>
-              {children}
-            </Styled.Content>
-          )}
+        {avatar.length !== 0 && !emoji ? (
+          <Styled.Image>
+            <Styled.Img moderator={moderator} src={avatar} />
+          </Styled.Image>
+        ) : (
+          <Styled.Content>{children}</Styled.Content>
+        )}
       </Styled.Avatar>
     )}
   </>
