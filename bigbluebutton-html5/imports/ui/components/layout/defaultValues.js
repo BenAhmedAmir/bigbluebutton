@@ -17,7 +17,7 @@ const DEFAULT_VALUES = {
   camerasMargin: 10,
   captionsMargin: 10,
 
-  presentationTabOrder: 5,
+  presentationTabOrder: 1,
   presentationMinHeight: 220,
   presentationToolbarMinWidth: 430,
 
@@ -29,14 +29,14 @@ const DEFAULT_VALUES = {
 
   actionBarHeight: 42,
   actionBarPadding: 11.2,
-  actionBarTabOrder: 6,
+  actionBarTabOrder: 2,
 
   sidebarNavMaxWidth: 800,
   sidebarNavMinWidth: 70,
   sidebarNavHeight: '100%',
   sidebarNavTop: 0,
   sidebarNavLeft: 0,
-  sidebarNavTabOrder: 3,
+  sidebarNavTabOrder: 6,
   sidebarNavPanel: PANELS.USERLIST,
 
   sidebarContentMaxWidth: 800,
@@ -44,7 +44,7 @@ const DEFAULT_VALUES = {
   sidebarContentMinHeight: 200,
   sidebarContentHeight: '100%',
   sidebarContentTop: 0,
-  sidebarContentTabOrder: 2,
+  sidebarContentTabOrder: 5,
   sidebarContentPanel: PANELS.NONE,
 };
 

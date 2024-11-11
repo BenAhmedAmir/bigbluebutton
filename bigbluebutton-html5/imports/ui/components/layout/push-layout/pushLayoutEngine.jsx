@@ -78,8 +78,17 @@ class PushLayoutEngine extends React.Component {
 
     Settings.save();
 
-    const initialPresentation = !getFromUserSettings('bbb_hide_presentation_on_join', HIDE_PRESENTATION || !meetingPresentationIsOpen) || shouldShowScreenshare || shouldShowExternalVideo;
-    MediaService.setPresentationIsOpen(layoutContextDispatch, initialPresentation);
+    const initialPresentation =
+      !getFromUserSettings(
+        'bbb_hide_presentation_on_join',
+        HIDE_PRESENTATION || !meetingPresentationIsOpen
+      ) ||
+      shouldShowScreenshare ||
+      shouldShowExternalVideo;
+    MediaService.setPresentationIsOpen(
+      layoutContextDispatch,
+      initialPresentation
+    );
     Session.set('presentationLastState', initialPresentation);
 
     if (selectedLayout === 'custom') {
@@ -111,7 +120,7 @@ class PushLayoutEngine extends React.Component {
               height: h,
               browserWidth: window.innerWidth,
               browserHeight: window.innerHeight,
-            }
+            },
           });
         }
       }, 0);
@@ -146,13 +155,14 @@ class PushLayoutEngine extends React.Component {
     } = this.props;
 
     const meetingLayoutDidChange = meetingLayout !== prevProps.meetingLayout;
-    const pushLayoutMeetingDidChange = pushLayoutMeeting !== prevProps.pushLayoutMeeting;
+    const pushLayoutMeetingDidChange =
+      pushLayoutMeeting !== prevProps.pushLayoutMeeting;
     const shouldSwitchLayout = isPresenter
       ? meetingLayoutDidChange
-      : (meetingLayoutDidChange || pushLayoutMeetingDidChange) && pushLayoutMeeting;
+      : (meetingLayoutDidChange || pushLayoutMeetingDidChange) &&
+        pushLayoutMeeting;
 
     if (shouldSwitchLayout) {
-
       let contextLayout = meetingLayout;
       if (isMobile()) {
         contextLayout = meetingLayout === 'custom' ? 'smart' : meetingLayout;
@@ -180,29 +190,38 @@ class PushLayoutEngine extends React.Component {
       });
     }
 
-    if (meetingLayout === "custom" && selectedLayout === "custom" && !isPresenter) {
-
-      if (meetingLayoutFocusedCamera !== prevProps.meetingLayoutFocusedCamera
-        || meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt) {
-
+    if (
+      meetingLayout === 'custom' &&
+      selectedLayout === 'custom' &&
+      !isPresenter
+    ) {
+      if (
+        meetingLayoutFocusedCamera !== prevProps.meetingLayoutFocusedCamera ||
+        meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt
+      ) {
         layoutContextDispatch({
           type: ACTIONS.SET_FOCUSED_CAMERA_ID,
           value: meetingLayoutFocusedCamera,
         });
       }
 
-      if (meetingLayoutCameraPosition !== prevProps.meetingLayoutCameraPosition
-        || meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt) {
-
+      if (
+        meetingLayoutCameraPosition !== prevProps.meetingLayoutCameraPosition ||
+        meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt
+      ) {
         layoutContextDispatch({
           type: ACTIONS.SET_CAMERA_DOCK_POSITION,
           value: meetingLayoutCameraPosition,
         });
       }
 
-      if (!equalDouble(meetingLayoutVideoRate, prevProps.meetingLayoutVideoRate)
-        || meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt) {
-
+      if (
+        !equalDouble(
+          meetingLayoutVideoRate,
+          prevProps.meetingLayoutVideoRate
+        ) ||
+        meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt
+      ) {
         let w, h;
         if (horizontalPosition) {
           w = window.innerWidth * meetingLayoutVideoRate;
@@ -226,13 +245,14 @@ class PushLayoutEngine extends React.Component {
             height: h,
             browserWidth: window.innerWidth,
             browserHeight: window.innerHeight,
-          }
+          },
         });
       }
 
-      if (meetingPresentationIsOpen !== prevProps.meetingPresentationIsOpen
-        || meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt) {
-
+      if (
+        meetingPresentationIsOpen !== prevProps.meetingPresentationIsOpen ||
+        meetingLayoutUpdatedAt !== prevProps.meetingLayoutUpdatedAt
+      ) {
         layoutContextDispatch({
           type: ACTIONS.SET_PRESENTATION_IS_OPEN,
           value: meetingPresentationIsOpen,
@@ -240,20 +260,23 @@ class PushLayoutEngine extends React.Component {
       }
     }
 
-    const layoutChanged = presentationIsOpen !== prevProps.presentationIsOpen
-      || selectedLayout !== prevProps.selectedLayout
-      || cameraIsResizing !== prevProps.cameraIsResizing
-      || cameraPosition !== prevProps.cameraPosition
-      || focusedCamera !== prevProps.focusedCamera
-      || !equalDouble(presentationVideoRate, prevProps.presentationVideoRate);
+    const layoutChanged =
+      presentationIsOpen !== prevProps.presentationIsOpen ||
+      selectedLayout !== prevProps.selectedLayout ||
+      cameraIsResizing !== prevProps.cameraIsResizing ||
+      cameraPosition !== prevProps.cameraPosition ||
+      focusedCamera !== prevProps.focusedCamera ||
+      !equalDouble(presentationVideoRate, prevProps.presentationVideoRate);
 
-    if (pushLayout !== prevProps.pushLayout) { // push layout once after presenter toggles / special case where we set pushLayout to false in all viewers
+    if (pushLayout !== prevProps.pushLayout) {
+      // push layout once after presenter toggles / special case where we set pushLayout to false in all viewers
       if (isModerator) {
         setPushLayout(pushLayout);
       }
     }
 
-    if (pushLayout && layoutChanged || pushLayout !== prevProps.pushLayout) { // change layout sizes / states
+    if ((pushLayout && layoutChanged) || pushLayout !== prevProps.pushLayout) {
+      // change layout sizes / states
       if (isPresenter) {
         setMeetingLayout();
       }
@@ -267,7 +290,7 @@ class PushLayoutEngine extends React.Component {
   render() {
     return null;
   }
-};
+}
 
 PushLayoutEngine.propTypes = propTypes;
 
