@@ -11,8 +11,6 @@ import UserReactionService from '/imports/ui/components/user-reaction/service';
 import WhiteboardService from '/imports/ui/components/whiteboard/service';
 import Meetings from '/imports/api/meetings';
 
-const ROLE_MODERATOR = Meteor.settings.public.user.role_moderator;
-
 const UserParticipantsContainer = (props) => {
   const {
     formatUsers,

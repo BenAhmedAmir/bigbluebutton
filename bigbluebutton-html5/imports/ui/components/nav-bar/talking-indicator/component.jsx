@@ -142,7 +142,7 @@ class TalkingIndicator extends PureComponent {
           size='sm'
           style={{
             backgroundColor: '#4a148c',
-            border: 'solid 2px #4a148c',
+            border: 'solid 21px #4a148c',
             cursor: 'default',
           }}
         />
