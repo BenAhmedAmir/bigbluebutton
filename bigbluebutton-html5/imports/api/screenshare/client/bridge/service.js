@@ -36,25 +36,82 @@ const getBoundGDM = () => {
   }
 }
 
+// const getScreenStream = async () => {
+//   const gDMCallback = (stream) => {
+//     // Some older Chromium variants choke on gDM when audio: true by NOT generating
+//     // a promise rejection AND not generating a valid input screen stream, need to
+//     // work around that manually for now - prlanzarin
+//     if (stream == null) {
+//       return Promise.reject(SCREENSHARING_ERRORS.NotSupportedError);
+//     }
+
+//     if (typeof stream.getVideoTracks === 'function'
+//       && typeof GDM_CONSTRAINTS.video === 'object') {
+//       stream.getVideoTracks().forEach(track => {
+//         if (typeof track.applyConstraints  === 'function') {
+//           track.applyConstraints(GDM_CONSTRAINTS.video).catch(error => {
+//             logger.warn({
+//               logCode: 'screenshare_videoconstraint_failed',
+//               extraInfo: { errorName: error.name, errorCode: error.code },
+//             },
+//               'Error applying screenshare video constraint');
+//           });
+//         }
+//       });
+//     }
+
+//     if (typeof stream.getAudioTracks === 'function'
+//       && typeof GDM_CONSTRAINTS.audio === 'object') {
+//       stream.getAudioTracks().forEach(track => {
+//         if (typeof track.applyConstraints  === 'function') {
+//           track.applyConstraints(GDM_CONSTRAINTS.audio).catch(error => {
+//             logger.warn({
+//               logCode: 'screenshare_audioconstraint_failed',
+//               extraInfo: { errorName: error.name, errorCode: error.code },
+//             }, 'Error applying screenshare audio constraint');
+//           });
+//         }
+//       });
+//     }
+
+//     return Promise.resolve(stream);
+//   };
+
+//   const getDisplayMedia = getBoundGDM();
+
+//   if (typeof getDisplayMedia === 'function') {
+//     return getDisplayMedia(GDM_CONSTRAINTS)
+//       .then(gDMCallback)
+//       .catch(error => {
+//         const normalizedError = normalizeGetDisplayMediaError(error);
+//         logger.error({
+//           logCode: 'screenshare_getdisplaymedia_failed',
+//           extraInfo: { errorCode: normalizedError.errorCode, errorMessage: normalizedError.errorMessage },
+//         }, 'getDisplayMedia call failed');
+//         return Promise.reject(normalizedError);
+//       });
+//   } else {
+//     // getDisplayMedia isn't supported, error its way out
+//     return Promise.reject(SCREENSHARING_ERRORS.NotSupportedError);
+//   }
+// };
 const getScreenStream = async () => {
-  const gDMCallback = (stream) => {
-    // Some older Chromium variants choke on gDM when audio: true by NOT generating
-    // a promise rejection AND not generating a valid input screen stream, need to
-    // work around that manually for now - prlanzarin
+  const gDMCallback = async (stream) => {
+    // Check if the stream is valid
     if (stream == null) {
       return Promise.reject(SCREENSHARING_ERRORS.NotSupportedError);
     }
 
+    // Apply constraints if specified in GDM_CONSTRAINTS
     if (typeof stream.getVideoTracks === 'function'
       && typeof GDM_CONSTRAINTS.video === 'object') {
       stream.getVideoTracks().forEach(track => {
-        if (typeof track.applyConstraints  === 'function') {
+        if (typeof track.applyConstraints === 'function') {
           track.applyConstraints(GDM_CONSTRAINTS.video).catch(error => {
             logger.warn({
               logCode: 'screenshare_videoconstraint_failed',
               extraInfo: { errorName: error.name, errorCode: error.code },
-            },
-              'Error applying screenshare video constraint');
+            }, 'Error applying screenshare video constraint');
           });
         }
       });
@@ -63,7 +120,7 @@ const getScreenStream = async () => {
     if (typeof stream.getAudioTracks === 'function'
       && typeof GDM_CONSTRAINTS.audio === 'object') {
       stream.getAudioTracks().forEach(track => {
-        if (typeof track.applyConstraints  === 'function') {
+        if (typeof track.applyConstraints === 'function') {
           track.applyConstraints(GDM_CONSTRAINTS.audio).catch(error => {
             logger.warn({
               logCode: 'screenshare_audioconstraint_failed',
@@ -72,6 +129,27 @@ const getScreenStream = async () => {
           });
         }
       });
+    }
+
+    // Apply region capture if supported
+    const videoTrack = stream.getVideoTracks()[0];
+    if ('cropTo' in videoTrack) {
+      try {
+        await videoTrack.cropTo({
+          x: 100, // Adjust these values as needed or make them dynamic
+          y: 100,
+          width: 640,
+          height: 480,
+        });
+        logger.info('Region capture applied successfully.');
+      } catch (error) {
+        logger.warn({
+          logCode: 'screenshare_cropTo_failed',
+          extraInfo: { errorName: error.name, errorCode: error.code },
+        }, 'Error applying region capture');
+      }
+    } else {
+      logger.warn('Region capture not supported on this video track.');
     }
 
     return Promise.resolve(stream);
