@@ -48,7 +48,7 @@ const UserParticipantsContainer = (props) => {
 
   return (
     <>
-      {currentUser?.role === ROLE_MODERATOR && (
+      {/* {currentUser?.role === ROLE_MODERATOR && (
         <input
           type='text'
           style={{
@@ -61,7 +61,7 @@ const UserParticipantsContainer = (props) => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-      )}
+      )} */}
 
       <UserParticipants
         {...{
