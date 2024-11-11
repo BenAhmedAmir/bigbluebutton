@@ -763,23 +763,25 @@ class UserListItem extends PureComponent {
     const userIcon = isVoiceOnly ? iconVoiceOnlyUser : iconUser;
 
     return (
-      <Styled.UserAvatarComponent
-        moderator={user.role === ROLE_MODERATOR}
-        presenter={user.presenter}
-        talking={voiceUser.isTalking}
-        muted={voiceUser.isMuted}
-        listenOnly={voiceUser.isListenOnly}
-        voice={voiceUser.isVoiceUser}
-        noVoice={!voiceUser.isVoiceUser}
-        color={user.color}
-        whiteboardAccess={user.whiteboardAccess}
-        // emoji={user.emoji !== 'none'}
-        emoji={'none'}
-        hasReaction={user.reaction !== 'none'}
-        avatar={userAvatarFiltered}
-      >
-        {userInBreakout && !meetingIsBreakout ? breakoutSequence : userIcon}
-      </Styled.UserAvatarComponent>
+      <div style={{ background: 'red' }}>
+        <Styled.UserAvatarComponent
+          moderator={user.role === ROLE_MODERATOR}
+          presenter={user.presenter}
+          talking={voiceUser.isTalking}
+          muted={voiceUser.isMuted}
+          listenOnly={voiceUser.isListenOnly}
+          voice={voiceUser.isVoiceUser}
+          noVoice={!voiceUser.isVoiceUser}
+          color={user.color}
+          whiteboardAccess={user.whiteboardAccess}
+          // emoji={user.emoji !== 'none'}
+          emoji={'none'}
+          hasReaction={user.reaction !== 'none'}
+          avatar={userAvatarFiltered}
+        >
+          {userInBreakout && !meetingIsBreakout ? breakoutSequence : userIcon}
+        </Styled.UserAvatarComponent>
+      </div>
     );
   }
 
