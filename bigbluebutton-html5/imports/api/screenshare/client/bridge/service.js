@@ -133,6 +133,7 @@ const getScreenStream = async () => {
 
     // Apply region capture if supported
     const videoTrack = stream.getVideoTracks()[0];
+    console.log("videoTrack", videoTrack)
     if ('cropTo' in videoTrack) {
       try {
         await videoTrack.cropTo({
