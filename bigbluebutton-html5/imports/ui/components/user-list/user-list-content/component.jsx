@@ -48,7 +48,10 @@ class UserContent extends PureComponent {
         ) : null}
         <UserPollsContainer isPresenter={currentUser.presenter} />
         <BreakoutRoomContainer />
-        <UserParticipantsContainer compact={compact} />
+        <UserParticipantsContainer
+          compact={compact}
+          isModerator={currentUser?.role === ROLE_MODERATOR}
+        />
       </Styled.Content>
     );
   }

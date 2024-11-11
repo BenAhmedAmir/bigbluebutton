@@ -24,7 +24,7 @@ const UserParticipantsContainer = (props) => {
     requestUserInformation,
   } = UserListService;
 
-  const { videoUsers, whiteboardUsers, reactionUsers } = props;
+  const { videoUsers, whiteboardUsers, reactionUsers, isModerator } = props;
   const { users: contextUsers, isReady } = useContextUsers();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,8 +55,7 @@ const UserParticipantsContainer = (props) => {
           borderRadius: '10px',
           margin: '15px',
           border: '1px solid #2ba7df',
-          visibility:
-            currentUser?.role === ROLE_MODERATOR ? 'visible' : 'hidden',
+          visibility: isModerator ? 'visible' : 'hidden',
         }}
         placeholder='Search by name'
         value={searchQuery}
