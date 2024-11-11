@@ -10,7 +10,10 @@ import BBBMenu from '/imports/ui/components/common/menu/component';
 import Styled from './styles';
 import { getUserNamesLink } from '/imports/ui/components/user-list/service';
 import Settings from '/imports/ui/services/settings';
-import { isBreakoutRoomsEnabled, isLearningDashboardEnabled } from '/imports/ui/services/features';
+import {
+  isBreakoutRoomsEnabled,
+  isLearningDashboardEnabled,
+} from '/imports/ui/services/features';
 import { uniqueId } from '/imports/utils/string-utils';
 
 const propTypes = {
@@ -163,14 +166,16 @@ class UserOptions extends PureComponent {
       isInvitation: false,
       isWriterMenuModalOpen: false,
       isLockViewersModalOpen: false,
-    }
+    };
 
-    this.handleCreateBreakoutRoomClick = this.handleCreateBreakoutRoomClick.bind(this);
+    this.handleCreateBreakoutRoomClick =
+      this.handleCreateBreakoutRoomClick.bind(this);
     this.onCreateBreakouts = this.onCreateBreakouts.bind(this);
     this.onInvitationUsers = this.onInvitationUsers.bind(this);
     this.renderMenuItems = this.renderMenuItems.bind(this);
     this.onSaveUserNames = this.onSaveUserNames.bind(this);
-    this.setCreateBreakoutRoomModalIsOpen = this.setCreateBreakoutRoomModalIsOpen.bind(this);
+    this.setCreateBreakoutRoomModalIsOpen =
+      this.setCreateBreakoutRoomModalIsOpen.bind(this);
     this.setGuestPolicyModalIsOpen = this.setGuestPolicyModalIsOpen.bind(this);
     this.setWriterMenuModalIsOpen = this.setWriterMenuModalIsOpen.bind(this);
     this.setLockViewersModalIsOpen = this.setLockViewersModalIsOpen.bind(this);
@@ -181,19 +186,23 @@ class UserOptions extends PureComponent {
     const lang = Settings.application.locale;
     const date = new Date();
 
-    const dateString = lang ? date.toLocaleDateString(lang) : date.toLocaleDateString();
-    const timeString = lang ? date.toLocaleTimeString(lang) : date.toLocaleTimeString();
+    const dateString = lang
+      ? date.toLocaleDateString(lang)
+      : date.toLocaleDateString();
+    const timeString = lang
+      ? date.toLocaleTimeString(lang)
+      : date.toLocaleTimeString();
 
     getUserNamesLink(
-      intl.formatMessage(intlMessages.savedNamesListTitle,
-        {
-          0: meetingName,
-          1: `${dateString}:${timeString}`,
-        }),
+      intl.formatMessage(intlMessages.savedNamesListTitle, {
+        0: meetingName,
+        1: `${dateString}:${timeString}`,
+      }),
       intl.formatMessage(intlMessages.sortedFirstNameHeading),
-      intl.formatMessage(intlMessages.sortedLastNameHeading),
-    ).dispatchEvent(new MouseEvent('click',
-      { bubbles: true, cancelable: true, view: window }));
+      intl.formatMessage(intlMessages.sortedLastNameHeading)
+    ).dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true, view: window })
+    );
   }
 
   onCreateBreakouts() {
@@ -205,7 +214,7 @@ class UserOptions extends PureComponent {
   }
 
   handleCreateBreakoutRoomClick(isInvitation) {
-    this.setState({isInvitation})
+    this.setState({ isInvitation });
     return this.setCreateBreakoutRoomModalIsOpen(true);
   }
 
@@ -225,14 +234,14 @@ class UserOptions extends PureComponent {
       dynamicGuestPolicy,
     } = this.props;
 
-    const canCreateBreakout = amIModerator
-      && !meetingIsBreakout
-      && !hasBreakoutRoom
-      && isBreakoutRoomsEnabled();
+    const canCreateBreakout =
+      amIModerator &&
+      !meetingIsBreakout &&
+      !hasBreakoutRoom &&
+      isBreakoutRoomsEnabled();
 
-      const canInviteUsers = amIModerator
-      && !meetingIsBreakout
-      && hasBreakoutRoom
+    const canInviteUsers =
+      amIModerator && !meetingIsBreakout && hasBreakoutRoom;
 
     const { locale } = intl;
 
@@ -242,23 +251,37 @@ class UserOptions extends PureComponent {
       if (!meetingIsBreakout) {
         this.menuItems.push({
           key: this.muteAllId,
-          label: intl.formatMessage(intlMessages[isMeetingMuted ? 'unmuteAllLabel' : 'muteAllLabel']),
-          description: intl.formatMessage(intlMessages[isMeetingMuted ? 'unmuteAllDesc' : 'muteAllDesc']),
+          label: intl.formatMessage(
+            intlMessages[isMeetingMuted ? 'unmuteAllLabel' : 'muteAllLabel']
+          ),
+          description: intl.formatMessage(
+            intlMessages[isMeetingMuted ? 'unmuteAllDesc' : 'muteAllDesc']
+          ),
           onClick: toggleMuteAllUsers,
           icon: isMeetingMuted ? 'unmute' : 'mute',
           dataTest: 'muteAll',
         });
 
-        if (!isMeetingMuted) {
-          this.menuItems.push({
-            key: this.muteId,
-            label: intl.formatMessage(intlMessages.muteAllExceptPresenterLabel),
-            description: intl.formatMessage(intlMessages.muteAllExceptPresenterDesc),
-            onClick: toggleMuteAllUsersExceptPresenter,
-            icon: 'mute',
-            dataTest: 'muteAllExceptPresenter',
-          });
-        }
+        // if (!isMeetingMuted) {
+        //   this.menuItems.push({
+        //     key: this.muteId,
+        //     label: intl.formatMessage(intlMessages.muteAllExceptPresenterLabel),
+        //     description: intl.formatMessage(intlMessages.muteAllExceptPresenterDesc),
+        //     onClick: toggleMuteAllUsersExceptPresenter,
+        //     icon: 'mute',
+        //     dataTest: 'muteAllExceptPresenter',
+        //   });
+        // }
+        this.menuItems.push({
+          key: this.muteId,
+          label: intl.formatMessage(intlMessages.muteAllExceptPresenterLabel),
+          description: intl.formatMessage(
+            intlMessages.muteAllExceptPresenterDesc
+          ),
+          onClick: toggleMuteAllUsersExceptPresenter,
+          icon: 'mute',
+          dataTest: 'muteAllExceptPresenter',
+        });
 
         this.menuItems.push({
           key: this.lockId,
@@ -333,15 +356,17 @@ class UserOptions extends PureComponent {
           label: intl.formatMessage(intlMessages.invitationLabel),
           onClick: this.onInvitationUsers,
           dataTest: 'inviteBreakoutRooms',
-        })
-}
+        });
+      }
       if (amIModerator && CaptionsService.isCaptionsEnabled()) {
         this.menuItems.push({
           icon: 'closed_caption',
           label: intl.formatMessage(intlMessages.captionsLabel),
           description: intl.formatMessage(intlMessages.captionsDesc),
           key: this.captionsId,
-          onClick: () => { this.setWriterMenuModalIsOpen(true); },
+          onClick: () => {
+            this.setWriterMenuModalIsOpen(true);
+          },
           dataTest: 'writeClosedCaptions',
         });
       }
@@ -351,11 +376,15 @@ class UserOptions extends PureComponent {
             icon: 'multi_whiteboard',
             iconRight: 'popout_window',
             label: intl.formatMessage(intlMessages.learningDashboardLabel),
-            description: `${intl.formatMessage(intlMessages.learningDashboardDesc)} ${intl.formatMessage(intlMessages.newTab)}`,
+            description: `${intl.formatMessage(
+              intlMessages.learningDashboardDesc
+            )} ${intl.formatMessage(intlMessages.newTab)}`,
             key: this.learningDashboardId,
-            onClick: () => { openLearningDashboardUrl(locale); },
+            onClick: () => {
+              openLearningDashboardUrl(locale);
+            },
             dividerTop: true,
-            dataTest: 'learningDashboard'
+            dataTest: 'learningDashboard',
           });
         }
       }
@@ -365,78 +394,107 @@ class UserOptions extends PureComponent {
   }
 
   renderModal(isOpen, setIsOpen, priority, Component, otherOptions) {
-    return isOpen ? <Component
-      {...{
-        ...otherOptions,
-        onRequestClose: () => setIsOpen(false),
-        priority,
-        setIsOpen,
-        isOpen
-      }}
-    /> : null
+    return isOpen ? (
+      <Component
+        {...{
+          ...otherOptions,
+          onRequestClose: () => setIsOpen(false),
+          priority,
+          setIsOpen,
+          isOpen,
+        }}
+      />
+    ) : null;
   }
 
   setCreateBreakoutRoomModalIsOpen(value) {
     this.setState({
       isCreateBreakoutRoomModalOpen: value,
-    })
+    });
   }
 
   setGuestPolicyModalIsOpen(value) {
     this.setState({
       isGuestPolicyModalOpen: value,
-    })
+    });
   }
 
   setWriterMenuModalIsOpen(value) {
-    this.setState({isWriterMenuModalOpen: value});
+    this.setState({ isWriterMenuModalOpen: value });
   }
 
   setLockViewersModalIsOpen(value) {
-    this.setState({isLockViewersModalOpen: value});
+    this.setState({ isLockViewersModalOpen: value });
   }
 
   render() {
     const { intl, isRTL, isBreakoutRecordable } = this.props;
-    const { isCreateBreakoutRoomModalOpen, isInvitation,
-            isGuestPolicyModalOpen, isWriterMenuModalOpen,
-            isLockViewersModalOpen } = this.state;
+    const {
+      isCreateBreakoutRoomModalOpen,
+      isInvitation,
+      isGuestPolicyModalOpen,
+      isWriterMenuModalOpen,
+      isLockViewersModalOpen,
+    } = this.state;
 
     return (
       <>
         <BBBMenu
-          trigger={(
+          trigger={
             <Styled.OptionsButton
               label={intl.formatMessage(intlMessages.optionsLabel)}
-              data-test="manageUsers"
-              icon="settings"
-              color="light"
+              data-test='manageUsers'
+              icon='settings'
+              color='light'
               hideLabel
-              size="md"
+              size='md'
               circle
               onClick={() => null}
             />
-          )}
+          }
           actions={this.renderMenuItems()}
           opts={{
-            id: "user-options-dropdown-menu",
+            id: 'user-options-dropdown-menu',
             keepMounted: true,
             transitionDuration: 0,
             elevation: 3,
             getcontentanchorel: null,
-            fullwidth: "true",
-            anchorOrigin: { vertical: 'bottom', horizontal: isRTL ? 'right' : 'left' },
-            transformOrigin: { vertical: 'top', horizontal: isRTL ? 'right' : 'left' },
+            fullwidth: 'true',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: isRTL ? 'right' : 'left',
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: isRTL ? 'right' : 'left',
+            },
           }}
         />
-        {this.renderModal(isCreateBreakoutRoomModalOpen, this.setCreateBreakoutRoomModalIsOpen, "medium",
-          CreateBreakoutRoomContainer, {isBreakoutRecordable, isInvitation, isUpdate: isInvitation})}
-        {this.renderModal(isGuestPolicyModalOpen, this.setGuestPolicyModalIsOpen, "low",
-          GuestPolicyContainer)}
-        {this.renderModal(isWriterMenuModalOpen, this.setWriterMenuModalIsOpen, "low",
-          WriterMenuContainer)}
-        {this.renderModal(isLockViewersModalOpen, this.setLockViewersModalIsOpen, "low",
-          LockViewersContainer)}
+        {this.renderModal(
+          isCreateBreakoutRoomModalOpen,
+          this.setCreateBreakoutRoomModalIsOpen,
+          'medium',
+          CreateBreakoutRoomContainer,
+          { isBreakoutRecordable, isInvitation, isUpdate: isInvitation }
+        )}
+        {this.renderModal(
+          isGuestPolicyModalOpen,
+          this.setGuestPolicyModalIsOpen,
+          'low',
+          GuestPolicyContainer
+        )}
+        {this.renderModal(
+          isWriterMenuModalOpen,
+          this.setWriterMenuModalIsOpen,
+          'low',
+          WriterMenuContainer
+        )}
+        {this.renderModal(
+          isLockViewersModalOpen,
+          this.setLockViewersModalIsOpen,
+          'low',
+          LockViewersContainer
+        )}
       </>
     );
   }

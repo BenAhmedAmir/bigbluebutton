@@ -42,7 +42,6 @@ const UserParticipantsContainer = (props) => {
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  console.log('filteredUsers', filteredUsers);
 
   return (
     <>
