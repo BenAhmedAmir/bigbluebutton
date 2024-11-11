@@ -31,12 +31,12 @@ const DEFAULT_VALUES = {
   actionBarPadding: 11.2,
   actionBarTabOrder: 6,
 
-  sidebarNavMaxWidth: 240,
+  sidebarNavMaxWidth: 800,
   sidebarNavMinWidth: 70,
   sidebarNavHeight: '100%',
   sidebarNavTop: 0,
   sidebarNavLeft: 0,
-  sidebarNavTabOrder: 1,
+  sidebarNavTabOrder: 3,
   sidebarNavPanel: PANELS.USERLIST,
 
   sidebarContentMaxWidth: 800,
