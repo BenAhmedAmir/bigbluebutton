@@ -48,20 +48,20 @@ const UserParticipantsContainer = (props) => {
 
   return (
     <>
-      {/* {currentUser?.role === ROLE_MODERATOR && (
-        <input
-          type='text'
-          style={{
-            padding: '10px',
-            borderRadius: '10px',
-            margin: '15px',
-            border: '1px solid #2ba7df',
-          }}
-          placeholder='Search by name'
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      )} */}
+      <input
+        type='text'
+        style={{
+          padding: '10px',
+          borderRadius: '10px',
+          margin: '15px',
+          border: '1px solid #2ba7df',
+          visibility:
+            currentUser?.role === ROLE_MODERATOR ? 'visible' : 'hidden',
+        }}
+        placeholder='Search by name'
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
       <UserParticipants
         {...{
