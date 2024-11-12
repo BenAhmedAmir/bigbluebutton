@@ -49,9 +49,11 @@ const UserParticipantsContainer = (props) => {
     );
   }, [contextUsers, isReady]);
   console.log(users);
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredUsers = users
+    ? users?.filter((user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
   const handleDownAllHands = () => {
     const updatedUsers = users.map((user) =>
       user.raiseHand ? { ...user, raiseHand: false } : user
