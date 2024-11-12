@@ -37,7 +37,7 @@ const UserParticipantsContainer = (props) => {
   //   contextUsers && isReady
   //     ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
   //     : [];
-
+  const [users, setUsers] = useState();
   useEffect(() => {
     setUsers(
       formatUsers(
