@@ -20,6 +20,7 @@ const UserParticipantsContainer = (props) => {
     clearAllReactions,
     roving,
     requestUserInformation,
+    muteAllExceptPresenter,
   } = UserListService;
 
   const { videoUsers, whiteboardUsers, reactionUsers, isModerator } = props;
@@ -67,6 +68,9 @@ const UserParticipantsContainer = (props) => {
     clearAllReactions();
     clearAllEmojiStatus();
   };
+  const handleMuteAll = () => {
+    muteAllExceptPresenter();
+  };
   return (
     <>
       <input
@@ -82,22 +86,39 @@ const UserParticipantsContainer = (props) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-
-      <button
-        onClick={handleDownAllHands}
-        style={{
-          padding: '8px 12px',
-          borderRadius: '8px',
-          margin: '10px',
-          backgroundColor: '#2ba7df',
-          color: '#fff',
-          border: 'none',
-          cursor: 'pointer',
-          visibility: isModerator ? 'visible' : 'hidden',
-        }}
-      >
-        Down All Hands
-      </button>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        {' '}
+        <button
+          onClick={handleDownAllHands}
+          style={{
+            padding: '8px 12px',
+            borderRadius: '8px',
+            margin: '10px',
+            backgroundColor: '#2ba7df',
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer',
+            visibility: isModerator ? 'visible' : 'hidden',
+          }}
+        >
+          Down All Hands
+        </button>
+        <button
+          onClick={handleMuteAll}
+          style={{
+            padding: '8px 12px',
+            borderRadius: '8px',
+            margin: '10px',
+            backgroundColor: '#2ba7df',
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer',
+            visibility: isModerator ? 'visible' : 'hidden',
+          }}
+        >
+          Mute All
+        </button>
+      </div>
 
       <UserParticipants
         {...{
