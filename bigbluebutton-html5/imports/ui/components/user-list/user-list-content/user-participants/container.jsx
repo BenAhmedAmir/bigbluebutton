@@ -33,30 +33,30 @@ const UserParticipantsContainer = (props) => {
     contextUsers && isReady
       ? Object.values(contextUsers[Auth.meetingID])
       : null;
-  // const users =
-  //   contextUsers && isReady
-  //     ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
-  //     : [];
-  const [users, setUsers] = useState();
-  useEffect(() => {
-    if (contextUsers && isReady) {
-      setUsers(
-        formatUsers(
-          Object.values(contextUsers[Auth.meetingID]),
-          videoUsers,
-          whiteboardUsers,
-          reactionUsers
-        )
-      );
-    }
-  }, [
-    contextUsers,
-    isReady,
-    videoUsers,
-    whiteboardUsers,
-    reactionUsers,
-    isModerator,
-  ]);
+  const users =
+    contextUsers && isReady
+      ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
+      : [];
+  // const [users, setUsers] = useState();
+  // useEffect(() => {
+  //   if (contextUsers && isReady) {
+  //     setUsers(
+  //       formatUsers(
+  //         Object.values(contextUsers[Auth.meetingID]),
+  //         videoUsers,
+  //         whiteboardUsers,
+  //         reactionUsers
+  //       )
+  //     );
+  //   }
+  // }, [
+  //   contextUsers,
+  //   isReady,
+  //   videoUsers,
+  //   whiteboardUsers,
+  //   reactionUsers,
+  //   isModerator,
+  // ]);
   console.log(users);
   const filteredUsers = users
     ? users?.filter((user) =>
@@ -64,10 +64,7 @@ const UserParticipantsContainer = (props) => {
       )
     : [];
   const handleDownAllHands = () => {
-    const updatedUsers = users.map((user) =>
-      user.raiseHand ? { ...user, raiseHand: false } : user
-    );
-    setUsers(updatedUsers);
+    clearAllReactions();
   };
   return (
     <>
