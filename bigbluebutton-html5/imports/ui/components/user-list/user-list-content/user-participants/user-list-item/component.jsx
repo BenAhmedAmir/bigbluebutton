@@ -942,6 +942,14 @@ class UserListItem extends PureComponent {
             ) : null}
           </Styled.UserName>
         ) : null}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleVoice(user.userId);
+          }}
+        >
+          toggle mic
+        </button>
       </Styled.UserItemInnerContents>
     );
 
@@ -958,7 +966,6 @@ class UserListItem extends PureComponent {
         style={{ direction: isRTL ? 'rtl' : 'ltr', width: '100%' }}
       >
         {innerContents}
-        <button onClick={() => toggleVoice(user.userId)}>toggle mic</button>
       </div>
     );
 
