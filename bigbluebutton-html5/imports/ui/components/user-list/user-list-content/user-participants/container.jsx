@@ -42,7 +42,13 @@ const UserParticipantsContainer = (props) => {
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
+  const handleDownAllHands = () => {
+    filteredUsers.forEach((user) => {
+      if (user.raiseHand) {
+        user.raiseHand = false;
+      }
+    });
+  };
   return (
     <>
       <input
@@ -59,10 +65,26 @@ const UserParticipantsContainer = (props) => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
+      <button
+        onClick={handleDownAllHands}
+        style={{
+          padding: '8px 12px',
+          borderRadius: '8px',
+          margin: '10px',
+          backgroundColor: '#2ba7df',
+          color: '#fff',
+          border: 'none',
+          cursor: 'pointer',
+          visibility: isModerator ? 'visible' : 'hidden',
+        }}
+      >
+        Down All Hands
+      </button>
+
       <UserParticipants
         {...{
           currentUser,
-          users: searchQuery !== '' ? filteredUsers : users,
+          users: filteredUsers,
           setEmojiStatus,
           setUserAway,
           clearAllEmojiStatus,
