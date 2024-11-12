@@ -803,6 +803,7 @@ class UserListItem extends PureComponent {
       removeUser,
       toggleVoice,
       voiceUser,
+      currentUser,
     } = this.props;
 
     const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
@@ -837,7 +838,7 @@ class UserListItem extends PureComponent {
       );
 
     const actions = this.getUsersActions();
-
+    const amIModerator = currentUser.role === ROLE_MODERATOR;
     const you = isMe(user.userId) ? intl.formatMessage(messages.you) : '';
 
     const presenter = user.presenter
@@ -944,24 +945,22 @@ class UserListItem extends PureComponent {
             ) : null}
           </Styled.UserName>
         ) : null}
-        <button
-          style={{
-            padding: '10px 15px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            fontSize: '18px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            transition: 'background-color 0.3s ease, transform 0.2s',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleVoice(user.userId);
-          }}
-        >
-          {voiceUser.isMuted ? '📣' : '🔕'}
-        </button>
+        {user.role !== ROLE_MODERATOR && amIModerator && (
+          <button
+            style={{
+              padding: '10px 10px',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleVoice(user.userId);
+            }}
+          >
+            {voiceUser.isMuted ? '📣' : '🔕'}
+          </button>
+        )}
       </Styled.UserItemInnerContents>
     );
 
