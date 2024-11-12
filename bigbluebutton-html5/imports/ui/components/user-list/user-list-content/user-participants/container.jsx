@@ -39,14 +39,16 @@ const UserParticipantsContainer = (props) => {
   //     : [];
   const [users, setUsers] = useState();
   useEffect(() => {
-    setUsers(
-      formatUsers(
-        Object.values(contextUsers[Auth.meetingID]),
-        videoUsers,
-        whiteboardUsers,
-        reactionUsers
-      )
-    );
+    if (contextUsers && isReady) {
+      setUsers(
+        formatUsers(
+          Object.values(contextUsers[Auth.meetingID]),
+          videoUsers,
+          whiteboardUsers,
+          reactionUsers
+        )
+      );
+    }
   }, [contextUsers, isReady]);
   console.log(users);
   const filteredUsers = users
