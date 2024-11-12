@@ -802,6 +802,7 @@ class UserListItem extends PureComponent {
       selectedUserId,
       removeUser,
       toggleVoice,
+      voiceUser,
     } = this.props;
 
     const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
@@ -949,7 +950,7 @@ class UserListItem extends PureComponent {
             toggleVoice(user.userId);
           }}
         >
-          toggle mic
+          {voiceUser.isVoiceUser ? 'mic open' : ' mic closed'}
         </button>
       </Styled.UserItemInnerContents>
     );
