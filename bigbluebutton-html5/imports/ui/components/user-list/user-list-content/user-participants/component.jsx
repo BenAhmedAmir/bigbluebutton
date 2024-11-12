@@ -183,7 +183,16 @@ class UserParticipants extends Component {
   changeState(ref) {
     this.setState({ selectedUser: ref });
   }
+  handleDownAllHands = () => {
+    const { users } = this.props;
 
+    users.forEach((user) => {
+      if (user.raisedHand) {
+        // Assuming there's a service to update the user's properties
+        UserListService.updateUserAttribute(user.userId, { raisedHand: false });
+      }
+    });
+  };
   render() {
     const {
       intl,
@@ -229,6 +238,8 @@ class UserParticipants extends Component {
           }}
         >
           <span id='participants-destination' />
+          <button onClick={this.handleDownAllHands}>Down All Hands</button>
+
           <AutoSizer>
             {({ height, width }) => (
               <Styled.VirtualizedList
