@@ -942,6 +942,7 @@ class UserListItem extends PureComponent {
             ) : null}
           </Styled.UserName>
         ) : null}
+        <button>sdsdsdsds</button>
       </Styled.UserItemInnerContents>
     );
 
