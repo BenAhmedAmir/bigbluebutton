@@ -801,6 +801,7 @@ class UserListItem extends PureComponent {
       isRTL,
       selectedUserId,
       removeUser,
+      toggleVoice,
     } = this.props;
 
     const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
