@@ -942,10 +942,7 @@ class UserListItem extends PureComponent {
             ) : null}
           </Styled.UserName>
         ) : null}
-        <button onClick={() => toggleVoice(user.userId)}>
-          {' '}
-          {actions?.voiceUser.isVoiceUser ? 'opened mic' : 'close mic'}
-        </button>
+        <button onClick={() => toggleVoice(user.userId)}>toggle mic</button>
       </Styled.UserItemInnerContents>
     );
 
