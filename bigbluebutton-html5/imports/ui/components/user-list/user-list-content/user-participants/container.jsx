@@ -33,21 +33,28 @@ const UserParticipantsContainer = (props) => {
     contextUsers && isReady
       ? Object.values(contextUsers[Auth.meetingID])
       : null;
-  const users =
-    contextUsers && isReady
-      ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
+  // const users =
+  //   contextUsers && isReady
+  //     ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
+  //     : [];
+  const [users, setUsers] = useState(() => {
+    return contextUsers && isReady
+      ? formatUsers(
+          Object.values(contextUsers[Auth.meetingID]),
+          videoUsers,
+          whiteboardUsers,
+          reactionUsers
+        )
       : [];
-
-  console.log('users', users);
+  });
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const handleDownAllHands = () => {
-    filteredUsers.forEach((user) => {
-      if (user.raiseHand) {
-        user.raiseHand = false;
-      }
-    });
+    const updatedUsers = users.map((user) =>
+      user.raiseHand ? { ...user, raiseHand: false } : user
+    );
+    setUsers(updatedUsers);
   };
   return (
     <>
