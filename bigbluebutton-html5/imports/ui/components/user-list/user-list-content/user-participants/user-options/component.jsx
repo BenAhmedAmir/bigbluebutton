@@ -292,16 +292,16 @@ class UserOptions extends PureComponent {
           dataTest: 'lockViewersButton',
         });
 
-        if (dynamicGuestPolicy) {
-          this.menuItems.push({
-            key: this.guestPolicyId,
-            icon: 'user',
-            label: intl.formatMessage(intlMessages.guestPolicyLabel),
-            description: intl.formatMessage(intlMessages.guestPolicyDesc),
-            onClick: () => this.setGuestPolicyModalIsOpen(true),
-            dataTest: 'guestPolicyLabel',
-          });
-        }
+        // if (dynamicGuestPolicy) {
+        //   this.menuItems.push({
+        //     key: this.guestPolicyId,
+        //     icon: 'user',
+        //     label: intl.formatMessage(intlMessages.guestPolicyLabel),
+        //     description: intl.formatMessage(intlMessages.guestPolicyDesc),
+        //     onClick: () => this.setGuestPolicyModalIsOpen(true),
+        //     dataTest: 'guestPolicyLabel',
+        //   });
+        // }
       }
 
       if (amIModerator) {
