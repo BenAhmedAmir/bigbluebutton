@@ -948,9 +948,12 @@ class UserListItem extends PureComponent {
         {user.role !== ROLE_MODERATOR && amIModerator && (
           <button
             style={{
-              padding: '10px 10px',
+              padding: '10px 15px',
               border: 'none',
               borderRadius: '5px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               cursor: 'pointer',
             }}
             onClick={(e) => {
