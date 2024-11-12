@@ -65,6 +65,7 @@ const UserParticipantsContainer = (props) => {
     : [];
   const handleDownAllHands = () => {
     clearAllReactions();
+    clearAllEmojiStatus();
   };
   return (
     <>
