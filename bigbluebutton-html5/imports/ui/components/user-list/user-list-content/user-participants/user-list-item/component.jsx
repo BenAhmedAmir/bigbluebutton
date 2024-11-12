@@ -944,7 +944,7 @@ class UserListItem extends PureComponent {
         ) : null}
         <button onClick={() => toggleVoice(user.userId)}>
           {' '}
-          {voiceUser.isVoiceUser ? 'opened mic' : 'close mic'}
+          {actions?.voiceUser.isVoiceUser ? 'opened mic' : 'close mic'}
         </button>
       </Styled.UserItemInnerContents>
     );
