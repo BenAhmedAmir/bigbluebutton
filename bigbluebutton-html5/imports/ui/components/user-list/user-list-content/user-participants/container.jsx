@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import UserListService from '/imports/ui/components/user-list/service';
 import UserParticipants from './component';
@@ -37,16 +37,18 @@ const UserParticipantsContainer = (props) => {
   //   contextUsers && isReady
   //     ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
   //     : [];
-  const [users, setUsers] = useState(() => {
-    return contextUsers && isReady
-      ? formatUsers(
-          Object.values(contextUsers[Auth.meetingID]),
-          videoUsers,
-          whiteboardUsers,
-          reactionUsers
-        )
-      : [];
-  });
+
+  useEffect(() => {
+    setUsers(
+      formatUsers(
+        Object.values(contextUsers[Auth.meetingID]),
+        videoUsers,
+        whiteboardUsers,
+        reactionUsers
+      )
+    );
+  }, [contextUsers, isReady]);
+  console.log(users);
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
