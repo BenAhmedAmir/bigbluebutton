@@ -945,12 +945,22 @@ class UserListItem extends PureComponent {
           </Styled.UserName>
         ) : null}
         <button
+          style={{
+            padding: '10px 15px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            fontSize: '18px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease, transform 0.2s',
+          }}
           onClick={(e) => {
             e.stopPropagation();
             toggleVoice(user.userId);
           }}
         >
-          {voiceUser.isVoiceUser ? '📣' : '🔕'}
+          {voiceUser.isMuted ? '📣' : '🔕'}
         </button>
       </Styled.UserItemInnerContents>
     );
