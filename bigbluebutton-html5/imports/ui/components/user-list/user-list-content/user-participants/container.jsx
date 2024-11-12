@@ -49,7 +49,14 @@ const UserParticipantsContainer = (props) => {
         )
       );
     }
-  }, [contextUsers, isReady]);
+  }, [
+    contextUsers,
+    isReady,
+    videoUsers,
+    whiteboardUsers,
+    reactionUsers,
+    isModerator,
+  ]);
   console.log(users);
   const filteredUsers = users
     ? users?.filter((user) =>
