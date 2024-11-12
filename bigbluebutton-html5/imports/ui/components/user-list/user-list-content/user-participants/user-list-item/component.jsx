@@ -945,7 +945,7 @@ class UserListItem extends PureComponent {
             ) : null}
           </Styled.UserName>
         ) : null}
-        {user.role !== ROLE_MODERATOR && amIModerator && (
+        {/* {user.role !== ROLE_MODERATOR && amIModerator && (
           <button
             style={{
               padding: '10px 12px',
@@ -963,7 +963,7 @@ class UserListItem extends PureComponent {
           >
             {voiceUser.isMuted ? '📣' : '🔕'}
           </button>
-        )}
+        )} */}
       </Styled.UserItemInnerContents>
     );
 
