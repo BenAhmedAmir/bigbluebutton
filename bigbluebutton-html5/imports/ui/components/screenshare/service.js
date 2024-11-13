@@ -211,8 +211,8 @@ const getMediaElement = () => {
 const getMediaElementDimensions = () => {
   const element = getMediaElement();
   return {
-    width: 500,
-    height: 500,
+    width: element?.videoWidth ?? 0,
+    height: element?.videoHeight ?? 0,
   };
 };
 
