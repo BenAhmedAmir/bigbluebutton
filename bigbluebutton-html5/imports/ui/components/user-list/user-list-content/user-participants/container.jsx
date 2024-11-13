@@ -22,8 +22,9 @@ const UserParticipantsContainer = (props) => {
     roving,
     requestUserInformation,
     muteAllExceptPresenter,
+    talkers,
   } = UserListService;
-
+  console.log('talkers', talkers);
   const { videoUsers, whiteboardUsers, reactionUsers, isModerator } = props;
   const { users: contextUsers, isReady } = useContextUsers();
 
@@ -53,27 +54,7 @@ const UserParticipantsContainer = (props) => {
   const handleMuteAll = () => {
     muteAllExceptPresenter();
   };
-  const meetingId = Auth.meetingID;
 
-  const usersTalking = VoiceUsers.find(
-    { meetingId, joined: true, spoke: true },
-    {
-      fields: {
-        callerName: 1,
-        talking: 1,
-        floor: 1,
-        color: 1,
-        startTime: 1,
-        muted: 1,
-        intId: 1,
-      },
-      sort: {
-        startTime: 1,
-      },
-      limit: 120,
-    }
-  ).fetch();
-  console.log('VoiceUsers list', usersTalking);
   return (
     <>
       <input
@@ -164,6 +145,44 @@ export default withTracker(() => {
     const { muteOnStart } = voiceProp;
     return muteOnStart;
   };
+  const talkers = {};
+  const meetingId = Auth.meetingID;
+  const usersTalking = VoiceUsers.find(
+    { meetingId, joined: true, spoke: true },
+    {
+      fields: {
+        callerName: 1,
+        talking: 1,
+        floor: 1,
+        color: 1,
+        startTime: 1,
+        muted: 1,
+        intId: 1,
+      },
+      sort: {
+        startTime: 1,
+      },
+      limit: TALKING_INDICATORS_MAX + 1,
+    }
+  ).fetch();
+  if (usersTalking) {
+    const maxNumberVoiceUsersNotification =
+      usersTalking.length < 120 ? usersTalking.length : 120;
+
+    for (let i = 0; i < maxNumberVoiceUsersNotification; i += 1) {
+      const { callerName, talking, floor, color, muted, intId } =
+        usersTalking[i];
+
+      talkers[`${intId}`] = {
+        color,
+        transcribing: SpeechService.hasSpeechLocale(intId),
+        floor,
+        talking,
+        muted,
+        callerName,
+      };
+    }
+  }
 
   return {
     isMeetingMuteOnStart: isMeetingMuteOnStart(),
@@ -173,5 +192,6 @@ export default withTracker(() => {
     reactionUsers: UserReactionService.getUsersIdFromUserReaction(),
     isThisMeetingLocked: UserListService.isMeetingLocked(Auth.meetingID),
     lockSettingsProps: currentMeeting && currentMeeting.lockSettingsProps,
+    talkers,
   };
 })(UserParticipantsContainer);

@@ -19,7 +19,7 @@ const TalkingIndicatorContainer = ({ enableTalkingIndicator, ...props }) => {
   const usingUsersContext = useContext(UsersContext);
   const { users } = usingUsersContext;
 
-  if (!enableTalkingIndicator) return null;
+  // if (!enableTalkingIndicator) return null;
 
   const sidebarContent = layoutSelectInput((i) => i.sidebarContent);
   const { sidebarContentPanel } = sidebarContent;
@@ -43,31 +43,34 @@ const TalkingIndicatorContainer = ({ enableTalkingIndicator, ...props }) => {
 export default withTracker(() => {
   const talkers = {};
   const meetingId = Auth.meetingID;
-  const usersTalking = VoiceUsers.find({ meetingId, joined: true, spoke: true }, {
-    fields: {
-      callerName: 1,
-      talking: 1,
-      floor: 1,
-      color: 1,
-      startTime: 1,
-      muted: 1,
-      intId: 1,
-    },
-    sort: {
-      startTime: 1,
-    },
-    limit: TALKING_INDICATORS_MAX + 1,
-  }).fetch();
+  const usersTalking = VoiceUsers.find(
+    { meetingId, joined: true, spoke: true },
+    {
+      fields: {
+        callerName: 1,
+        talking: 1,
+        floor: 1,
+        color: 1,
+        startTime: 1,
+        muted: 1,
+        intId: 1,
+      },
+      sort: {
+        startTime: 1,
+      },
+      limit: TALKING_INDICATORS_MAX + 1,
+    }
+  ).fetch();
 
   if (usersTalking) {
-    const maxNumberVoiceUsersNotification = usersTalking.length < TALKING_INDICATORS_MAX
-      ? usersTalking.length
-      : TALKING_INDICATORS_MAX;
+    const maxNumberVoiceUsersNotification =
+      usersTalking.length < TALKING_INDICATORS_MAX
+        ? usersTalking.length
+        : TALKING_INDICATORS_MAX;
 
     for (let i = 0; i < maxNumberVoiceUsersNotification; i += 1) {
-      const {
-        callerName, talking, floor, color, muted, intId,
-      } = usersTalking[i];
+      const { callerName, talking, floor, color, muted, intId } =
+        usersTalking[i];
 
       talkers[`${intId}`] = {
         color,
@@ -80,15 +83,22 @@ export default withTracker(() => {
     }
   }
 
-  const muteUser = debounce((id) => {
-    const user = VoiceUsers.findOne({ meetingId, intId: id }, {
-      fields: {
-        muted: 1,
-      },
-    });
-    if (user.muted) return;
-    makeCall('toggleVoice', id);
-  }, TALKING_INDICATOR_MUTE_INTERVAL, { leading: true, trailing: false });
+  const muteUser = debounce(
+    (id) => {
+      const user = VoiceUsers.findOne(
+        { meetingId, intId: id },
+        {
+          fields: {
+            muted: 1,
+          },
+        }
+      );
+      if (user.muted) return;
+      makeCall('toggleVoice', id);
+    },
+    TALKING_INDICATOR_MUTE_INTERVAL,
+    { leading: true, trailing: false }
+  );
 
   return {
     talkers,
