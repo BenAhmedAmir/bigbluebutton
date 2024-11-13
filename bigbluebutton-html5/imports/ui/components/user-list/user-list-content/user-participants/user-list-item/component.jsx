@@ -960,7 +960,11 @@ class UserListItem extends PureComponent {
               toggleVoice(user.userId);
             }}
           >
-            {voiceUser.isMuted ? '🎙️' : '🔕'}
+            {voiceUser.isMuted ? (
+              <i class='fa-solid fa-microphone-slash'></i>
+            ) : (
+              <i class='fa-solid fa-microphone'></i>
+            )}
           </button>
         )}
       </Styled.UserItemInnerContents>
