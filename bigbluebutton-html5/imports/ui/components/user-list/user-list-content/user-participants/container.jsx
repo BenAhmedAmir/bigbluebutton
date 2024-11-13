@@ -53,7 +53,25 @@ const UserParticipantsContainer = (props) => {
   const handleMuteAll = () => {
     muteAllExceptPresenter();
   };
-  console.log('VoiceUsers list', VoiceUsers);
+  const usersTalking = VoiceUsers.find(
+    { meetingId, joined: true, spoke: true },
+    {
+      fields: {
+        callerName: 1,
+        talking: 1,
+        floor: 1,
+        color: 1,
+        startTime: 1,
+        muted: 1,
+        intId: 1,
+      },
+      sort: {
+        startTime: 1,
+      },
+      limit: TALKING_INDICATORS_MAX + 1,
+    }
+  ).fetch();
+  console.log('VoiceUsers list', usersTalking);
   return (
     <>
       <input
