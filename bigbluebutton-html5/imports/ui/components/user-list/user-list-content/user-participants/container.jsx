@@ -162,7 +162,7 @@ export default withTracker(() => {
       sort: {
         startTime: 1,
       },
-      limit: TALKING_INDICATORS_MAX + 1,
+      limit: 120,
     }
   ).fetch();
   if (usersTalking) {
