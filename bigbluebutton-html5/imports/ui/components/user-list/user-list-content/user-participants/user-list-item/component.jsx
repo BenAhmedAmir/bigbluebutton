@@ -701,7 +701,6 @@ class UserListItem extends PureComponent {
     const emojiProps = {
       size: '1.3rem',
     };
-    console.log('voiceUser', voiceUser);
     const userAvatarFiltered =
       user.raiseHand === true || user.away === true || user.reaction !== 'none'
         ? ''

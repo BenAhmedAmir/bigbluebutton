@@ -129,7 +129,6 @@ class UserParticipants extends Component {
       lockSettingsProps,
       isThisMeetingLocked,
     } = this.props;
-    console.log('propppps', this.props);
 
     const { scrollArea } = this.state;
     const user = users[index];

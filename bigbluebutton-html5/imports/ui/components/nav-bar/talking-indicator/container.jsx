@@ -19,7 +19,7 @@ const TalkingIndicatorContainer = ({ enableTalkingIndicator, ...props }) => {
   const usingUsersContext = useContext(UsersContext);
   const { users } = usingUsersContext;
 
-  // if (!enableTalkingIndicator) return null;
+  if (!enableTalkingIndicator) return null;
 
   const sidebarContent = layoutSelectInput((i) => i.sidebarContent);
   const { sidebarContentPanel } = sidebarContent;

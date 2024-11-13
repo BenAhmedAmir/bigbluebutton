@@ -11,6 +11,7 @@ import UserReactionService from '/imports/ui/components/user-reaction/service';
 import WhiteboardService from '/imports/ui/components/whiteboard/service';
 import Meetings from '/imports/api/meetings';
 import VoiceUsers from '/imports/api/voice-users';
+import SpeechService from '/imports/ui/components/audio/captions/speech/service';
 
 const UserParticipantsContainer = (props) => {
   const {
