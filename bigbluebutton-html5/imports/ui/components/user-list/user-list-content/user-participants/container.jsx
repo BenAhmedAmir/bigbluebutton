@@ -70,7 +70,7 @@ const UserParticipantsContainer = (props) => {
       sort: {
         startTime: 1,
       },
-      limit: TALKING_INDICATORS_MAX + 1,
+      limit: 120,
     }
   ).fetch();
   console.log('VoiceUsers list', usersTalking);
