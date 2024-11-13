@@ -10,6 +10,7 @@ import VideoService from '/imports/ui/components/video-provider/service';
 import UserReactionService from '/imports/ui/components/user-reaction/service';
 import WhiteboardService from '/imports/ui/components/whiteboard/service';
 import Meetings from '/imports/api/meetings';
+import VoiceUsers from '/imports/api/voice-users';
 
 const UserParticipantsContainer = (props) => {
   const {
@@ -52,6 +53,7 @@ const UserParticipantsContainer = (props) => {
   const handleMuteAll = () => {
     muteAllExceptPresenter();
   };
+  console.log('VoiceUsers list', VoiceUsers);
   return (
     <>
       <input
