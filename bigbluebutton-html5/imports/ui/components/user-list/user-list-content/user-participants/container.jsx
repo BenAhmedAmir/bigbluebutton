@@ -53,6 +53,8 @@ const UserParticipantsContainer = (props) => {
   const handleMuteAll = () => {
     muteAllExceptPresenter();
   };
+  const meetingId = Auth.meetingID;
+
   const usersTalking = VoiceUsers.find(
     { meetingId, joined: true, spoke: true },
     {
