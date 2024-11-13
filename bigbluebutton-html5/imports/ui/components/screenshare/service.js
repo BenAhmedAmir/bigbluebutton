@@ -182,8 +182,8 @@ const screenshareHasAudio = () => {
 }
 
 const getBroadcastContentType = () => {
-  const screenshareEntry = Screenshare.findOne({meetindId: Auth.meedingID},
-    { fields: { 'screenshare.contentType': 1} });
+  const screenshareEntry = Screenshare.findOne({ meetindId: Auth.meedingID },
+    { fields: { 'screenshare.contentType': 1 } });
 
   if (!screenshareEntry) {
     // defaults to contentType: "camera"
@@ -211,8 +211,8 @@ const getMediaElement = () => {
 const getMediaElementDimensions = () => {
   const element = getMediaElement();
   return {
-    width: element?.videoWidth ?? 0,
-    height: element?.videoHeight ?? 0,
+    width: 500,
+    height: 500,
   };
 };
 
@@ -225,7 +225,7 @@ const getVolume = () => KurentoBridge.getVolume();
 const shouldEnableVolumeControl = () => VOLUME_CONTROL_ENABLED && screenshareHasAudio();
 
 const attachLocalPreviewStream = (mediaElement) => {
-  const {isTabletApp} = browserInfo;
+  const { isTabletApp } = browserInfo;
   if (isTabletApp) {
     // We don't show preview for mobile app, as the stream is only available in native code
     return;
