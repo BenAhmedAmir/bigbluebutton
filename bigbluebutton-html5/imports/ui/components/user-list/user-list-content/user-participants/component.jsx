@@ -62,7 +62,6 @@ class UserParticipants extends Component {
     this.handleClickSelectedUser = this.handleClickSelectedUser.bind(this);
     this.selectEl = this.selectEl.bind(this);
   }
-
   componentDidMount() {
     document
       .getElementById('user-list-virtualized-scroll')
@@ -130,6 +129,8 @@ class UserParticipants extends Component {
       lockSettingsProps,
       isThisMeetingLocked,
     } = this.props;
+    console.log('propppps', this.props);
+
     const { scrollArea } = this.state;
     const user = users[index];
     const isRTL = Settings.application.isRTL;
