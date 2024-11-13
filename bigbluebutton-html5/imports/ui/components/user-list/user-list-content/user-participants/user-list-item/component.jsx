@@ -947,7 +947,7 @@ class UserListItem extends PureComponent {
         {user.role !== ROLE_MODERATOR && amIModerator && (
           <button
             style={{
-              padding: '10px 12px',
+              padding: '10px',
               border: 'none',
               borderRadius: '5px',
               display: 'flex',
@@ -960,11 +960,7 @@ class UserListItem extends PureComponent {
               toggleVoice(user.userId);
             }}
           >
-            {voiceUser.isMuted ? (
-              <i class='fa-solid fa-microphone-slash'></i>
-            ) : (
-              <i class='fa-solid fa-microphone'></i>
-            )}
+            {voiceUser.isMuted ? '🔕' : '🎙️'}
           </button>
         )}
       </Styled.UserItemInnerContents>
