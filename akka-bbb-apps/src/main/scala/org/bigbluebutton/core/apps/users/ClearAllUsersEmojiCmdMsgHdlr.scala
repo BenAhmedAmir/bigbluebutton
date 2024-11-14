@@ -23,8 +23,7 @@ trait ClearAllUsersEmojiCmdMsgHdlr extends RightsManagementTrait {
       for {
         user <- Users2x.findAll(liveMeeting.users2x)
       } yield {
-        Users2x.setEmojiStatus(liveMeeting.users2x, user.intId, "none")
-        Users2x.setUserAway(liveMeeting.users2x, user.intId, false)
+ 
         Users2x.setUserRaiseHand(liveMeeting.users2x, user.intId, false)
       }
       sendClearedAllUsersEmojiEvtMsg(outGW, liveMeeting.props.meetingProp.intId, msg.header.userId)
