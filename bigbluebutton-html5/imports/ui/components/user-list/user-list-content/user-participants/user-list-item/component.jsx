@@ -806,7 +806,7 @@ class UserListItem extends PureComponent {
     } = this.props;
 
     const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
-
+    console.log('voiceUser', voiceUser);
     if (!user)
       return (
         <Styled.SkeletonUserItemContents>
@@ -867,18 +867,18 @@ class UserListItem extends PureComponent {
       );
     }
 
-    if (
-      ((isThisMeetingLocked && user.locked) || user.chatLocked) &&
-      user.role !== ROLE_MODERATOR
-    ) {
-      userNameSub.push(
-        <span key={uniqueId('lock-')}>
-          <Icon iconName='lock' />
-          &nbsp;
-          {intl.formatMessage(messages.locked)}
-        </span>
-      );
-    }
+    // if (
+    //   ((isThisMeetingLocked && user.locked) || user.chatLocked) &&
+    //   user.role !== ROLE_MODERATOR
+    // ) {
+    //   userNameSub.push(
+    //     <span key={uniqueId('lock-')}>
+    //       <Icon iconName='lock' />
+    //       &nbsp;
+    //       {intl.formatMessage(messages.locked)}
+    //     </span>
+    //   );
+    // }
 
     if (user.role === ROLE_MODERATOR) {
       if (LABEL.moderator)
@@ -945,23 +945,64 @@ class UserListItem extends PureComponent {
           </Styled.UserName>
         ) : null}
         {user.role !== ROLE_MODERATOR && amIModerator && (
-          <button
-            style={{
-              padding: '10px',
-              border: 'none',
-              borderRadius: '5px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleVoice(user.userId);
-            }}
-          >
-            {voiceUser.isMuted ? '🔕' : '🎙️'}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              style={{
+                padding: '10px',
+                border: 'none',
+                borderRadius: '5px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleVoice(user.userId);
+              }}
+            >
+              {voiceUser.isVoiceUser ? (
+                voiceUser.isMuted ? (
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 28 28'
+                  >
+                    <path
+                      fill='#c71f1f'
+                      d='M19.31 18.25L3.28 2.22a.75.75 0 1 0-1.06 1.06l7.28 7.28v3.94a4.5 4.5 0 0 0 7.39 3.45l1.417 1.418A6.5 6.5 0 0 1 7.5 14.5v-.748a.75.75 0 1 0-1.5 0v.749a8 8 0 0 0 7.25 7.965v2.785a.75.75 0 0 0 1.5 0v-2.785a7.97 7.97 0 0 0 4.62-2.035l5.35 5.35a.75.75 0 0 0 1.06 0a.75.75 0 0 0 0-1.06l-5.397-5.397zm1.881-.24A8 8 0 0 0 22 14.5v-.75a.75.75 0 1 0-1.5 0v.75c0 .837-.158 1.637-.446 2.372zm-2.754-2.755q.062-.37.063-.755v-8a4.5 4.5 0 0 0-8.997-.179z'
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 16 16'
+                  >
+                    <path
+                      fill='#58c828'
+                      d='M7.94 10.5a2.5 2.5 0 0 0 2.5-2.5V3.5a2.5 2.5 0 0 0-5 0V8a2.5 2.5 0 0 0 2.5 2.5m.5 1.972V14h2v1h-5v-1h2v-1.528A4.5 4.5 0 0 1 3.44 8h1a3.5 3.5 0 0 0 7 0h1a4.5 4.5 0 0 1-4 4.472'
+                    />
+                  </svg>
+                )
+              ) : null}
+            </button>
+
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='24'
+              height='24'
+              viewBox='0 0 20 20'
+            >
+              <g fill='#4e5a66'>
+                <circle cx='10' cy='15' r='2' />
+                <circle cx='10' cy='10' r='2' />
+                <circle cx='10' cy='5' r='2' />
+              </g>
+            </svg>
+          </div>
         )}
       </Styled.UserItemInnerContents>
     );
