@@ -43,14 +43,12 @@ const PresentationMenuContainer = (props) => {
         }}
       />
 
-      {isFullscreen && (
-        <div
-          className='fullscreen-hover-button'
-          onMouseEnter={() => setShowModal(true)}
-        >
-          <button onClick={handleButtonClick}>Show Modal</button>
-        </div>
-      )}
+      <div
+        className='fullscreen-hover-button'
+        onMouseEnter={() => setShowModal(true)}
+      >
+        <button onClick={handleButtonClick}>Show Modal</button>
+      </div>
 
       {showModal && (
         <div className='modal-overlay' onClick={closeModal}>
