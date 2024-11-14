@@ -19,7 +19,7 @@ trait MuteAllExceptPresentersCmdMsgHdlr extends RightsManagementTrait {
       val reason = "No permission to mute all except presenters."
       PermissionCheck.ejectUserForFailedPermission(meetingId, msg.header.userId, reason, outGW, liveMeeting)
     } else {
-      if (msg.body.mute != MeetingStatus2x.isMeetingMuted(liveMeeting.status)) {
+      if (msg.body.mute ) {
         if (msg.body.mute) {
           val notifyEvent = MsgBuilder.buildNotifyAllInMeetingEvtMsg(
             liveMeeting.props.meetingProp.intId,
