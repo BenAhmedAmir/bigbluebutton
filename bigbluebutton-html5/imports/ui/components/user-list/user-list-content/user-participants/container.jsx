@@ -23,9 +23,11 @@ const UserParticipantsContainer = (props) => {
     roving,
     requestUserInformation,
     muteAllExceptPresenter,
-    talkers,
   } = UserListService;
-  const { videoUsers, whiteboardUsers, reactionUsers, isModerator } = props;
+  const { videoUsers, whiteboardUsers, reactionUsers, isModerator, talkers } =
+    props;
+  console.log('talkers', talkers);
+
   const { users: contextUsers, isReady } = useContextUsers();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -163,7 +165,7 @@ export default withTracker(() => {
       limit: 120,
     }
   ).fetch();
-  console.log('talkers', talkers);
+  console.log('usersTalking', usersTalking);
 
   if (usersTalking) {
     const maxNumberVoiceUsersNotification =
