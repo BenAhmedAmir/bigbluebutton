@@ -25,7 +25,6 @@ const UserParticipantsContainer = (props) => {
     muteAllExceptPresenter,
     talkers,
   } = UserListService;
-  console.log('talkers', talkers);
   const { videoUsers, whiteboardUsers, reactionUsers, isModerator } = props;
   const { users: contextUsers, isReady } = useContextUsers();
 
@@ -165,6 +164,8 @@ export default withTracker(() => {
       limit: 120,
     }
   ).fetch();
+  console.log('talkers', talkers);
+
   if (usersTalking) {
     const maxNumberVoiceUsersNotification =
       usersTalking.length < 120 ? usersTalking.length : 120;
