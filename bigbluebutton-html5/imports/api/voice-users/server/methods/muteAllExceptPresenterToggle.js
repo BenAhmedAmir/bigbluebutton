@@ -21,7 +21,7 @@ export default async function muteAllExceptPresenterToggle() {
 
     const payload = {
       mutedBy: requesterUserId,
-      mute: false,
+      mute: toggleMeetingMuted,
     };
 
     RedisPubSub.publishUserMessage(CHANNEL, EVENT_NAME, meetingId, requesterUserId, payload);
