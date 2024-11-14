@@ -382,7 +382,7 @@ class ScreenshareComponent extends React.Component {
         style={{
           position: 'absolute',
           top: '10px',
-          right: '10px',
+          right: '30px',
           zIndex: 1000,
         }}
       >
@@ -405,10 +405,9 @@ class ScreenshareComponent extends React.Component {
         <style jsx>{`
           .modal-overlay {
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
@@ -578,7 +577,7 @@ class ScreenshareComponent extends React.Component {
         {this.renderShowModalButton()}
         {this.renderModal()}
         {this.renderVideo(true)}
-        {loaded && enableVolumeControl && this.renderVolumeSlider()}
+        {/* {loaded && enableVolumeControl && this.renderVolumeSlider()} */}
 
         <Styled.ScreenshareContainerDefault>
           {!loaded
