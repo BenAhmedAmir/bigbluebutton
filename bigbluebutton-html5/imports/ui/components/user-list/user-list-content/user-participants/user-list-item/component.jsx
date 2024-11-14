@@ -806,7 +806,6 @@ class UserListItem extends PureComponent {
     } = this.props;
 
     const { isActionsOpen, selected, isConfirmationModalOpen } = this.state;
-    console.log('voiceUser', voiceUser);
     if (!user)
       return (
         <Styled.SkeletonUserItemContents>

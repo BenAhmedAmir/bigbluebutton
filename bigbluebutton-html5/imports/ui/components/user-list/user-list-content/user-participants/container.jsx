@@ -42,7 +42,6 @@ const UserParticipantsContainer = (props) => {
       ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
       : [];
 
-  console.log(users);
   const filteredUsers = users
     ? users?.filter((user) =>
         user.name.toLowerCase().includes(searchQuery.toLowerCase())
