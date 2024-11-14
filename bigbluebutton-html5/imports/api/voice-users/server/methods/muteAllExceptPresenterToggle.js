@@ -18,7 +18,9 @@ export default async function muteAllExceptPresenterToggle() {
 
     const meeting = await Meetings.findOneAsync({ meetingId });
     const toggleMeetingMuted = !meeting.voiceProp.muteOnStart;
+    console.log("meeting", meeting.voiceProp)
 
+    console.log("toggleMeetingMuted", toggleMeetingMuted)
     const payload = {
       mutedBy: requesterUserId,
       mute: true,

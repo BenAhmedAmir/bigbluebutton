@@ -973,7 +973,7 @@ class UserListItem extends PureComponent {
                 toggleVoice(user.userId);
               }}
             >
-              {voiceUser.isVoiceUser && voiceUser.isListenOnly ? (
+              {voiceUser.isVoiceUser && !voiceUser.isListenOnly ? (
                 voiceUser.isMuted ? (
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
