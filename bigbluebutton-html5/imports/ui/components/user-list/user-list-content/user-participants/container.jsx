@@ -24,9 +24,14 @@ const UserParticipantsContainer = (props) => {
     requestUserInformation,
     muteAllExceptPresenter,
   } = UserListService;
-  const { videoUsers, whiteboardUsers, reactionUsers, isModerator, talkers } =
-    props;
-  console.log('talkers', talkers);
+  const {
+    videoUsers,
+    whiteboardUsers,
+    reactionUsers,
+    isModerator,
+    usersTalking,
+  } = props;
+  console.log('talkers', usersTalking);
 
   const { users: contextUsers, isReady } = useContextUsers();
 
@@ -43,11 +48,33 @@ const UserParticipantsContainer = (props) => {
       ? formatUsers(usersArray, videoUsers, whiteboardUsers, reactionUsers)
       : [];
 
+  // const filteredUsers = users
+  //   ? users?.filter((user) =>
+  //       user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //     )
+  //   : [];
+
   const filteredUsers = users
-    ? users?.filter((user) =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+    ? users
+        .filter((user) =>
+          user.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .sort((a, b) => {
+          // Check if each user exists in usersTalking
+          const aIsTalking = usersTalking.some(
+            (talkingUser) => talkingUser.intId === a.intId
+          );
+          const bIsTalking = usersTalking.some(
+            (talkingUser) => talkingUser.intId === b.intId
+          );
+
+          // Sort talking users to the top
+          if (aIsTalking && !bIsTalking) return -1;
+          if (!aIsTalking && bIsTalking) return 1;
+          return 0; // Keep original order for users in the same talking state
+        })
     : [];
+
   const handleDownAllHands = () => {
     clearAllEmojiStatus();
   };
@@ -165,7 +192,6 @@ export default withTracker(() => {
       limit: 120,
     }
   ).fetch();
-  console.log('usersTalking', usersTalking);
 
   if (usersTalking) {
     const maxNumberVoiceUsersNotification =
@@ -194,6 +220,6 @@ export default withTracker(() => {
     reactionUsers: UserReactionService.getUsersIdFromUserReaction(),
     isThisMeetingLocked: UserListService.isMeetingLocked(Auth.meetingID),
     lockSettingsProps: currentMeeting && currentMeeting.lockSettingsProps,
-    talkers,
+    usersTalking,
   };
 })(UserParticipantsContainer);
