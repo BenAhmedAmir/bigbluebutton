@@ -33,6 +33,7 @@ import { ACTIONS } from '/imports/ui/components/layout/enums';
 import Settings from '/imports/ui/services/settings';
 import deviceInfo from '/imports/utils/deviceInfo';
 import { uniqueId } from '/imports/utils/string-utils';
+import ChatContainer from '/imports/ui/components/chat/container';
 
 const ALLOW_FULLSCREEN = Meteor.settings.public.app.allowFullscreen;
 const MOBILE_HOVER_TIMEOUT = 5000;
@@ -397,7 +398,8 @@ class ScreenshareComponent extends React.Component {
     return (
       <div className='modal-overlay' onClick={this.toggleModal}>
         <div className='modal-content' onClick={(e) => e.stopPropagation()}>
-          <p>Hello</p>
+          <ChatContainer width={200} />
+
           <button onClick={this.toggleModal}>Close</button>
         </div>
         <style jsx>{`
