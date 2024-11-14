@@ -375,21 +375,6 @@ class ScreenshareComponent extends React.Component {
     this.setState((prevState) => ({ showModal: !prevState.showModal }));
   };
 
-  renderShowModalButton() {
-    return (
-      <button
-        onClick={this.toggleModal}
-        style={{
-          position: 'absolute',
-          top: '10px',
-          right: '30px',
-          zIndex: 1000,
-        }}
-      >
-        Show Modal
-      </button>
-    );
-  }
   renderModal() {
     const { showModal } = this.state;
 
@@ -402,16 +387,26 @@ class ScreenshareComponent extends React.Component {
 
           <button onClick={this.toggleModal}>Close</button>
         </div>
+        <button
+          onClick={this.toggleModal}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '30px',
+            zIndex: 1000,
+          }}
+        >
+          Show Modal
+        </button>
         <style jsx>{`
           .modal-overlay {
             position: fixed;
             bottom: 0;
             left: 0;
-
-            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 999;
           }
           .modal-content {
             background: white;
@@ -574,7 +569,6 @@ class ScreenshareComponent extends React.Component {
         id='screenshareContainer'
       >
         {loaded && this.renderFullscreenButton()}
-        {this.renderShowModalButton()}
         {this.renderModal()}
         {this.renderVideo(true)}
         {/* {loaded && enableVolumeControl && this.renderVolumeSlider()} */}
