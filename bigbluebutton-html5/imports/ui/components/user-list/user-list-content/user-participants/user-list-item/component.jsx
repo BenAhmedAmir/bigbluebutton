@@ -539,17 +539,17 @@ class UserListItem extends PureComponent {
         icon: 'presentation',
         dataTest: isMe(user.userId) ? 'takePresenter' : 'makePresenter',
       },
-      {
-        allowed: allowedToPromote && isMeteorConnected && !showNestedOptions,
-        key: 'promote',
-        label: intl.formatMessage(messages.PromoteUserLabel),
-        onClick: () => {
-          this.onActionsHide(changeRole(user.userId, 'MODERATOR'));
-          this.handleClose();
-        },
-        icon: 'promote',
-        dataTest: 'promoteToModerator',
-      },
+      // {
+      //   allowed: allowedToPromote && isMeteorConnected && !showNestedOptions,
+      //   key: 'promote',
+      //   label: intl.formatMessage(messages.PromoteUserLabel),
+      //   onClick: () => {
+      //     this.onActionsHide(changeRole(user.userId, 'MODERATOR'));
+      //     this.handleClose();
+      //   },
+      //   icon: 'promote',
+      //   dataTest: 'promoteToModerator',
+      // },
       {
         allowed: allowedToDemote && isMeteorConnected && !showNestedOptions,
         key: 'demote',
@@ -587,18 +587,18 @@ class UserListItem extends PureComponent {
         },
         icon: 'user',
       },
-      {
-        allowed: allowedToRemove && isMeteorConnected && !showNestedOptions,
-        key: 'remove',
-        label: intl.formatMessage(messages.RemoveUserLabel, { 0: user.name }),
-        onClick: () => {
-          this.onActionsHide(this.setConfirmationModalIsOpen(true));
+      // {
+      //   allowed: allowedToRemove && isMeteorConnected && !showNestedOptions,
+      //   key: 'remove',
+      //   label: intl.formatMessage(messages.RemoveUserLabel, { 0: user.name }),
+      //   onClick: () => {
+      //     this.onActionsHide(this.setConfirmationModalIsOpen(true));
 
-          this.handleClose();
-        },
-        icon: 'circle_close',
-        dataTest: 'removeUser',
-      },
+      //     this.handleClose();
+      //   },
+      //   icon: 'circle_close',
+      //   dataTest: 'removeUser',
+      // },
       {
         allowed:
           allowedToEjectCameras &&
@@ -945,10 +945,22 @@ class UserListItem extends PureComponent {
           </Styled.UserName>
         ) : null}
         {user.role !== ROLE_MODERATOR && amIModerator && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='24'
+              height='24'
+              viewBox='0 0 20 20'
+            >
+              <g fill='#4e5a66'>
+                <circle cx='10' cy='15' r='2' />
+                <circle cx='10' cy='10' r='2' />
+                <circle cx='10' cy='5' r='2' />
+              </g>
+            </svg>
             <button
               style={{
-                padding: '10px',
+                padding: '7px',
                 border: 'none',
                 borderRadius: '5px',
                 display: 'flex',
@@ -961,7 +973,7 @@ class UserListItem extends PureComponent {
                 toggleVoice(user.userId);
               }}
             >
-              {voiceUser.isVoiceUser ? (
+              {voiceUser.isVoiceUser && voiceUser.isListenOnly ? (
                 voiceUser.isMuted ? (
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -989,19 +1001,6 @@ class UserListItem extends PureComponent {
                 )
               ) : null}
             </button>
-
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 20 20'
-            >
-              <g fill='#4e5a66'>
-                <circle cx='10' cy='15' r='2' />
-                <circle cx='10' cy='10' r='2' />
-                <circle cx='10' cy='5' r='2' />
-              </g>
-            </svg>
           </div>
         )}
       </Styled.UserItemInnerContents>
