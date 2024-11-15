@@ -160,7 +160,7 @@ const ChatListItem = (props) => {
         });
         layoutContextDispatch({
           type: ACTIONS.SET_ID_CHAT_OPEN,
-          value: chat.chatId,
+          value: '',
         });
       } else {
         layoutContextDispatch({
