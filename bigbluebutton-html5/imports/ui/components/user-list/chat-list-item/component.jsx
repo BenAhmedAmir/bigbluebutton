@@ -107,6 +107,44 @@ const ChatListItem = (props) => {
     }
   }, [idChatOpen, sidebarContentIsOpen, sidebarContentPanel, chat]);
 
+  // const handleClickToggleChat = () => {
+  //   // Verify if chat panel is open
+
+  //   if (sidebarContentIsOpen && sidebarContentPanel === PANELS.CHAT) {
+  //     if (idChatOpen === chat.chatId) {
+  //       layoutContextDispatch({
+  //         type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
+  //         value: false,
+  //       });
+  //       layoutContextDispatch({
+  //         type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
+  //         value: PANELS.NONE,
+  //       });
+  //       layoutContextDispatch({
+  //         type: ACTIONS.SET_ID_CHAT_OPEN,
+  //         value: '',
+  //       });
+  //     } else {
+  //       layoutContextDispatch({
+  //         type: ACTIONS.SET_ID_CHAT_OPEN,
+  //         value: chat.chatId,
+  //       });
+  //     }
+  //   } else {
+  //     layoutContextDispatch({
+  //       type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
+  //       value: true,
+  //     });
+  //     layoutContextDispatch({
+  //       type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
+  //       value: PANELS.CHAT,
+  //     });
+  //     layoutContextDispatch({
+  //       type: ACTIONS.SET_ID_CHAT_OPEN,
+  //       value: chat.chatId,
+  //     });
+  //   }
+  // };
   const handleClickToggleChat = () => {
     // Verify if chat panel is open
 
@@ -122,7 +160,7 @@ const ChatListItem = (props) => {
         });
         layoutContextDispatch({
           type: ACTIONS.SET_ID_CHAT_OPEN,
-          value: '',
+          value: chat.chatId,
         });
       } else {
         layoutContextDispatch({

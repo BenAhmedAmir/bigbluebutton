@@ -389,7 +389,7 @@ class ScreenshareComponent extends React.Component {
           cursor: 'pointer',
           display: 'flex',
           border: '0px',
-          zIndex: 1000,
+          zIndex: 99,
         }}
       >
         <svg
