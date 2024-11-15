@@ -386,6 +386,7 @@ class ScreenshareComponent extends React.Component {
           padding: '10px',
           background: '#35bbe3',
           borderRadius: '50px',
+          display: 'flex',
           border: '0px',
           zIndex: 1000,
         }}
@@ -412,17 +413,29 @@ class ScreenshareComponent extends React.Component {
     return (
       <div className='modal-overlay' onClick={this.toggleModal}>
         <div className='modal-content' onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={this.toggleModal}
+            style={{
+              position: 'absolute',
+              padding: '7px',
+              background: '#35bbe3',
+              color: 'white',
+              border: '0px',
+            }}
+          >
+            Close
+          </button>
           <ChatContainer width={200} />
-
-          <button onClick={this.toggleModal}>Close</button>
         </div>
         <style jsx>{`
           .modal-overlay {
             position: fixed;
             bottom: 0;
+            width:30vw,
+
             left: 0;
             display: flex;
-            height: 100vh;
+            height: 80vh;
             justify-content: center;
             align-items: center;
             z-index: 999;
@@ -431,7 +444,10 @@ class ScreenshareComponent extends React.Component {
           .modal-content {
             background: white;
             padding: 20px;
+            display:flex;
+            flex-direction:column;
             height: 100%;
+            width:100%;
             border-radius: 8px;
             text-align: center;
           }
