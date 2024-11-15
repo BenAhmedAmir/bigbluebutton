@@ -59,8 +59,8 @@ class NavBar extends Component {
     super(props);
 
     this.state = {
-        acs: props.activeChats,
-    }
+      acs: props.activeChats,
+    };
 
     this.handleToggleUserList = this.handleToggleUserList.bind(this);
   }
@@ -76,9 +76,12 @@ class NavBar extends Component {
 
     if (breakoutNum && breakoutNum > 0) {
       if (breakoutName && meetingName) {
-        const defaultBreakoutName = intl.formatMessage(intlMessages.defaultBreakoutName, {
-          0: breakoutNum,
-        });
+        const defaultBreakoutName = intl.formatMessage(
+          intlMessages.defaultBreakoutName,
+          {
+            0: breakoutNum,
+          }
+        );
 
         if (breakoutName === defaultBreakoutName) {
           document.title = `${breakoutNum} - ${meetingName}`;
@@ -97,7 +100,11 @@ class NavBar extends Component {
         const { key, code } = event;
         const eventKey = key?.toUpperCase();
         const eventCode = code;
-        if (event?.altKey && (eventKey === TOGGLE_USERLIST_AK || eventCode === `Key${TOGGLE_USERLIST_AK}`)) {
+        if (
+          event?.altKey &&
+          (eventKey === TOGGLE_USERLIST_AK ||
+            eventCode === `Key${TOGGLE_USERLIST_AK}`)
+        ) {
           this.handleToggleUserList();
         }
       });
@@ -106,7 +113,7 @@ class NavBar extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevProps.activeChats, this.props.activeChats)) {
-      this.setState({ acs: this.props.activeChats})
+      this.setState({ acs: this.props.activeChats });
     }
   }
 
@@ -115,11 +122,8 @@ class NavBar extends Component {
   }
 
   handleToggleUserList() {
-    const {
-      sidebarNavigation,
-      sidebarContent,
-      layoutContextDispatch,
-    } = this.props;
+    const { sidebarNavigation, sidebarContent, layoutContextDispatch } =
+      this.props;
 
     if (sidebarNavigation.isOpen) {
       if (sidebarContent.isOpen) {
@@ -178,67 +182,81 @@ class NavBar extends Component {
     const hasNotification = hasUnreadMessages || (hasUnreadNotes && !isPinned);
 
     let ariaLabel = intl.formatMessage(intlMessages.toggleUserListAria);
-    ariaLabel += hasNotification ? (` ${intl.formatMessage(intlMessages.newMessages)}`) : '';
+    ariaLabel += hasNotification
+      ? ` ${intl.formatMessage(intlMessages.newMessages)}`
+      : '';
 
     const isExpanded = sidebarNavigation.isOpen;
     const { isPhone } = deviceInfo;
-
 
     const { acs } = this.state;
 
     activeChats.map((c, i) => {
       if (c?.unreadCounter > 0 && c?.unreadCounter !== acs[i]?.unreadCounter) {
-        addNewAlert(`${intl.formatMessage(intlMessages.newMsgAria, { 0: c.name })}`);
+        addNewAlert(
+          `${intl.formatMessage(intlMessages.newMsgAria, { 0: c.name })}`
+        );
       }
     });
 
     return (
       <Styled.Navbar
-        id="Navbar"
+        id='Navbar'
         style={
           main === 'new'
             ? {
-              position: 'absolute',
-              top: style.top,
-              left: style.left,
-              height: style.height,
-              width: style.width,
-            }
+                position: 'absolute',
+                top: style.top,
+                left: style.left,
+                height: style.height,
+                width: style.width,
+              }
             : {
-              position: 'relative',
-              height: style.height,
-              width: '100%',
-            }
+                position: 'relative',
+                height: style.height,
+                width: '100%',
+              }
         }
       >
         <Styled.Top>
           <Styled.Left>
-            {isExpanded && document.dir === 'ltr'
-              && <Styled.ArrowLeft iconName="left_arrow" />}
-            {!isExpanded && document.dir === 'rtl'
-              && <Styled.ArrowLeft iconName="left_arrow" />}
-            <Styled.NavbarToggleButton
-              onClick={this.handleToggleUserList}
-              color={isPhone && isExpanded ? 'primary' : 'dark'}
-              size='md'
-              circle
-              hideLabel
-              data-test={hasNotification ? 'hasUnreadMessages' : 'toggleUserList'}
-              label={intl.formatMessage(intlMessages.toggleUserListLabel)}
-              tooltipLabel={intl.formatMessage(intlMessages.toggleUserListLabel)}
-              aria-label={ariaLabel}
-              icon="user"
-              aria-expanded={isExpanded}
-              accessKey={TOGGLE_USERLIST_AK}
-              hasNotification={hasNotification}
-            />
-            {!isExpanded && document.dir === 'ltr'
-              && <Styled.ArrowRight iconName="right_arrow" />}
-            {isExpanded && document.dir === 'rtl'
-              && <Styled.ArrowRight iconName="right_arrow" />}
+            {isExpanded && document.dir === 'ltr' && (
+              <Styled.ArrowLeft iconName='left_arrow' />
+            )}
+            {!isExpanded && document.dir === 'rtl' && (
+              <Styled.ArrowLeft iconName='left_arrow' />
+            )}
+            {amIModerator && (
+              <Styled.NavbarToggleButton
+                onClick={this.handleToggleUserList}
+                color={isPhone && isExpanded ? 'primary' : 'dark'}
+                size='md'
+                circle
+                hideLabel
+                data-test={
+                  hasNotification ? 'hasUnreadMessages' : 'toggleUserList'
+                }
+                label={intl.formatMessage(intlMessages.toggleUserListLabel)}
+                tooltipLabel={intl.formatMessage(
+                  intlMessages.toggleUserListLabel
+                )}
+                aria-label={ariaLabel}
+                icon='user'
+                aria-expanded={isExpanded}
+                accessKey={TOGGLE_USERLIST_AK}
+                hasNotification={hasNotification}
+              />
+            )}
+
+            {!isExpanded && document.dir === 'ltr' && (
+              <Styled.ArrowRight iconName='right_arrow' />
+            )}
+            {isExpanded && document.dir === 'rtl' && (
+              <Styled.ArrowRight iconName='right_arrow' />
+            )}
           </Styled.Left>
           <Styled.Center>
-            <Styled.PresentationTitle data-test="presentationTitle">
+            <Styled.PresentationTitle data-test='presentationTitle'>
               {presentationTitle}
             </Styled.PresentationTitle>
             <RecordingIndicator
@@ -247,10 +265,12 @@ class NavBar extends Component {
             />
           </Styled.Center>
           <Styled.Right>
-            {ConnectionStatusService.isEnabled() ? <ConnectionStatusButton /> : null}
-            {isDirectLeaveButtonEnabled && isMeteorConnected
-              ? <LeaveMeetingButtonContainer amIModerator={amIModerator} />
-              : null}
+            {ConnectionStatusService.isEnabled() ? (
+              <ConnectionStatusButton />
+            ) : null}
+            {isDirectLeaveButtonEnabled && isMeteorConnected ? (
+              <LeaveMeetingButtonContainer amIModerator={amIModerator} />
+            ) : null}
             <SettingsDropdownContainer
               amIModerator={amIModerator}
               isDirectLeaveButtonEnabled={isDirectLeaveButtonEnabled}

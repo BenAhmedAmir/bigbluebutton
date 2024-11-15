@@ -34,12 +34,6 @@ import Settings from '/imports/ui/services/settings';
 import deviceInfo from '/imports/utils/deviceInfo';
 import { uniqueId } from '/imports/utils/string-utils';
 import ChatContainer from '/imports/ui/components/chat/container';
-import {
-  layoutSelect,
-  layoutSelectInput,
-  layoutDispatch,
-} from '../layout/context';
-
 const ALLOW_FULLSCREEN = Meteor.settings.public.app.allowFullscreen;
 const MOBILE_HOVER_TIMEOUT = 5000;
 const MEDIA_FLOW_PROBE_INTERVAL = 500;
@@ -377,47 +371,7 @@ class ScreenshareComponent extends React.Component {
     );
   }
   toggleModal = () => {
-    const sidebarContent = layoutSelectInput((i) => i.sidebarContent);
-    const idChatOpen = layoutSelect((i) => i.idChatOpen);
-    const { layoutContextDispatch } = this.props;
-
-    const { sidebarContentPanel } = sidebarContent;
-    const sidebarContentIsOpen = sidebarContent.isOpen;
     this.setState((prevState) => ({ showModal: !prevState.showModal }));
-    if (sidebarContentIsOpen && sidebarContentPanel === PANELS.CHAT) {
-      if (idChatOpen === chat.chatId) {
-        layoutContextDispatch({
-          type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
-          value: false,
-        });
-        layoutContextDispatch({
-          type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
-          value: PANELS.NONE,
-        });
-        layoutContextDispatch({
-          type: ACTIONS.SET_ID_CHAT_OPEN,
-          value: '',
-        });
-      } else {
-        layoutContextDispatch({
-          type: ACTIONS.SET_ID_CHAT_OPEN,
-          value: chat.chatId,
-        });
-      }
-    } else {
-      layoutContextDispatch({
-        type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
-        value: true,
-      });
-      layoutContextDispatch({
-        type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
-        value: PANELS.CHAT,
-      });
-      layoutContextDispatch({
-        type: ACTIONS.SET_ID_CHAT_OPEN,
-        value: chat.chatId,
-      });
-    }
   };
 
   renderShowModalButton() {
