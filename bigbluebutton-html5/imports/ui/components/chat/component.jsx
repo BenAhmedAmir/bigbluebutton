@@ -72,7 +72,7 @@ const Chat = (props) => {
       isChrome={isChrome}
       data-test={isPublicChat ? 'publicChat' : 'privateChat'}
     >
-      {showPublicHeader && (
+      {showPublicHeader && amIModerator && (
         <Header
           data-test='chatTitle'
           leftButtonProps={{
