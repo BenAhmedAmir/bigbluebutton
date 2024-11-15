@@ -586,10 +586,10 @@ class ScreenshareComponent extends React.Component {
         id='screenshareContainer'
       >
         {loaded && this.renderFullscreenButton()}
-        {/* {this.renderShowModalButton()}
-        {this.renderModal()} */}
+        {this.renderShowModalButton()}
+        {this.renderModal()}
         {this.renderVideo(true)}
-        {loaded && enableVolumeControl && this.renderVolumeSlider()}
+        {/* {loaded && enableVolumeControl && this.renderVolumeSlider()} */}
 
         <Styled.ScreenshareContainerDefault>
           {!loaded
