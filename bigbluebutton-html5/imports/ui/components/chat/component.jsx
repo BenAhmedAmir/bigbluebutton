@@ -54,6 +54,7 @@ const Chat = (props) => {
     syncedPercent,
     lastTimeWindowValuesBuild,
     width,
+    showPublicHeader,
   } = props;
   console.log('messages', messages);
   const userSentMessage = UserSentMessageCollection.findOne({
@@ -71,67 +72,72 @@ const Chat = (props) => {
       isChrome={isChrome}
       data-test={isPublicChat ? 'publicChat' : 'privateChat'}
     >
-      <Header
-        data-test='chatTitle'
-        leftButtonProps={{
-          accessKey: chatID !== 'public' ? HIDE_CHAT_AK : null,
-          'aria-label': intl.formatMessage(intlMessages.hideChatLabel, {
-            0: title,
-          }),
-          'data-test': isPublicChat ? 'hidePublicChat' : 'hidePrivateChat',
-          label: title,
-          onClick: () => {
-            layoutContextDispatch({
-              type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
-              value: false,
-            });
-            layoutContextDispatch({
-              type: ACTIONS.SET_ID_CHAT_OPEN,
-              value: '',
-            });
-            layoutContextDispatch({
-              type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
-              value: PANELS.NONE,
-            });
-          },
-        }}
-        rightButtonProps={{
-          accessKey: CLOSE_CHAT_AK,
-          'aria-label': intl.formatMessage(intlMessages.closeChatLabel, {
-            0: title,
-          }),
-          'data-test': 'closePrivateChat',
-          icon: 'close',
-          label: intl.formatMessage(intlMessages.closeChatLabel, { 0: title }),
-          onClick: () => {
-            actions.handleClosePrivateChat(chatID);
-            layoutContextDispatch({
-              type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
-              value: false,
-            });
-            layoutContextDispatch({
-              type: ACTIONS.SET_ID_CHAT_OPEN,
-              value: '',
-            });
-            layoutContextDispatch({
-              type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
-              value: PANELS.NONE,
-            });
-          },
-        }}
-        customRightButton={
-          isPublicChat && (
-            <ChatDropdownContainer
-              {...{
-                meetingIsBreakout,
-                isMeteorConnected,
-                amIModerator,
-                timeWindowsValues,
-              }}
-            />
-          )
-        }
-      />
+      {showPublicHeader && (
+        <Header
+          data-test='chatTitle'
+          leftButtonProps={{
+            accessKey: chatID !== 'public' ? HIDE_CHAT_AK : null,
+            'aria-label': intl.formatMessage(intlMessages.hideChatLabel, {
+              0: title,
+            }),
+            'data-test': isPublicChat ? 'hidePublicChat' : 'hidePrivateChat',
+            label: title,
+            onClick: () => {
+              layoutContextDispatch({
+                type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
+                value: false,
+              });
+              layoutContextDispatch({
+                type: ACTIONS.SET_ID_CHAT_OPEN,
+                value: '',
+              });
+              layoutContextDispatch({
+                type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
+                value: PANELS.NONE,
+              });
+            },
+          }}
+          rightButtonProps={{
+            accessKey: CLOSE_CHAT_AK,
+            'aria-label': intl.formatMessage(intlMessages.closeChatLabel, {
+              0: title,
+            }),
+            'data-test': 'closePrivateChat',
+            icon: 'close',
+            label: intl.formatMessage(intlMessages.closeChatLabel, {
+              0: title,
+            }),
+            onClick: () => {
+              actions.handleClosePrivateChat(chatID);
+              layoutContextDispatch({
+                type: ACTIONS.SET_SIDEBAR_CONTENT_IS_OPEN,
+                value: false,
+              });
+              layoutContextDispatch({
+                type: ACTIONS.SET_ID_CHAT_OPEN,
+                value: '',
+              });
+              layoutContextDispatch({
+                type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
+                value: PANELS.NONE,
+              });
+            },
+          }}
+          customRightButton={
+            isPublicChat && (
+              <ChatDropdownContainer
+                {...{
+                  meetingIsBreakout,
+                  isMeteorConnected,
+                  amIModerator,
+                  timeWindowsValues,
+                }}
+              />
+            )
+          }
+        />
+      )}
+
       <TimeWindowList
         id={ELEMENT_ID}
         chatId={chatID}

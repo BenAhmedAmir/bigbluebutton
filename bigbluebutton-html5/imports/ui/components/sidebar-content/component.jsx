@@ -83,7 +83,7 @@ const SidebarContent = (props) => {
     });
   };
 
-  const smallSidebar = width < (maxWidth / 2);
+  const smallSidebar = width < maxWidth / 2;
   const pollDisplay = sidebarContentPanel === PANELS.POLL ? 'inherit' : 'none';
 
   return (
@@ -102,13 +102,15 @@ const SidebarContent = (props) => {
         bottom: isResizable && resizableEdge.bottom,
         right: isResizable && resizableEdge.right,
       }}
-      handleWrapperClass="resizeSidebarContentWrapper"
+      handleWrapperClass='resizeSidebarContentWrapper'
       onResizeStart={() => {
         setIsResizing(true);
         setResizeStartWidth(resizableWidth);
         setResizeStartHeight(resizableHeight);
       }}
-      onResize={(...[, , , delta]) => setSidebarContentSize(delta.width, delta.height)}
+      onResize={(...[, , , delta]) =>
+        setSidebarContentSize(delta.width, delta.height)
+      }
       onResizeStop={() => {
         setIsResizing(false);
         setResizeStartWidth(0);
@@ -128,14 +130,11 @@ const SidebarContent = (props) => {
         right: { height: '100vh' },
       }}
     >
-      {sidebarContentPanel === PANELS.CHAT
-        && (
-          <ErrorBoundary
-            Fallback={FallbackView}
-          >
-            <ChatContainer width={width} />
-          </ErrorBoundary>
-        )}
+      {sidebarContentPanel === PANELS.CHAT && (
+        <ErrorBoundary Fallback={FallbackView}>
+          <ChatContainer width={width} showPublicHeader={true} />
+        </ErrorBoundary>
+      )}
       {!isSharedNotesPinned && (
         <NotesContainer
           isToSharedNotesBeShow={sidebarContentPanel === PANELS.SHARED_NOTES}
@@ -148,9 +147,12 @@ const SidebarContent = (props) => {
       {sidebarContentPanel === PANELS.POLL && (
         <Styled.Poll
           style={{ minWidth, top: '0', display: pollDisplay }}
-          id="pollPanel"
+          id='pollPanel'
         >
-          <PollContainer smallSidebar={smallSidebar} amIPresenter={amIPresenter} />
+          <PollContainer
+            smallSidebar={smallSidebar}
+            amIPresenter={amIPresenter}
+          />
         </Styled.Poll>
       )}
     </Resizable>

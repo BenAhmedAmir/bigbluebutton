@@ -79,6 +79,7 @@ const ChatContainer = (props) => {
     lockSettings,
     isChatLockedPublic,
     isChatLockedPrivate,
+    showPublicHeader,
     users: propUsers,
     ...restProps
   } = props;
@@ -153,6 +154,7 @@ const ChatContainer = (props) => {
   const participants = groupChat[idChatOpen]?.participants;
   const chatName = participants?.filter((user) => user.id !== Auth.userID)[0]
     ?.name;
+
   const title = chatName
     ? intl.formatMessage(intlMessages.titlePrivate, { 0: chatName })
     : intl.formatMessage(intlMessages.titlePublic);
@@ -178,7 +180,6 @@ const ChatContainer = (props) => {
 
   const contextChat =
     usingChatContext?.chats[isPublicChat ? PUBLIC_GROUP_CHAT_KEY : chatID];
-  console.log('contextChat', contextChat);
   const lastTimeWindow = contextChat?.lastTimewindow;
   const lastMsg =
     contextChat &&
@@ -297,6 +298,7 @@ const ChatContainer = (props) => {
         syncing: contextChat?.syncing,
         syncedPercent: contextChat?.syncedPercent,
         chatName,
+        showPublicHeader,
         contextChat,
         layoutContextDispatch,
         lastTimeWindowValuesBuild,

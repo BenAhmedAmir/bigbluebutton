@@ -416,7 +416,6 @@ class ScreenshareComponent extends React.Component {
           <button
             onClick={this.toggleModal}
             style={{
-              position: 'absolute',
               padding: '7px',
               background: '#35bbe3',
               color: 'white',
@@ -425,7 +424,7 @@ class ScreenshareComponent extends React.Component {
           >
             Close
           </button>
-          <ChatContainer width={200} />
+          <ChatContainer width={250} showPublicHeader={false} />
         </div>
         <style jsx>{`
           .modal-overlay {
