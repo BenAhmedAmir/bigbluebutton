@@ -29,7 +29,7 @@ import {
   subscribeToStreamStateChange,
   unsubscribeFromStreamStateChange,
 } from '/imports/ui/services/bbb-webrtc-sfu/stream-state-service';
-import { ACTIONS } from '/imports/ui/components/layout/enums';
+import { ACTIONS, PANELS } from '/imports/ui/components/layout/enums';
 import Settings from '/imports/ui/services/settings';
 import deviceInfo from '/imports/utils/deviceInfo';
 import { uniqueId } from '/imports/utils/string-utils';
@@ -372,6 +372,15 @@ class ScreenshareComponent extends React.Component {
     );
   }
   toggleModal = () => {
+    const { layoutContextDispatch } = this.props;
+
+    // Dispatch the action to set the sidebar content panel to chat
+    layoutContextDispatch({
+      type: ACTIONS.SET_SIDEBAR_CONTENT_PANEL,
+      value: PANELS.CHAT,
+    });
+
+    // Toggle the modal state
     this.setState((prevState) => ({ showModal: !prevState.showModal }));
   };
 
