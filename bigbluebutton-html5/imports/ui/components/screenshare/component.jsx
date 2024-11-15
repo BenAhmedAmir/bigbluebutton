@@ -382,9 +382,11 @@ class ScreenshareComponent extends React.Component {
         style={{
           position: 'absolute',
           top: '5px',
-          right: '30px',
+          right: '40px',
           padding: '10px',
           background: '#35bbe3',
+          borderRadius: '50px',
+          border: '0px',
           zIndex: 1000,
         }}
       >
@@ -420,6 +422,7 @@ class ScreenshareComponent extends React.Component {
             bottom: 0;
             left: 0;
             display: flex;
+            height: 100vh;
             justify-content: center;
             align-items: center;
             z-index: 999;
@@ -428,6 +431,7 @@ class ScreenshareComponent extends React.Component {
           .modal-content {
             background: white;
             padding: 20px;
+            height: 100%;
             border-radius: 8px;
             text-align: center;
           }
