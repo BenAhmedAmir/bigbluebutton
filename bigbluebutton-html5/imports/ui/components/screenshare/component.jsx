@@ -386,6 +386,7 @@ class ScreenshareComponent extends React.Component {
           padding: '10px',
           background: '#35bbe3',
           borderRadius: '50px',
+          cursor: 'pointer',
           display: 'flex',
           border: '0px',
           zIndex: 1000,
@@ -419,6 +420,8 @@ class ScreenshareComponent extends React.Component {
               padding: '7px',
               background: '#35bbe3',
               color: 'white',
+              cursor: 'pointer',
+              borderRadius: '10px',
               border: '0px',
             }}
           >

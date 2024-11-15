@@ -945,18 +945,6 @@ class UserListItem extends PureComponent {
         ) : null}
         {user.role !== ROLE_MODERATOR && amIModerator && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 20 20'
-            >
-              <g fill='#4e5a66'>
-                <circle cx='10' cy='15' r='2' />
-                <circle cx='10' cy='10' r='2' />
-                <circle cx='10' cy='5' r='2' />
-              </g>
-            </svg>
             <button
               style={{
                 padding: '7px',
@@ -1000,6 +988,18 @@ class UserListItem extends PureComponent {
                 )
               ) : null}
             </button>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='24'
+              height='24'
+              viewBox='0 0 20 20'
+            >
+              <g fill='#4e5a66'>
+                <circle cx='10' cy='15' r='2' />
+                <circle cx='10' cy='10' r='2' />
+                <circle cx='10' cy='5' r='2' />
+              </g>
+            </svg>
           </div>
         )}
       </Styled.UserItemInnerContents>
