@@ -72,7 +72,7 @@ const PresentationTitle = styled.div`
   justify-content: center;
   font-weight: 400;
   color: ${colorWhite};
-  font-size: ${fontSizeBase};
+  font-size: 21px;
   padding: 0;
   margin-right: 0;
   white-space: nowrap;
