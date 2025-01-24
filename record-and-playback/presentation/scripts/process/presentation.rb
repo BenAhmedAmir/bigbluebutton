@@ -237,7 +237,7 @@ unless FileTest.directory?(target_dir)
       deskshare_width = presentation_props['deskshare_output_width']
       deskshare_height = presentation_props['deskshare_output_height']
       deskshare_framerate = presentation_props['deskshare_output_framerate']
-      deskshare_framerate = 30 
+      deskshare_framerate = 1 
 
       BigBlueButton.process_deskshare_videos(target_dir, raw_archive_dir, deskshare_width, deskshare_height, deskshare_framerate, presentation_props['video_formats'])
     end
