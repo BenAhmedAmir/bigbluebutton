@@ -369,8 +369,8 @@ public:
       constraints:
         video:
           frameRate:
-            ideal: 5
-            max: 10
+            ideal: 30
+            max: 60
           width:
             max: 2560
           height:
