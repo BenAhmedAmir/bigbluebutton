@@ -302,7 +302,7 @@ public:
   externalVideoPlayer:
     enabled: true
   kurento:
-    wsUrl: wss://live3.takiacademy.com/bbb-webrtc-sfu
+    wsUrl: wss://live.takiacademy.com/bbb-webrtc-sfu
     cameraWsOptions:
       # Valid for video-provider. Time (ms) before its WS connection times out
       # and tries to reconnect.
@@ -718,7 +718,7 @@ public:
     forceRelay: false
     # Firefox has a buggy ICE implementation. With mediasoup this leads to
     # connection problems unless all traffic is relayed through a turn server.
-    forceRelayOnFirefox: true
+    forceRelayOnFirefox: false
     mediaTag: '#remote-media'
     callTransferTimeout: 5000
     callHangupTimeout: 2000
