@@ -302,7 +302,7 @@ public:
   externalVideoPlayer:
     enabled: true
   kurento:
-    wsUrl: wss://live8.takiacademy.com/bbb-webrtc-sfu
+    wsUrl: wss://live9.takiacademy.com/bbb-webrtc-sfu
     cameraWsOptions:
       # Valid for video-provider. Time (ms) before its WS connection times out
       # and tries to reconnect.
