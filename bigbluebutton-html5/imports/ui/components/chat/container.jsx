@@ -133,7 +133,7 @@ const ChatContainer = (props) => {
   const usingUsersContext = useContext(UsersContext);
   const { users } = usingUsersContext;
   const currentUser = users[Auth.meetingID][Auth.userID];
-  console.log('currentUser', currentUser);
+
   const amIModerator = currentUser.role === ROLE_MODERATOR;
   const systemMessagesIds = [
     sysMessagesIds.welcomeId,

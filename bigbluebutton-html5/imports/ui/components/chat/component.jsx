@@ -56,7 +56,7 @@ const Chat = (props) => {
     width,
     showPublicHeader,
   } = props;
-  console.log('messages', messages);
+
   const userSentMessage = UserSentMessageCollection.findOne({
     userId: Auth.userID,
     sent: true,

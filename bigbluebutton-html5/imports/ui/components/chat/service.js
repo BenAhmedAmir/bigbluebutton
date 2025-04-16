@@ -198,8 +198,8 @@ const sendGroupMessage = (message, idChatOpen) => {
 
   const user = Users.findOne({ meetingId: Auth.meetingID, userId: Auth.userID },
     { fields: { locked: 1, role: 1 } });
-  console.log(user)
-  console.log(ROLE_MODERATOR)
+
+
   const isPublicChat = user.role === ROLE_MODERATOR;
   // const isPublicChat = true;
 

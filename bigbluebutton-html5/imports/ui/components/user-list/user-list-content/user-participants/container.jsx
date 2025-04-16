@@ -31,7 +31,6 @@ const UserParticipantsContainer = (props) => {
     isModerator,
     usersTalking,
   } = props;
-  console.log('talkers', usersTalking);
 
   const { users: contextUsers, isReady } = useContextUsers();
 
