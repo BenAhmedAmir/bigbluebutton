@@ -103,19 +103,19 @@ const ChatContainer = (props) => {
   ChatLogger.debug('ChatContainer::render::props', props);
 
   const systemMessages = {
-    [sysMessagesIds.welcomeId]: {
-      id: sysMessagesIds.welcomeId,
-      content: [
-        {
-          id: sysMessagesIds.welcomeId,
-          text: welcomeProp.welcomeMsg,
-          time: loginTime,
-        },
-      ],
-      key: sysMessagesIds.welcomeId,
-      time: loginTime,
-      sender: null,
-    },
+    // [sysMessagesIds.welcomeId]: {
+    //   id: sysMessagesIds.welcomeId,
+    //   content: [
+    //     {
+    //       id: sysMessagesIds.welcomeId,
+    //       text: welcomeProp.welcomeMsg,
+    //       time: loginTime,
+    //     },
+    //   ],
+    //   key: sysMessagesIds.welcomeId,
+    //   time: loginTime,
+    //   sender: null,
+    // },
     [sysMessagesIds.moderatorId]: {
       id: sysMessagesIds.moderatorId,
       content: [
